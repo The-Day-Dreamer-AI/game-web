@@ -15,12 +15,16 @@ interface BannerSliderProps {
   banners: Banner[];
   autoPlayInterval?: number;
   className?: string;
+  showDots?: boolean;
+  rounded?: boolean;
 }
 
 export function BannerSlider({
   banners,
   autoPlayInterval = 4000,
   className,
+  showDots = true,
+  rounded = true,
 }: BannerSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [imgErrors, setImgErrors] = useState<Set<string>>(new Set());
@@ -50,7 +54,7 @@ export function BannerSlider({
   return (
     <div className={cn("relative w-full", className)}>
       {/* Slider Container */}
-      <div className="relative overflow-hidden rounded-lg aspect-[16/7]">
+      <div className={cn("relative overflow-hidden aspect-[16/7]", rounded && "rounded-lg")}>
         <div
           className="flex transition-transform duration-500 ease-out h-full"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -78,7 +82,7 @@ export function BannerSlider({
       </div>
 
       {/* Navigation Dots */}
-      {banners.length > 1 && (
+      {showDots && banners.length > 1 && (
         <div className="flex justify-center gap-1.5 mt-2">
           {banners.map((_, index) => (
             <button

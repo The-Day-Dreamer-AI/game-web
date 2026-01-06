@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Volume2 } from "lucide-react";
-import { BottomNav, Header } from "@/components/layout";
+import { BottomNav, Header, AppDownloadBanner } from "@/components/layout";
 import {
   BannerSlider,
   WelcomeCard,
@@ -255,18 +255,24 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
+      {/* App Download Banner */}
+      <AppDownloadBanner />
+
       {/* Header */}
       <Header variant="logo" />
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto pb-2">
-        {/* Banner Slider */}
-        <div className="px-2 pt-2">
-          <BannerSlider banners={banners} autoPlayInterval={4000} />
-        </div>
+        {/* Banner Slider - Full width, no padding, no dots, no border radius */}
+        <BannerSlider
+          banners={banners}
+          autoPlayInterval={4000}
+          showDots={false}
+          rounded={false}
+        />
 
-        {/* Announcement Bar */}
-        <div className="mx-2 mt-2 flex items-center gap-2 px-3 py-2 bg-zinc-100 rounded-full">
+        {/* Announcement Bar - Full width, no border radius */}
+        <div className="flex items-center gap-2 px-3 py-2 bg-zinc-100">
           <Volume2 className="w-4 h-4 text-primary flex-shrink-0" />
           <div className="overflow-hidden flex-1">
             <p className="text-xs text-zinc-600 whitespace-nowrap animate-marquee">
