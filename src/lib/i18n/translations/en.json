@@ -25,7 +25,8 @@
     "verified": "Verified",
     "rejected": "Rejected",
     "progress": "Progress",
-    "failed": "Failed"
+    "failed": "Failed",
+    "errorLoading": "Failed to load data. Please try again."
   },
   "nav": {
     "home": "Home",
