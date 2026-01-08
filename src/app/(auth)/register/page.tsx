@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -96,13 +97,15 @@ export default function RegisterPage() {
 
           if (uplineResult.Code !== 0) {
             setError("referralCode", {
-              message: uplineResult.Message || "Invalid referral code"
+              message: uplineResult.Message || "Invalid referral code",
             });
             setIsValidatingUpline(false);
             return;
           }
         } catch {
-          setError("referralCode", { message: "Failed to validate referral code" });
+          setError("referralCode", {
+            message: "Failed to validate referral code",
+          });
           setIsValidatingUpline(false);
           return;
         }
@@ -160,24 +163,13 @@ export default function RegisterPage() {
       {/* Main Content */}
       <main className="flex-1 overflow-auto">
         {/* Welcome Banner */}
-        <div className="relative w-full h-48 bg-gradient-to-r from-orange-100 via-yellow-50 to-blue-100 overflow-hidden">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center">
-              <p className="text-2xl font-bold text-zinc-800 mb-1">
-                Welcome to
-              </p>
-              <div className="flex items-center justify-center">
-                <span className="text-4xl font-black text-zinc-800">AON</span>
-                <span className="text-4xl font-black text-primary">1</span>
-                <span className="text-4xl font-black text-zinc-800">E</span>
-              </div>
-              <p className="text-primary text-sm font-medium mt-1">
-                where the excitement
-              </p>
-              <p className="text-primary text-sm font-medium">never stops</p>
-            </div>
-          </div>
-        </div>
+        <Image
+          src="/aone/Banner/Welcome_Banner.webp"
+          alt="register banner"
+          width={32}
+          height={32}
+          className="h-46 w-full object-fill"
+        />
 
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-3">
@@ -231,7 +223,9 @@ export default function RegisterPage() {
               className="w-full pl-10 pr-4 py-3.5 border border-zinc-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 bg-white"
             />
             {errors.username && (
-              <p className="text-xs text-red-500 mt-1">{errors.username.message}</p>
+              <p className="text-xs text-red-500 mt-1">
+                {errors.username.message}
+              </p>
             )}
           </div>
 
@@ -245,15 +239,17 @@ export default function RegisterPage() {
                 required: "Email is required",
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Invalid email address"
-                }
+                  message: "Invalid email address",
+                },
               })}
               type="email"
               placeholder="Email"
               className="w-full pl-10 pr-4 py-3.5 border border-zinc-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 bg-white"
             />
             {errors.email && (
-              <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>
+              <p className="text-xs text-red-500 mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
@@ -437,7 +433,9 @@ export default function RegisterPage() {
             {isSubmitting ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin" />
-                {isValidatingUpline ? "Validating..." : t("auth.creatingAccount")}
+                {isValidatingUpline
+                  ? "Validating..."
+                  : t("auth.creatingAccount")}
               </>
             ) : (
               t("auth.register").toUpperCase()
