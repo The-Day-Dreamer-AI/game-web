@@ -66,12 +66,12 @@ export default function TransferPage() {
                 onError={() => setImgError(true)}
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-zinc-500 font-bold text-2xl">
+              <div className="w-full h-full flex items-center justify-center text-zinc-500 font-roboto-bold text-2xl">
                 {contact.alias.charAt(0).toUpperCase()}
               </div>
             )}
           </div>
-          <h2 className="text-xl font-semibold text-zinc-800 mb-1">{contact.alias}</h2>
+          <h2 className="text-xl font-roboto-semibold text-zinc-800 mb-1">{contact.alias}</h2>
           <span className="text-sm text-zinc-500">UID: {contact.username}</span>
         </div>
 
@@ -88,7 +88,7 @@ export default function TransferPage() {
             />
           </div>
           <p className="mt-2 text-sm text-zinc-500">
-            Available Balance: <span className="text-primary font-medium">MYR {mockBalance.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span>
+            Available Balance: <span className="text-primary font-roboto-medium">MYR {mockBalance.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span>
           </p>
         </div>
 
@@ -111,7 +111,7 @@ export default function TransferPage() {
         <button
           onClick={handleTransfer}
           disabled={!amount || !pin}
-          className="w-full py-4 bg-primary text-white font-bold text-base rounded-full hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-4 bg-primary text-white font-roboto-bold text-base rounded-full hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           TRANSFER
         </button>
@@ -126,18 +126,18 @@ export default function TransferPage() {
           />
           <div className="relative bg-white rounded-xl p-6 w-full max-w-sm">
             <p className="text-center text-zinc-800 mb-6">
-              Confirm transfer <span className="text-primary font-medium">MYR {formattedAmount}</span> to your friend <span className="text-primary font-medium">{contact.alias}</span>?
+              Confirm transfer <span className="text-primary font-roboto-medium">MYR {formattedAmount}</span> to your friend <span className="text-primary font-roboto-medium">{contact.alias}</span>?
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setShowConfirm(false)}
-                className="flex-1 py-3 bg-dark text-white font-medium rounded-lg hover:bg-dark/90 transition-colors"
+                className="flex-1 py-3 bg-dark text-white font-roboto-medium rounded-lg hover:bg-dark/90 transition-colors"
               >
                 CANCEL
               </button>
               <button
                 onClick={handleConfirm}
-                className="flex-1 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors"
+                className="flex-1 py-3 bg-primary text-white font-roboto-medium rounded-lg hover:bg-primary/90 transition-colors"
               >
                 CONFIRM
               </button>

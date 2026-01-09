@@ -27,7 +27,7 @@ export function AppDownloadBanner({ className }: AppDownloadBannerProps) {
         <div className="shrink-0 overflow-hidden w-10 h-10">
           {imgError ? (
             <div className="w-full h-full rounded-lg bg-dark flex items-center justify-center">
-              <span className="text-xs font-bold text-white">
+              <span className="text-xs font-roboto-bold text-white">
                 A<span className="text-primary">1</span>
               </span>
             </div>
@@ -43,10 +43,10 @@ export function AppDownloadBanner({ className }: AppDownloadBannerProps) {
           )}
         </div>
         <div className="flex flex-col min-w-0">
-          <span className="text-white truncate font-bold text-base" style={{ lineHeight: '0.85' }} >
+          <span className="text-white truncate font-roboto-bold text-base" style={{ lineHeight: '0.85' }} >
             AONE APP
           </span>
-          <span className="text-white truncate font-normal text-sm" style={{ lineHeight: '0.85' }}>
+          <span className="text-white truncate font-roboto-regular text-sm" style={{ lineHeight: '0.85' }}>
             Download App Now
           </span>
         </div>
@@ -59,7 +59,7 @@ export function AppDownloadBanner({ className }: AppDownloadBannerProps) {
             // TODO: Link to app store
             window.open("#download", "_blank");
           }}
-          className="bg-white py-1.5 px-2.5 rounded-md font-bold text-xs text-primary transition-opacity hover:opacity-90"
+          className="bg-white py-1.5 px-2.5 rounded-md font-roboto-bold text-xs text-primary transition-opacity hover:opacity-90"
         >
           DOWNLOAD NOW
         </button>

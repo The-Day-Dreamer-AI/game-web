@@ -49,7 +49,7 @@ export default function ProfilePage() {
               </div>
 
               {/* Label */}
-              <span className="flex-1 text-sm font-medium text-zinc-700">
+              <span className="flex-1 text-sm font-roboto-medium text-zinc-700">
                 {t(item.labelKey)}
               </span>
 

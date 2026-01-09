@@ -71,7 +71,7 @@ export default function ResetPinPage() {
                   }}
                   className={cn(
                     "w-full flex items-center gap-3 px-4 py-3 text-left text-sm hover:bg-zinc-50 transition-colors",
-                    sendTo === option.id ? "text-primary font-medium" : "text-zinc-700"
+                    sendTo === option.id ? "text-primary font-roboto-medium" : "text-zinc-700"
                   )}
                 >
                   <option.icon className="w-5 h-5 text-primary" />
@@ -98,7 +98,7 @@ export default function ResetPinPage() {
           <button
             onClick={handleRequestOtp}
             disabled={!sendTo || isRequestingOtp}
-            className="px-4 py-3 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+            className="px-4 py-3 bg-primary text-white text-sm font-roboto-medium rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
           >
             {isRequestingOtp ? "Sending..." : "Request OTP"}
           </button>
@@ -146,7 +146,7 @@ export default function ResetPinPage() {
         <button
           onClick={handleConfirm}
           disabled={!isFormValid}
-          className="w-full py-4 bg-primary text-white font-bold text-base rounded-full hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+          className="w-full py-4 bg-primary text-white font-roboto-bold text-base rounded-full hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
         >
           CONFIRM
         </button>

@@ -92,7 +92,7 @@ export default function TermsPage() {
                     : "text-zinc-700 hover:bg-zinc-50 rounded-xl"
                 )}
               >
-                <span className="font-medium text-sm">
+                <span className="font-roboto-medium text-sm">
                   {section.id}. {t(section.titleKey)}
                 </span>
                 <ChevronDown

@@ -59,7 +59,7 @@ export function KycVerificationModal({
         </button>
 
         {/* Title */}
-        <h2 className="text-xl font-semibold text-zinc-800 mb-6">
+        <h2 className="text-xl font-roboto-semibold text-zinc-800 mb-6">
           KYC Verification
         </h2>
 
@@ -125,7 +125,7 @@ export function KycVerificationModal({
             <button
               type="button"
               onClick={handleRequestOTP}
-              className="px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap"
+              className="px-6 py-3 bg-primary text-white font-roboto-semibold rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap"
             >
               Request OTP
             </button>
@@ -142,7 +142,7 @@ export function KycVerificationModal({
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 bg-primary text-white font-roboto-semibold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? "PROCESSING..." : "CONFIRM"}
           </button>

@@ -41,7 +41,7 @@ export default function AboutPage() {
           </div>
 
           {/* Tagline */}
-          <p className="text-white/90 text-sm italic font-light tracking-wide">
+          <p className="text-white/90 text-sm italic font-roboto-light tracking-wide">
             {t("about.tagline")}
           </p>
         </div>
@@ -49,7 +49,7 @@ export default function AboutPage() {
 
       {/* Content */}
       <main className="flex-1 bg-white px-4 py-6">
-        <h2 className="text-lg font-semibold text-zinc-800 text-center mb-6">
+        <h2 className="text-lg font-roboto-semibold text-zinc-800 text-center mb-6">
           {t("about.aboutTitle")}
         </h2>
 

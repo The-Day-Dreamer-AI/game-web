@@ -97,7 +97,7 @@ export default function EventPage() {
             key={category.id}
             onClick={() => setActiveCategory(category.id)}
             className={cn(
-              "flex-shrink-0 px-4 py-2 rounded-full text-xs font-medium transition-colors whitespace-nowrap",
+              "flex-shrink-0 px-4 py-2 rounded-full text-xs font-roboto-medium transition-colors whitespace-nowrap",
               activeCategory === category.id
                 ? "bg-primary text-white"
                 : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
@@ -158,7 +158,7 @@ export default function EventPage() {
 
               {/* Event Content */}
               <div className="p-4">
-                <h3 className="text-base font-semibold text-zinc-800 mb-1">
+                <h3 className="text-base font-roboto-semibold text-zinc-800 mb-1">
                   {event.title}
                 </h3>
                 <p className="text-sm text-zinc-500 mb-4 line-clamp-2">

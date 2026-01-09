@@ -17,13 +17,13 @@ export function GuestWelcomeCard({ className }: GuestWelcomeCardProps) {
     <div className={cn("flex gap-2", className)}>
       <button
         onClick={openLoginModal}
-        className="uppercase flex-1 py-3 text-center text-base font-bold text-white bg-dark rounded-lg cursor-pointer"
+        className="uppercase flex-1 py-3 text-center text-base font-roboto-bold text-white bg-dark rounded-lg cursor-pointer"
       >
         {t("auth.login")}
       </button>
       <Link
         href="/register"
-        className="uppercase flex-1 py-3 text-center text-base font-bold text-white bg-primary rounded-lg cursor-pointer"
+        className="uppercase flex-1 py-3 text-center text-base font-roboto-bold text-white bg-primary rounded-lg cursor-pointer"
       >
         {t("auth.register")}
       </Link>

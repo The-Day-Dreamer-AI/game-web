@@ -31,11 +31,11 @@ export function AddFriendBanner({
           height={24}
           className="w-6 h-6 object-contain"
         />
-        <span className="text-white font-medium">Add New Friend</span>
+        <span className="text-white font-roboto-medium">Add New Friend</span>
       </div>
       <div className="flex items-center gap-2">
         {requestCount > 0 && (
-          <span className="w-6 h-6 rounded-full bg-white text-primary text-sm font-bold flex items-center justify-center">
+          <span className="w-6 h-6 rounded-full bg-white text-primary text-sm font-roboto-bold flex items-center justify-center">
             {requestCount}
           </span>
         )}

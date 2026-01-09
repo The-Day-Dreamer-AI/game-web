@@ -68,7 +68,7 @@ export default function ContactDetailPage() {
                 onError={() => setImgError(true)}
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-zinc-500 font-bold text-2xl">
+              <div className="w-full h-full flex items-center justify-center text-zinc-500 font-roboto-bold text-2xl">
                 {contact.alias.charAt(0).toUpperCase()}
               </div>
             )}
@@ -84,11 +84,11 @@ export default function ContactDetailPage() {
                 onBlur={handleSaveAlias}
                 onKeyDown={(e) => e.key === "Enter" && handleSaveAlias()}
                 autoFocus
-                className="text-xl font-semibold text-zinc-800 text-center border-b-2 border-primary focus:outline-none bg-transparent"
+                className="text-xl font-roboto-semibold text-zinc-800 text-center border-b-2 border-primary focus:outline-none bg-transparent"
               />
             ) : (
               <>
-                <span className="text-xl font-semibold text-zinc-800">{alias}</span>
+                <span className="text-xl font-roboto-semibold text-zinc-800">{alias}</span>
                 <button
                   onClick={() => setIsEditing(true)}
                   className="text-zinc-400 hover:text-zinc-600"
@@ -107,14 +107,14 @@ export default function ContactDetailPage() {
         <div className="space-y-3">
           <button
             onClick={handleTransfer}
-            className="w-full py-4 bg-primary text-white font-bold text-base rounded-lg hover:bg-primary/90 transition-colors"
+            className="w-full py-4 bg-primary text-white font-roboto-bold text-base rounded-lg hover:bg-primary/90 transition-colors"
           >
             TRANSFER
           </button>
 
           <button
             onClick={() => setShowDeleteConfirm(true)}
-            className="w-full py-4 bg-red-500 text-white font-bold text-base rounded-lg hover:bg-red-600 transition-colors"
+            className="w-full py-4 bg-red-500 text-white font-roboto-bold text-base rounded-lg hover:bg-red-600 transition-colors"
           >
             DELETE
           </button>
@@ -129,20 +129,20 @@ export default function ContactDetailPage() {
             onClick={() => setShowDeleteConfirm(false)}
           />
           <div className="relative bg-white rounded-xl p-6 w-full max-w-sm">
-            <h3 className="text-lg font-semibold text-zinc-800 mb-2">Delete Contact</h3>
+            <h3 className="text-lg font-roboto-semibold text-zinc-800 mb-2">Delete Contact</h3>
             <p className="text-zinc-600 mb-6">
               Are you sure you want to delete {alias} from your contacts?
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="flex-1 py-3 border border-zinc-300 text-zinc-700 font-medium rounded-lg hover:bg-zinc-50 transition-colors"
+                className="flex-1 py-3 border border-zinc-300 text-zinc-700 font-roboto-medium rounded-lg hover:bg-zinc-50 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="flex-1 py-3 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 transition-colors"
+                className="flex-1 py-3 bg-red-500 text-white font-roboto-medium rounded-lg hover:bg-red-600 transition-colors"
               >
                 Delete
               </button>

@@ -59,7 +59,7 @@ export function GameCategories({
                 : undefined
             }
           >
-            <span className="mb-1 w-8 h-8 relative">
+            <span className="mb-1 w-8 h-8 relative flex items-center">
               <Image
                 src={imagePath}
                 alt={t(category.labelKey)}
@@ -68,7 +68,7 @@ export function GameCategories({
                 className="object-contain"
               />
             </span>
-            <span className="text-xs font-bold whitespace-nowrap">{t(category.labelKey)}</span>
+            <span className="text-xs font-roboto-bold whitespace-nowrap">{t(category.labelKey)}</span>
           </button>
         );
       })}

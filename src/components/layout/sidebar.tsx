@@ -97,7 +97,7 @@ const secondaryMenuItems = [
     labelKey: "sidebar.aboutUs",
     href: "/about",
     icon: (
-      <span className="text-xs font-bold text-primary">A1</span>
+      <span className="text-xs font-roboto-bold text-primary">A1</span>
     ),
   },
   {
@@ -227,7 +227,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   onError={() => setImgError(true)}
                 />
               ) : (
-                <span className="text-3xl font-bold text-zinc-800">
+                <span className="text-3xl font-roboto-bold text-zinc-800">
                   AON<span className="text-primary">1</span>E
                 </span>
               )}
@@ -250,7 +250,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   <path d="M9 4V2M15 4V2" stroke="#4FD1C5" strokeWidth="1.5" strokeLinecap="round"/>
                   <path d="M8 13l2 2 4-4" stroke="#4FD1C5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                <span className="text-xs font-medium text-zinc-700">{t("sidebar.checkIn")}</span>
+                <span className="text-xs font-roboto-medium text-zinc-700">{t("sidebar.checkIn")}</span>
               </Link>
               <Link
                 href="/spin-wheel"
@@ -262,7 +262,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   <path d="M12 3v9l6 3" stroke="#4FD1C5" strokeWidth="1.5" strokeLinecap="round"/>
                   <circle cx="12" cy="12" r="2" fill="#4FD1C5"/>
                 </svg>
-                <span className="text-xs font-medium text-zinc-700">{t("sidebar.spinWheel")}</span>
+                <span className="text-xs font-roboto-medium text-zinc-700">{t("sidebar.spinWheel")}</span>
               </Link>
             </div>
           </div>
@@ -287,7 +287,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   )}
                 >
                   <span className={item.color}>{item.icon}</span>
-                  <span className="flex-1 text-sm font-medium text-zinc-700">{t(item.labelKey)}</span>
+                  <span className="flex-1 text-sm font-roboto-medium text-zinc-700">{t(item.labelKey)}</span>
                   {item.badge && (
                     <span className="w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
                       {item.badge}
@@ -312,7 +312,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   )}
                 >
                   <span className="w-5 h-5 flex items-center justify-center">{item.icon}</span>
-                  <span className="text-sm font-medium text-zinc-700">{t(item.labelKey)}</span>
+                  <span className="text-sm font-roboto-medium text-zinc-700">{t(item.labelKey)}</span>
                 </Link>
               ))}
 
@@ -328,7 +328,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <svg viewBox="0 0 24 24" className="w-5 h-5 text-red-500" fill="currentColor">
                   <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
                 </svg>
-                <span className="text-sm font-medium text-zinc-700">{t("sidebar.logout")}</span>
+                <span className="text-sm font-roboto-medium text-zinc-700">{t("sidebar.logout")}</span>
               </button>
             </div>
           </div>

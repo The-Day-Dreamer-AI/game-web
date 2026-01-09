@@ -122,7 +122,7 @@ export default function AccountPage() {
                 onError={() => setImgError(true)}
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-zinc-400 text-xl font-bold">
+              <div className="w-full h-full flex items-center justify-center text-zinc-400 text-xl font-roboto-bold">
                 {userData.username.charAt(0).toUpperCase()}
               </div>
             )}
@@ -131,7 +131,7 @@ export default function AccountPage() {
           {/* User Info */}
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <h2 className="text-white text-lg font-semibold">{userData.username}</h2>
+              <h2 className="text-white text-lg font-roboto-semibold">{userData.username}</h2>
               <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
                 <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -140,7 +140,7 @@ export default function AccountPage() {
               <button
                 onClick={() => setIsKycModalOpen(true)}
                 className={cn(
-                  "px-2 py-0.5 rounded-full text-xs font-medium transition-opacity hover:opacity-80",
+                  "px-2 py-0.5 rounded-full text-xs font-roboto-medium transition-opacity hover:opacity-80",
                   statusConfig[userData.status as keyof typeof statusConfig].className
                 )}
               >
@@ -157,12 +157,12 @@ export default function AccountPage() {
         <div className="flex gap-4">
           {/* Cash Balance */}
           <div className="flex-1 flex flex-col items-center">
-            <span className="px-4 py-1 rounded-full bg-primary text-white text-xs font-medium mb-2">
+            <span className="px-4 py-1 rounded-full bg-primary text-white text-xs font-roboto-medium mb-2">
               {t("wallet.cash")}
             </span>
             <div className="flex items-baseline gap-1">
               <span className="text-zinc-400 text-xs">MYR</span>
-              <span className="text-white text-xl font-bold">
+              <span className="text-white text-xl font-roboto-bold">
                 {formatCurrency(userData.cashBalance)}
               </span>
             </div>
@@ -173,14 +173,14 @@ export default function AccountPage() {
 
           {/* Chips Balance */}
           <div className="flex-1 flex flex-col items-center">
-            <span className="px-4 py-1 rounded-full bg-primary text-white text-xs font-medium mb-2">
+            <span className="px-4 py-1 rounded-full bg-primary text-white text-xs font-roboto-medium mb-2">
               {t("wallet.chips")}
             </span>
             <div className="flex items-center gap-1">
               <svg className="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor">
                 <circle cx="12" cy="12" r="10" />
               </svg>
-              <span className="text-white text-xl font-bold">
+              <span className="text-white text-xl font-roboto-bold">
                 {formatCurrency(userData.chipsBalance)}
               </span>
             </div>
@@ -191,20 +191,20 @@ export default function AccountPage() {
       {/* Overview Section */}
       <div className="mx-4 mt-4 bg-white rounded-xl p-4">
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-sm font-medium text-zinc-700">{t("account.overview")}</span>
+          <span className="text-sm font-roboto-medium text-zinc-700">{t("account.overview")}</span>
           <span className="text-sm text-primary">({userData.overview.date})</span>
         </div>
         <div className="flex items-center divide-x divide-zinc-200">
           <div className="flex-1 text-center">
-            <p className="text-xl font-bold text-primary">{userData.overview.registered}</p>
+            <p className="text-xl font-roboto-bold text-primary">{userData.overview.registered}</p>
             <p className="text-xs text-zinc-500">{t("account.registered")}</p>
           </div>
           <div className="flex-1 text-center">
-            <p className="text-xl font-bold text-primary">{userData.overview.activePlayer}</p>
+            <p className="text-xl font-roboto-bold text-primary">{userData.overview.activePlayer}</p>
             <p className="text-xs text-zinc-500">{t("account.activePlayer")}</p>
           </div>
           <div className="flex-1 text-center">
-            <p className="text-xl font-bold text-primary">{formatCurrency(userData.overview.turnover)}</p>
+            <p className="text-xl font-roboto-bold text-primary">{formatCurrency(userData.overview.turnover)}</p>
             <p className="text-xs text-zinc-500">{t("account.turnover")}</p>
           </div>
         </div>

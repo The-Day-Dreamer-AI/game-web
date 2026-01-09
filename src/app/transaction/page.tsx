@@ -141,17 +141,17 @@ export default function TransactionPage() {
       {/* Month Banner */}
       <div className="mx-4 h-20 rounded-lg bg-gradient-to-r from-zinc-700 to-zinc-600 flex items-end p-4 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <span className="text-[80px] font-bold text-white/20 absolute -right-4 -top-4">AON1E</span>
+          <span className="text-[80px] font-roboto-bold text-white/20 absolute -right-4 -top-4">AON1E</span>
         </div>
-        <p className="text-white text-xl italic font-semibold">
-          {selectedMonthData?.month} <span className="text-sm font-normal not-italic">{selectedMonthData?.year}</span>
+        <p className="text-white text-xl italic font-roboto-semibold">
+          {selectedMonthData?.month} <span className="text-sm font-roboto-regular not-italic">{selectedMonthData?.year}</span>
         </p>
       </div>
 
       {/* Transaction Table */}
       <div className="flex-1 mt-4 overflow-auto">
         {/* Table Header */}
-        <div className="sticky top-0 bg-zinc-700 px-4 py-3 grid grid-cols-[80px_1fr_90px_80px] gap-2 text-xs text-white font-medium">
+        <div className="sticky top-0 bg-zinc-700 px-4 py-3 grid grid-cols-[80px_1fr_90px_80px] gap-2 text-xs text-white font-roboto-medium">
           <span>{t("common.date")}</span>
           <span>{t("common.transId")}</span>
           <span className="text-center">{t("common.amount")}<br />(MYR)</span>
@@ -219,7 +219,7 @@ export default function TransactionPage() {
                 {/* Status */}
                 <div className="flex justify-center">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${statusConfig[tx.status].className}`}
+                    className={`px-3 py-1 rounded-full text-xs font-roboto-medium ${statusConfig[tx.status].className}`}
                   >
                     {t(statusConfig[tx.status].labelKey)}
                   </span>

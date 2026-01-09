@@ -76,7 +76,7 @@ export default function ChangeAvatarPage() {
                     />
                   ) : (
                     <div className="w-full h-full bg-zinc-200 flex items-center justify-center text-zinc-400">
-                      <span className="text-2xl font-bold">
+                      <span className="text-2xl font-roboto-bold">
                         {avatar.id.slice(-1)}
                       </span>
                     </div>
@@ -99,7 +99,7 @@ export default function ChangeAvatarPage() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full py-3.5 bg-primary text-white font-semibold rounded-xl hover:bg-primary/90 transition-colors"
+            className="w-full py-3.5 bg-primary text-white font-roboto-semibold rounded-xl hover:bg-primary/90 transition-colors"
           >
             {t("common.confirm")}
           </button>

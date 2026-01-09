@@ -41,18 +41,18 @@ export function SearchResultCard({
               onError={() => setImgError(true)}
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-zinc-500 font-bold text-lg">
+            <div className="w-full h-full flex items-center justify-center text-zinc-500 font-roboto-bold text-lg">
               {username.charAt(0).toUpperCase()}
             </div>
           )}
         </div>
-        <span className="text-zinc-800 font-medium">{username}</span>
+        <span className="text-zinc-800 font-roboto-medium">{username}</span>
       </div>
 
       <button
         onClick={onAdd}
         disabled={isAdding}
-        className="flex items-center gap-1.5 px-4 py-2 bg-dark text-white text-sm font-medium rounded-md hover:bg-dark/90 transition-colors disabled:opacity-50"
+        className="flex items-center gap-1.5 px-4 py-2 bg-dark text-white text-sm font-roboto-medium rounded-md hover:bg-dark/90 transition-colors disabled:opacity-50"
       >
         <UserPlus className="w-4 h-4" />
         <span>Add</span>

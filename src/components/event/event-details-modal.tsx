@@ -52,7 +52,7 @@ export function EventDetailsModal({
 
         {/* Header */}
         <div className="p-6 border-b border-zinc-100">
-          <h2 className="text-xl font-semibold text-zinc-800">
+          <h2 className="text-xl font-roboto-semibold text-zinc-800">
             {event.title}
           </h2>
         </div>
@@ -69,7 +69,7 @@ export function EventDetailsModal({
         <div className="p-6 border-t border-zinc-100">
           <button
             onClick={onClose}
-            className="w-full py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+            className="w-full py-3 bg-primary text-white font-roboto-semibold rounded-lg hover:bg-primary/90 transition-colors"
           >
             APPLY
           </button>

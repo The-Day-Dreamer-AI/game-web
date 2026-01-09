@@ -95,7 +95,7 @@ export default function WithdrawalPage() {
       <main className="flex-1 overflow-auto px-4 py-4">
         {/* Bank Account Selection */}
         <div className="mb-4">
-          <label className="text-sm font-medium text-zinc-700 mb-2 block">
+          <label className="text-sm font-roboto-medium text-zinc-700 mb-2 block">
             {t("withdrawal.bankAccount")}<span className="text-red-500">*</span>
           </label>
 
@@ -120,7 +120,7 @@ export default function WithdrawalPage() {
                         : "border-transparent"
                     )}
                   >
-                    <span className="text-white text-xs font-bold">{getBankAbbrev(bank.BankName)}</span>
+                    <span className="text-white text-xs font-roboto-bold">{getBankAbbrev(bank.BankName)}</span>
                     {selectedBankId === bank.Id && (
                       <div className="absolute bottom-0 right-0 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
                         <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -131,7 +131,7 @@ export default function WithdrawalPage() {
                   </div>
                   <span className={cn(
                     "text-xs mt-1 max-w-[60px] truncate",
-                    selectedBankId === bank.Id ? "text-primary font-medium" : "text-zinc-500"
+                    selectedBankId === bank.Id ? "text-primary font-roboto-medium" : "text-zinc-500"
                   )}>
                     {bank.BankName}
                   </span>
@@ -169,7 +169,7 @@ export default function WithdrawalPage() {
 
         {/* Enter Amount */}
         <div className="mb-2">
-          <label className="text-sm font-medium text-zinc-700 mb-2 block">
+          <label className="text-sm font-roboto-medium text-zinc-700 mb-2 block">
             {t("withdrawal.enterAmount")}<span className="text-red-500">*</span>
           </label>
           <div className="relative">
@@ -192,7 +192,7 @@ export default function WithdrawalPage() {
         {/* Available Balance */}
         <div className="mb-2">
           <span className="text-sm text-zinc-500">{t("withdrawal.availableBalance")}: </span>
-          <span className="text-sm text-primary font-medium">MYR {formatCurrency(cashBalance)}</span>
+          <span className="text-sm text-primary font-roboto-medium">MYR {formatCurrency(cashBalance)}</span>
         </div>
 
         {/* Turnover / Target - TODO: Add turnover API when available */}
@@ -220,7 +220,7 @@ export default function WithdrawalPage() {
 
         {/* Important Notice */}
         <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 mb-4">
-          <h3 className="font-medium text-zinc-700 mb-3">{t("deposit.importantNotice")}</h3>
+          <h3 className="font-roboto-medium text-zinc-700 mb-3">{t("deposit.importantNotice")}</h3>
           <div className="space-y-1 text-sm text-zinc-500 mb-4">
             <p>{t("withdrawal.minMaxLimit")}: MYR 50.00/50,000.00</p>
             <p>{t("withdrawal.dailyLimit")}: MYR 50,000.00</p>
@@ -240,7 +240,7 @@ export default function WithdrawalPage() {
         <button
           onClick={handleSubmit}
           disabled={submitWithdraw.isPending || !selectedBankId || !amount || !pin}
-          className="w-full py-4 bg-primary text-white font-semibold rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full py-4 bg-primary text-white font-roboto-semibold rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {submitWithdraw.isPending && <Loader2 className="w-5 h-5 animate-spin" />}
           {t("common.submit")}

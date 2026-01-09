@@ -97,7 +97,7 @@ export default function ReferralPage() {
                   onError={() => setImgError(true)}
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-zinc-100 text-zinc-500 text-2xl font-bold">
+                <div className="w-full h-full flex items-center justify-center bg-zinc-100 text-zinc-500 text-2xl font-roboto-bold">
                   {(user?.name || "U").charAt(0).toUpperCase()}
                 </div>
               )}
@@ -105,7 +105,7 @@ export default function ReferralPage() {
           </div>
 
           {/* Username */}
-          <h2 className="text-lg font-semibold text-zinc-800 mb-1">
+          <h2 className="text-lg font-roboto-semibold text-zinc-800 mb-1">
             {user?.name || "User"}
           </h2>
 
@@ -117,7 +117,7 @@ export default function ReferralPage() {
           {/* Referral Code */}
           <div className="flex items-center gap-2">
             <span className="text-sm text-zinc-500">{t("referral.code")}:</span>
-            <span className="text-sm font-semibold text-primary">
+            <span className="text-sm font-roboto-semibold text-primary">
               {referralCode}
             </span>
             <button
@@ -185,7 +185,7 @@ export default function ReferralPage() {
           />
           <button
             onClick={handleCopyLink}
-            className="px-6 py-3 bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors"
+            className="px-6 py-3 bg-primary text-white text-sm font-roboto-medium hover:bg-primary/90 transition-colors"
           >
             {copiedLink ? t("common.copied") : t("common.copyLink")}
           </button>
@@ -194,7 +194,7 @@ export default function ReferralPage() {
 
       {/* Share Section */}
       <div className="mx-4 mt-8 flex-1">
-        <h3 className="text-center text-sm font-medium text-zinc-700 mb-4">
+        <h3 className="text-center text-sm font-roboto-medium text-zinc-700 mb-4">
           {t("referral.shareQr")}:
         </h3>
         <div className="flex justify-center gap-8">

@@ -144,7 +144,7 @@ export default function ChangePasswordPage() {
               type="button"
               onClick={handleRequestOtp}
               disabled={countdown > 0}
-              className="px-4 py-3.5 bg-primary text-white text-sm font-medium rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+              className="px-4 py-3.5 bg-primary text-white text-sm font-roboto-medium rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
             >
               {countdown > 0 ? `${countdown}s` : t("profile.requestOtp")}
             </button>
@@ -216,7 +216,7 @@ export default function ChangePasswordPage() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full py-3.5 bg-primary text-white font-semibold rounded-xl hover:bg-primary/90 transition-colors"
+            className="w-full py-3.5 bg-primary text-white font-roboto-semibold rounded-xl hover:bg-primary/90 transition-colors"
           >
             {t("common.confirm")}
           </button>

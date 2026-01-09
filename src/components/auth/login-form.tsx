@@ -56,7 +56,7 @@ export function LoginForm() {
     >
       <Card className="w-full border-0 shadow-none">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">
+          <CardTitle className="text-2xl font-roboto-bold text-center">
             Welcome back
           </CardTitle>
           <CardDescription className="text-center">
@@ -120,7 +120,7 @@ export function LoginForm() {
             Don&apos;t have an account?{" "}
             <Link
               href="/register"
-              className="text-primary hover:underline font-medium"
+              className="text-primary hover:underline font-roboto-medium"
             >
               Sign up
             </Link>

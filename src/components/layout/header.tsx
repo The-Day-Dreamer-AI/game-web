@@ -61,7 +61,7 @@ export function Header({
                   onError={() => setImgError(true)}
                 />
               ) : (
-                <span className="text-xl font-bold text-white">
+                <span className="text-xl font-roboto-bold text-white">
                   AON<span className="text-primary">1</span>E
                 </span>
               )}
@@ -78,7 +78,7 @@ export function Header({
 
         {/* Center Section - Title for subpage variant */}
         {variant === "subpage" && title && (
-          <h1 className="absolute left-1/2 -translate-x-1/2 text-white font-medium text-base">
+          <h1 className="absolute left-1/2 -translate-x-1/2 text-white font-roboto-medium text-base">
             {title}
           </h1>
         )}

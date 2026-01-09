@@ -44,7 +44,7 @@ export default function ChangeUsernamePage() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full py-3.5 bg-primary text-white font-semibold rounded-xl hover:bg-primary/90 transition-colors"
+            className="w-full py-3.5 bg-primary text-white font-roboto-semibold rounded-xl hover:bg-primary/90 transition-colors"
           >
             {t("common.confirm")}
           </button>

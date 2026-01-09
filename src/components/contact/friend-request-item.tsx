@@ -44,12 +44,12 @@ export function FriendRequestItem({
               onError={() => setImgError(true)}
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-zinc-500 font-bold text-lg">
+            <div className="w-full h-full flex items-center justify-center text-zinc-500 font-roboto-bold text-lg">
               {username.charAt(0).toUpperCase()}
             </div>
           )}
         </div>
-        <span className="text-zinc-800 font-medium">{username}</span>
+        <span className="text-zinc-800 font-roboto-medium">{username}</span>
       </div>
 
       <div className="flex items-center gap-2">
@@ -57,13 +57,13 @@ export function FriendRequestItem({
           <>
             <button
               onClick={onReject}
-              className="px-4 py-1.5 bg-red-500 text-white text-sm font-medium rounded-md hover:bg-red-600 transition-colors"
+              className="px-4 py-1.5 bg-red-500 text-white text-sm font-roboto-medium rounded-md hover:bg-red-600 transition-colors"
             >
               Reject
             </button>
             <button
               onClick={onApprove}
-              className="px-4 py-1.5 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary/90 transition-colors"
+              className="px-4 py-1.5 bg-primary text-white text-sm font-roboto-medium rounded-md hover:bg-primary/90 transition-colors"
             >
               Approve
             </button>
@@ -71,7 +71,7 @@ export function FriendRequestItem({
         ) : (
           <button
             onClick={onCancel}
-            className="px-4 py-1.5 bg-red-500 text-white text-sm font-medium rounded-md hover:bg-red-600 transition-colors"
+            className="px-4 py-1.5 bg-red-500 text-white text-sm font-roboto-medium rounded-md hover:bg-red-600 transition-colors"
           >
             Cancel
           </button>

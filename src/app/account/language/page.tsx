@@ -68,7 +68,7 @@ export default function LanguagePage() {
 
       {/* Main Content */}
       <main className="flex-1 px-4 py-6">
-        <h2 className="text-center text-zinc-700 font-medium mb-6">
+        <h2 className="text-center text-zinc-700 font-roboto-medium mb-6">
           {t("language.chooseLanguage")}
         </h2>
 
@@ -94,7 +94,7 @@ export default function LanguagePage() {
                 className={cn(
                   "text-sm mt-2",
                   locale === lang.id
-                    ? "text-primary font-medium"
+                    ? "text-primary font-roboto-medium"
                     : "text-zinc-600"
                 )}
               >

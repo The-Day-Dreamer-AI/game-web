@@ -37,7 +37,7 @@ export default function ReportPage() {
               <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                 <option.icon className="w-5 h-5 text-primary" />
               </div>
-              <span className="text-sm font-medium text-zinc-800">{option.label}</span>
+              <span className="text-sm font-roboto-medium text-zinc-800">{option.label}</span>
             </div>
             <ChevronRight className="w-5 h-5 text-zinc-400" />
           </Link>

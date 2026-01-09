@@ -57,7 +57,7 @@ export function GameProviderGrid({
         />
       ) : (
         <div className="w-full h-full bg-gradient-to-br from-zinc-700 to-zinc-800 flex items-center justify-center">
-          <span className="text-white text-xs font-medium text-center px-2">
+          <span className="text-white text-xs font-roboto-medium text-center px-2">
             {provider.name}
           </span>
         </div>
@@ -66,7 +66,7 @@ export function GameProviderGrid({
       {/* Hot Badge */}
       {provider.isHot && (
         <span
-          className="absolute top-0 right-0 text-center px-1.5 py-px text-white text-[9px] font-medium rounded-l-full"
+          className="absolute top-0 right-0 text-center px-1.5 py-px text-white text-[9px] font-roboto-medium rounded-l-full"
           style={{
             background: "linear-gradient(180deg, #F9D85A 0%, #FA6625 100%)",
           }}
@@ -77,21 +77,21 @@ export function GameProviderGrid({
 
       {/* New Badge */}
       {provider.isNew && (
-        <span className="absolute top-1 right-1 px-1.5 py-0.5 bg-green-500 text-white text-[10px] font-bold rounded">
+        <span className="absolute top-1 right-1 px-1.5 py-0.5 bg-green-500 text-white text-[10px] font-roboto-bold rounded">
           New
         </span>
       )}
 
       {/* Custom Badge */}
       {provider.badge && !provider.isHot && !provider.isNew && (
-        <span className="absolute top-1 right-1 px-1.5 py-0.5 bg-primary text-white text-[10px] font-bold rounded">
+        <span className="absolute top-1 right-1 px-1.5 py-0.5 bg-primary text-white text-[10px] font-roboto-bold rounded">
           {provider.badge}
         </span>
       )}
 
       {/* Provider Name Overlay - optional, for providers without clear branding in image */}
       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-        <span className="text-white text-xs font-medium">{provider.name}</span>
+        <span className="text-white text-xs font-roboto-medium">{provider.name}</span>
       </div>
 
       {/* Loading Overlay */}

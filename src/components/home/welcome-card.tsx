@@ -51,7 +51,7 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
               unoptimized
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-zinc-400 text-lg font-bold">
+            <div className="w-full h-full flex items-center justify-center text-zinc-400 text-lg font-roboto-bold">
               {user.username.charAt(0).toUpperCase()}
             </div>
           )}
@@ -61,7 +61,7 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
         <div className="flex-1">
           <p className="text-zinc-400 text-sm">{t("common.welcome")},</p>
           <div className="flex items-center gap-2">
-            <span className="text-white font-semibold text-lg">{user.username}</span>
+            <span className="text-white font-roboto-semibold text-lg">{user.username}</span>
             {user.isVerified && (
               <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
                 <Check className="w-3 h-3 text-white" />
@@ -77,37 +77,37 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
         <div className="flex-1 space-y-2">
           {/* Cash Balance */}
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded-full bg-primary text-white text-xs font-medium">
+            <span className="px-2 py-0.5 rounded-full bg-primary text-white text-xs font-roboto-medium">
               {t("wallet.cash")}
             </span>
-            <span className="text-white font-medium">
+            <span className="text-white font-roboto-medium">
               MYR {formatCurrency(user.cashBalance)}
             </span>
           </div>
 
           {/* Chips Balance */}
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded-full bg-primary text-white text-xs font-medium">
+            <span className="px-2 py-0.5 rounded-full bg-primary text-white text-xs font-roboto-medium">
               {t("wallet.chips")}
             </span>
             <div className="flex items-center gap-1">
               <svg className="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor">
                 <circle cx="12" cy="12" r="10" />
               </svg>
-              <span className="text-white font-medium">{formatCurrency(user.chipsBalance)}</span>
+              <span className="text-white font-roboto-medium">{formatCurrency(user.chipsBalance)}</span>
             </div>
           </div>
 
           {/* A-Point */}
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded-full bg-primary text-white text-xs font-medium">
+            <span className="px-2 py-0.5 rounded-full bg-primary text-white text-xs font-roboto-medium">
               {t("wallet.aPoint")}
             </span>
             <div className="flex items-center gap-1">
               <svg className="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="currentColor">
                 <circle cx="12" cy="12" r="10" />
               </svg>
-              <span className="text-white font-medium">{formatPoints(user.aPoints)}</span>
+              <span className="text-white font-roboto-medium">{formatPoints(user.aPoints)}</span>
             </div>
           </div>
         </div>

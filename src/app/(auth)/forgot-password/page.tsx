@@ -68,7 +68,7 @@ export default function ForgotPasswordPage() {
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-white font-bold text-base absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">Forgot Password</h1>
+        <h1 className="text-white font-roboto-bold text-base absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">Forgot Password</h1>
         <div className="flex items-center gap-3">
           <button
             // onClick={onSupportClick}
@@ -201,7 +201,7 @@ export default function ForgotPasswordPage() {
             <button
               type="button"
               onClick={handleRequestOTP}
-              className="px-6 py-3.5 bg-primary text-white text-sm font-bold rounded-lg whitespace-nowrap"
+              className="px-6 py-3.5 bg-primary text-white text-sm font-roboto-bold rounded-lg whitespace-nowrap"
             >
               Request OTP
             </button>
@@ -261,7 +261,7 @@ export default function ForgotPasswordPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3.5 bg-primary text-white text-base font-bold rounded-lg"
+            className="w-full py-3.5 bg-primary text-white text-base font-roboto-bold rounded-lg"
           >
             {isLoading ? "PROCESSING..." : "CONFIRM"}
           </button>

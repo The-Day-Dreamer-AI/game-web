@@ -38,12 +38,12 @@ export function ContactListItem({
             onError={() => setImgError(true)}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-zinc-500 font-bold text-lg">
+          <div className="w-full h-full flex items-center justify-center text-zinc-500 font-roboto-bold text-lg">
             {username.charAt(0).toUpperCase()}
           </div>
         )}
       </div>
-      <span className="text-zinc-800 font-medium">{username}</span>
+      <span className="text-zinc-800 font-roboto-medium">{username}</span>
     </button>
   );
 }

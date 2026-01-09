@@ -112,7 +112,7 @@ export default function AddBankAccountPage() {
         <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm p-4 space-y-4">
           {/* Bank Name Dropdown */}
           <div>
-            <label className="text-sm font-medium text-zinc-700 mb-2 block">
+            <label className="text-sm font-roboto-medium text-zinc-700 mb-2 block">
               {t("bank.bankName")}<span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -160,7 +160,7 @@ export default function AddBankAccountPage() {
 
           {/* Account Number */}
           <div>
-            <label className="text-sm font-medium text-zinc-700 mb-2 block">
+            <label className="text-sm font-roboto-medium text-zinc-700 mb-2 block">
               {t("bank.accountNumber")}<span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -179,7 +179,7 @@ export default function AddBankAccountPage() {
 
           {/* TAC Code */}
           <div>
-            <label className="text-sm font-medium text-zinc-700 mb-2 block">
+            <label className="text-sm font-roboto-medium text-zinc-700 mb-2 block">
               {t("bank.tacCode")}<span className="text-red-500">*</span>
             </label>
             <div className="flex gap-2">
@@ -195,7 +195,7 @@ export default function AddBankAccountPage() {
                 type="button"
                 onClick={handleRequestTac}
                 disabled={requestTac.isPending || (tacExpiresIn !== null && tacExpiresIn > 0)}
-                className="px-4 py-3 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap flex items-center gap-2"
+                className="px-4 py-3 bg-primary text-white text-sm font-roboto-medium rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap flex items-center gap-2"
               >
                 {requestTac.isPending ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -232,7 +232,7 @@ export default function AddBankAccountPage() {
         <button
           onClick={handleSubmit}
           disabled={addBankAccount.isPending || !bankName || !accountNumber || !tac}
-          className="w-full py-4 bg-primary text-white font-semibold rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full py-4 bg-primary text-white font-roboto-semibold rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {addBankAccount.isPending && <Loader2 className="w-5 h-5 animate-spin" />}
           {t("common.submit")}

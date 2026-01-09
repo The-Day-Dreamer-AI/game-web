@@ -78,7 +78,7 @@ export default function TurnoverReportPage() {
               >
                 <div className="flex items-center gap-3">
                   <div className="w-5 h-5 rounded bg-primary/10 flex items-center justify-center">
-                    <span className="text-primary text-xs font-bold">G</span>
+                    <span className="text-primary text-xs font-roboto-bold">G</span>
                   </div>
                   <span className="text-zinc-800 text-sm">{selectedGame}</span>
                 </div>
@@ -96,7 +96,7 @@ export default function TurnoverReportPage() {
                       }}
                       className={cn(
                         "w-full px-4 py-2.5 text-left text-sm hover:bg-zinc-50 transition-colors",
-                        selectedGame === game ? "text-primary font-medium" : "text-zinc-700"
+                        selectedGame === game ? "text-primary font-roboto-medium" : "text-zinc-700"
                       )}
                     >
                       {game}
@@ -109,7 +109,7 @@ export default function TurnoverReportPage() {
             {/* Search Button */}
             <button
               onClick={handleSearch}
-              className="px-6 py-3 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors"
+              className="px-6 py-3 bg-primary text-white text-sm font-roboto-medium rounded-lg hover:bg-primary/90 transition-colors"
             >
               Search
             </button>
@@ -121,17 +121,17 @@ export default function TurnoverReportPage() {
           <div className="flex">
             <div className="flex-1 text-center">
               <p className="text-white/80 text-xs mb-1">Total Rollover</p>
-              <p className="text-white font-bold">MYR {mockSummary.totalRollover.toFixed(2)}</p>
+              <p className="text-white font-roboto-bold">MYR {mockSummary.totalRollover.toFixed(2)}</p>
             </div>
             <div className="flex-1 text-center">
               <p className="text-white/80 text-xs mb-1">Total Win Lose</p>
-              <p className="text-white font-bold">MYR {mockSummary.totalWinLose.toFixed(2)}</p>
+              <p className="text-white font-roboto-bold">MYR {mockSummary.totalWinLose.toFixed(2)}</p>
             </div>
           </div>
         </div>
 
         {/* Table Header */}
-        <div className="grid grid-cols-4 gap-2 px-4 py-3 bg-dark text-white text-xs font-medium">
+        <div className="grid grid-cols-4 gap-2 px-4 py-3 bg-dark text-white text-xs font-roboto-medium">
           <div>Date</div>
           <div>Game</div>
           <div className="text-right">Rollover</div>
@@ -149,7 +149,7 @@ export default function TurnoverReportPage() {
               <div className="text-zinc-800 flex items-center text-[10px]">{record.game}</div>
               <div className="text-zinc-800 text-right flex items-center justify-end">{record.rollover}</div>
               <div className={cn(
-                "text-right flex items-center justify-end font-medium",
+                "text-right flex items-center justify-end font-roboto-medium",
                 record.winLose >= 0 ? "text-primary" : "text-red-500"
               )}>
                 {record.winLose}

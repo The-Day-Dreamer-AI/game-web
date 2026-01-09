@@ -151,7 +151,7 @@ export default function RegisterPage() {
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-white font-bold text-base absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+        <h1 className="text-white font-roboto-bold text-base absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
           {t("auth.register")}
         </h1>
         <div className="flex items-center gap-3">
@@ -205,7 +205,7 @@ export default function RegisterPage() {
               </div>
             </div>
             <p className="text-xs text-zinc-500 mt-1 ml-1">
-              <span className="font-medium">Note:</span> If no referral code,
+              <span className="font-roboto-medium">Note:</span> If no referral code,
               one will be automatically generated for you
             </p>
           </div>
@@ -394,7 +394,7 @@ export default function RegisterPage() {
               type="button"
               onClick={handleRequestOTP}
               disabled={true}
-              className="px-6 py-3.5 bg-primary text-white font-semibold rounded-xl hover:bg-primary/90 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed min-w-[130px]"
+              className="px-6 py-3.5 bg-primary text-white font-roboto-semibold rounded-xl hover:bg-primary/90 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed min-w-[130px]"
             >
               Request OTP
             </button>
@@ -427,7 +427,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3.5 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full py-3.5 bg-primary text-white font-roboto-bold rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isSubmitting ? (
               <>
@@ -447,7 +447,7 @@ export default function RegisterPage() {
             <button
               type="button"
               onClick={() => setIsLoginModalOpen(true)}
-              className="text-primary hover:underline font-medium"
+              className="text-primary hover:underline font-roboto-medium"
             >
               Login Here
             </button>

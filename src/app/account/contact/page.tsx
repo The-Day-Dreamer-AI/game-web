@@ -160,7 +160,7 @@ export default function ContactPage() {
               <div key={letter}>
                 {/* Letter Header */}
                 <div className="px-4 py-2 bg-zinc-50 border-y border-zinc-200">
-                  <span className="text-sm font-semibold text-zinc-600">{letter}</span>
+                  <span className="text-sm font-roboto-semibold text-zinc-600">{letter}</span>
                 </div>
                 {/* Contact Items */}
                 {contacts.map((contact) => (
@@ -199,7 +199,7 @@ export default function ContactPage() {
               <button
                 onClick={() => setRequestTab("incoming")}
                 className={cn(
-                  "flex-1 py-3 text-sm font-medium transition-colors",
+                  "flex-1 py-3 text-sm font-roboto-medium transition-colors",
                   requestTab === "incoming"
                     ? "text-primary border-b-2 border-primary"
                     : "text-zinc-500"
@@ -210,7 +210,7 @@ export default function ContactPage() {
               <button
                 onClick={() => setRequestTab("outgoing")}
                 className={cn(
-                  "flex-1 py-3 text-sm font-medium transition-colors",
+                  "flex-1 py-3 text-sm font-roboto-medium transition-colors",
                   requestTab === "outgoing"
                     ? "text-primary border-b-2 border-primary"
                     : "text-zinc-500"

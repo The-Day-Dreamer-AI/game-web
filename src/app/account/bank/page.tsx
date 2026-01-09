@@ -63,7 +63,7 @@ export default function BankAccountsPage() {
                       <Building2 className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-zinc-800">
+                      <p className="text-sm font-roboto-semibold text-zinc-800">
                         {account.BankName}
                       </p>
                       <p className="text-xs text-zinc-500">{account.AccountName}</p>
@@ -73,7 +73,7 @@ export default function BankAccountsPage() {
                     </div>
                   </div>
                   {account.IsPrimary && (
-                    <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
+                    <span className="text-xs font-roboto-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
                       {t("account.primaryAccount")}
                     </span>
                   )}
@@ -103,7 +103,7 @@ export default function BankAccountsPage() {
         <button
           type="button"
           onClick={() => router.push("/account/bank/add")}
-          className="w-full py-3.5 bg-primary text-white font-semibold rounded-xl hover:bg-primary/90 transition-colors"
+          className="w-full py-3.5 bg-primary text-white font-roboto-semibold rounded-xl hover:bg-primary/90 transition-colors"
         >
           {t("account.addBankAccount")}
         </button>

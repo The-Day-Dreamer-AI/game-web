@@ -209,7 +209,7 @@ export default function HomePage() {
             className="h-7 w-auto object-contain"
           />
           <div className="overflow-hidden flex-1">
-            <p className="text-[11px] font-medium text-dark whitespace-nowrap animate-marquee">
+            <p className="text-[11px] font-roboto-medium text-dark whitespace-nowrap animate-marquee">
               {runningMessage}
             </p>
           </div>
