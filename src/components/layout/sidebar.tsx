@@ -26,6 +26,7 @@ const mainMenuItems = [
       </svg>
     ),
     color: "text-primary",
+    requiresAuth: true,
   },
   {
     id: "deposit",
@@ -37,6 +38,7 @@ const mainMenuItems = [
       </svg>
     ),
     color: "text-primary",
+    requiresAuth: true,
   },
   {
     id: "withdrawal",
@@ -48,6 +50,7 @@ const mainMenuItems = [
       </svg>
     ),
     color: "text-primary",
+    requiresAuth: true,
   },
   {
     id: "events",
@@ -59,6 +62,7 @@ const mainMenuItems = [
       </svg>
     ),
     color: "text-primary",
+    requiresAuth: true,
   },
   {
     id: "transactions",
@@ -70,6 +74,7 @@ const mainMenuItems = [
       </svg>
     ),
     color: "text-primary",
+    requiresAuth: true,
   },
   {
     id: "inbox",
@@ -82,6 +87,7 @@ const mainMenuItems = [
     ),
     color: "text-primary",
     badge: 1,
+    requiresAuth: true,
   },
 ];
 
@@ -121,8 +127,17 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const [imgError, setImgError] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { t } = useI18n();
-  const { logout } = useAuth();
+  const { logout, isAuthenticated } = useAuth();
   const { openLoginModal } = useLoginModal();
+
+  const handleProtectedNavigation = (href: string, requiresAuth?: boolean) => {
+    if (requiresAuth && !isAuthenticated) {
+      onClose();
+      openLoginModal();
+      return false;
+    }
+    return true;
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -259,7 +274,13 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <Link
                   key={item.id}
                   href={item.href}
-                  onClick={onClose}
+                  onClick={(e) => {
+                    if (!handleProtectedNavigation(item.href, item.requiresAuth)) {
+                      e.preventDefault();
+                    } else {
+                      onClose();
+                    }
+                  }}
                   className={cn(
                     "flex items-center gap-4 px-4 py-3.5 hover:bg-zinc-50 transition-colors",
                     index !== mainMenuItems.length - 1 && "border-b border-zinc-100"

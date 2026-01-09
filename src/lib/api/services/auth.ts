@@ -33,12 +33,13 @@ export const authApi = {
   },
 
   /**
-   * Get upline/referral info by referral code
+   * Generate upline/referral code using username
    * POST /api/mapiuser/Register_GetUpline
+   * Called when user does NOT provide a referral code - generates one based on username
    */
-  async getUpline(referralCode: string): Promise<GetUplineResponse> {
+  async getUpline(username: string): Promise<GetUplineResponse> {
     return apiClient.post<GetUplineResponse>("/api/mapiuser/Register_GetUpline", {
-      Id: referralCode,
+      Id: username,
     }, {
       authenticated: false,
     });

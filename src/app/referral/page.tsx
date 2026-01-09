@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Header, BottomNav } from "@/components/layout";
+import { RequireAuth } from "@/components/auth";
 import { Copy, Check, Loader2 } from "lucide-react";
 import { useAuth } from "@/providers/auth-provider";
 import { useQrCode } from "@/hooks/use-user";
@@ -49,7 +50,7 @@ export default function ReferralPage() {
   const [copiedLink, setCopiedLink] = useState(false);
   const [imgError, setImgError] = useState(false);
   const { t } = useI18n();
-  const { user, isAuthenticated } = useAuth();
+  const { user } = useAuth();
 
   // Fetch QR code from API
   const { data: qrData, isLoading: isQrLoading, error: qrError } = useQrCode();
@@ -74,22 +75,8 @@ export default function ReferralPage() {
     window.open(getShareUrl(referralLink), "_blank");
   };
 
-  // Show login prompt if not authenticated
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex flex-col bg-white">
-        <Header variant="logo" />
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-center px-4">
-            <p className="text-zinc-600 mb-4">{t("common.loginRequired")}</p>
-          </div>
-        </div>
-        <BottomNav />
-      </div>
-    );
-  }
-
   return (
+    <RequireAuth>
     <div className="min-h-screen flex flex-col bg-white">
       {/* Header */}
       <Header variant="logo" />
@@ -229,5 +216,6 @@ export default function ReferralPage() {
       {/* Bottom Navigation */}
       <BottomNav />
     </div>
+    </RequireAuth>
   );
 }

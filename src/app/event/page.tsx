@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import { Header, BottomNav } from "@/components/layout";
+import { RequireAuth } from "@/components/auth";
 import { Button } from "@/components/ui/button";
 import { EventDetailsModal } from "@/components/event";
 import { cn } from "@/lib/utils";
@@ -80,6 +81,7 @@ export default function EventPage() {
   };
 
   return (
+    <RequireAuth>
     <div className="relative min-h-screen flex flex-col bg-white">
       {/* Header */}
       <Header variant="logo" />
@@ -196,5 +198,6 @@ export default function EventPage() {
         event={selectedEvent}
       />
     </div>
+    </RequireAuth>
   );
 }

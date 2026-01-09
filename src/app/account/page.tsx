@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Header, BottomNav } from "@/components/layout";
+import { RequireAuth } from "@/components/auth";
 import {
   User,
   Landmark,
@@ -101,6 +102,7 @@ export default function AccountPage() {
   };
 
   return (
+    <RequireAuth>
     <div className="min-h-screen flex flex-col bg-zinc-100">
       {/* Header */}
       <Header variant="logo" />
@@ -271,5 +273,6 @@ export default function AccountPage() {
         onClose={() => setIsKycModalOpen(false)}
       />
     </div>
+    </RequireAuth>
   );
 }

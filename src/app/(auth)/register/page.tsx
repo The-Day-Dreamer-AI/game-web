@@ -88,23 +88,28 @@ export default function RegisterPage() {
     }
 
     try {
-      // If referral code is provided, validate it first
-      if (data.referralCode && data.referralCode.trim() !== "") {
+      let uplineValue = data.referralCode?.trim() || "";
+
+      // If NO referral code provided, call GetUpline API to generate one using username
+      if (!uplineValue) {
         setIsValidatingUpline(true);
 
         try {
-          const uplineResult = await authApi.getUpline(data.referralCode);
+          const uplineResult = await authApi.getUpline(data.username);
 
           if (uplineResult.Code !== 0) {
-            setError("referralCode", {
-              message: uplineResult.Message || "Invalid referral code",
+            setError("root", {
+              message: uplineResult.Message || "Failed to generate referral code",
             });
             setIsValidatingUpline(false);
             return;
           }
+
+          // Use the generated ReferralCode from the response
+          uplineValue = uplineResult.ReferralCode;
         } catch {
-          setError("referralCode", {
-            message: "Failed to validate referral code",
+          setError("root", {
+            message: "Failed to generate referral code. Please try again.",
           });
           setIsValidatingUpline(false);
           return;
@@ -113,15 +118,14 @@ export default function RegisterPage() {
         setIsValidatingUpline(false);
       }
 
-      // Proceed with registration
-      // Note: If no referral code, pass empty string - system will auto-assign default
+      // Proceed with registration using the upline value
       const result = await registerMutation.mutateAsync({
         Username: data.username,
         Password: data.password,
         Email: data.email,
         Phone: data.phone,
         FullName: data.fullName,
-        Upline: data.referralCode || "",
+        Upline: uplineValue,
       });
 
       if (result.Code === 0) {
@@ -202,13 +206,8 @@ export default function RegisterPage() {
             </div>
             <p className="text-xs text-zinc-500 mt-1 ml-1">
               <span className="font-medium">Note:</span> If no referral code,
-              system will auto assign a default referral code
+              one will be automatically generated for you
             </p>
-            {errors.referralCode && (
-              <p className="text-xs text-red-500 mt-1 ml-1">
-                {errors.referralCode.message}
-              </p>
-            )}
           </div>
 
           {/* Username */}
@@ -434,7 +433,7 @@ export default function RegisterPage() {
               <>
                 <Loader2 className="w-5 h-5 animate-spin" />
                 {isValidatingUpline
-                  ? "Validating..."
+                  ? "Generating referral..."
                   : t("auth.creatingAccount")}
               </>
             ) : (

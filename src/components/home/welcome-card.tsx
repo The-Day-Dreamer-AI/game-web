@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Check, RotateCcw, Wallet } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
+import { ProtectedLink } from "@/components/auth";
 
 interface UserData {
   username: string;
@@ -113,20 +114,20 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
 
         {/* Action Buttons */}
         <div className="flex gap-2">
-          <Link
+          <ProtectedLink
             href="/restore"
             className="flex flex-col items-center justify-center w-16 bg-zinc-700/50 rounded-xl hover:bg-zinc-700 transition-colors"
           >
             <RotateCcw className="w-6 h-6 text-zinc-300" />
             <span className="text-xs text-zinc-400 mt-1">{t("common.restore")}</span>
-          </Link>
-          <Link
+          </ProtectedLink>
+          <ProtectedLink
             href="/deposit"
             className="flex flex-col items-center justify-center w-16 bg-zinc-700/50 rounded-xl hover:bg-zinc-700 transition-colors"
           >
             <Wallet className="w-6 h-6 text-zinc-300" />
             <span className="text-xs text-zinc-400 mt-1">{t("wallet.deposit")}</span>
-          </Link>
+          </ProtectedLink>
         </div>
       </div>
     </div>

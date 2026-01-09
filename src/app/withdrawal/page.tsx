@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Header } from "@/components/layout";
+import { RequireAuth } from "@/components/auth";
 import { Plus, Lock, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
@@ -85,6 +86,7 @@ export default function WithdrawalPage() {
   };
 
   return (
+    <RequireAuth>
     <div className="min-h-screen flex flex-col bg-zinc-100">
       {/* Header */}
       <Header variant="subpage" title={t("withdrawal.title")} backHref="/deposit" />
@@ -250,5 +252,6 @@ export default function WithdrawalPage() {
         )}
       </div>
     </div>
+    </RequireAuth>
   );
 }

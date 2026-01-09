@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
+import { ProtectedLink } from "@/components/auth";
 
 interface NavItem {
   labelKey: string;
@@ -37,7 +38,7 @@ export function BottomNav() {
     const imagePath = `/aone/FooterMenu/Footer_Icon_${item.imageName}_${imageState}.webp`;
 
     return (
-      <Link
+      <ProtectedLink
         key={item.href}
         href={item.href}
         className={cn(
@@ -53,7 +54,7 @@ export function BottomNav() {
           className="w-[30px] h-[30px] object-contain"
         />
         <span>{t(labelTranslations[item.labelKey] || item.labelKey)}</span>
-      </Link>
+      </ProtectedLink>
     );
   };
 

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Header, BottomNav } from "@/components/layout";
+import { RequireAuth } from "@/components/auth";
 import { ChevronUp, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
@@ -90,6 +91,7 @@ export default function DepositPage() {
   };
 
   return (
+    <RequireAuth>
     <div className="min-h-screen flex flex-col bg-zinc-100">
       {/* Header */}
       <Header variant="subpage" title={t("wallet.title")} backHref="/" />
@@ -224,5 +226,6 @@ export default function DepositPage() {
       {/* Bottom Navigation */}
       <BottomNav />
     </div>
+    </RequireAuth>
   );
 }

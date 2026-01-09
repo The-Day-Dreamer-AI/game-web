@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { Header, BottomNav } from "@/components/layout";
+import { RequireAuth } from "@/components/auth";
 import { Dropdown } from "@/components/ui/dropdown";
 import { Copy, Check } from "lucide-react";
 import { useI18n } from "@/providers/i18n-provider";
@@ -116,6 +117,7 @@ export default function TransactionPage() {
   };
 
   return (
+    <RequireAuth>
     <div className="min-h-screen flex flex-col bg-white">
       {/* Header */}
       <Header variant="logo" />
@@ -231,5 +233,6 @@ export default function TransactionPage() {
       {/* Bottom Navigation */}
       <BottomNav />
     </div>
+    </RequireAuth>
   );
 }
