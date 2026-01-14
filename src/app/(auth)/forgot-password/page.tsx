@@ -1,197 +1,319 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import {
-  ChevronLeft,
-  Headphones,
-  Menu,
-  CreditCard,
-  Phone,
-  Wallet,
-  Lock,
   ChevronDown,
   EyeOff,
   Eye,
+  Loader2,
 } from "lucide-react";
+import { authApi } from "@/lib/api";
+import { Header } from "@/components/layout";
+import { FormInput } from "@/components/ui/form-input";
+import { useI18n } from "@/providers/i18n-provider";
+import Image from "next/image";
+
+type SendToOption = "SMS" | "WhatsApp";
+
+interface ForgotPasswordFormData {
+  username: string;
+  phoneNumber: string;
+  otpCode: string;
+  newPassword: string;
+}
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
+  const { t } = useI18n();
   const [showPassword, setShowPassword] = useState(false);
-  const [sendTo, setSendTo] = useState("");
+  const [sendTo, setSendTo] = useState<SendToOption | "">("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isRequestingOtp, setIsRequestingOtp] = useState(false);
+  const [otpCountdown, setOtpCountdown] = useState(0);
+  const [otpSent, setOtpSent] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+    setError,
+    clearErrors,
+    watch,
+  } = useForm<ForgotPasswordFormData>({
     defaultValues: {
-      uid: "",
+      username: "",
       phoneNumber: "",
       otpCode: "",
       newPassword: "",
     },
   });
 
-  const onSubmit = async (data: {
-    uid: string;
-    phoneNumber: string;
-    otpCode?: string;
-    newPassword: string;
-  }) => {
+  const usernameValue = watch("username");
+  const phoneValue = watch("phoneNumber");
+
+  // OTP countdown timer
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (otpCountdown > 0) {
+      timer = setTimeout(() => setOtpCountdown(otpCountdown - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [otpCountdown]);
+
+  // Handle OTP request
+  const handleRequestOTP = useCallback(async () => {
+    // Validate username
+    if (!usernameValue || usernameValue.trim().length < 1) {
+      setError("username", { message: t("auth.usernameRequired") });
+      return;
+    }
+
+    // Validate phone number
+    if (!phoneValue || phoneValue.trim().length < 10) {
+      setError("phoneNumber", { message: t("auth.phoneMinLength") });
+      return;
+    }
+
+    // Validate send to option
+    if (!sendTo) {
+      setError("root", {
+        message: t("auth.selectOtpMethod"),
+      });
+      return;
+    }
+
+    clearErrors("root");
+    setIsRequestingOtp(true);
+
+    try {
+      const result = await authApi.forgotPasswordGetTac({
+        Username: usernameValue.trim(),
+        Phone: phoneValue.trim(),
+        Option: sendTo,
+      });
+
+      if (result.Code === 0) {
+        setOtpSent(true);
+        setOtpCountdown(result.ExpiresIn || 300);
+      } else {
+        setError("root", { message: result.Message || t("auth.otpSendFailed") });
+      }
+    } catch {
+      setError("root", { message: t("auth.otpSendFailed") });
+    } finally {
+      setIsRequestingOtp(false);
+    }
+  }, [usernameValue, phoneValue, sendTo, setError, clearErrors, t]);
+
+  const onSubmit = async (data: ForgotPasswordFormData) => {
+    // Validate OTP was requested and code is entered
+    if (!otpSent) {
+      setError("root", { message: t("auth.requestOtpFirst") });
+      return;
+    }
+
+    if (!data.otpCode || data.otpCode.trim().length < 4) {
+      setError("otpCode", { message: t("auth.otpInvalid") });
+      return;
+    }
+
     setIsLoading(true);
 
-    // TODO: Implement forgot password API call
-    console.log("Reset password", data);
+    try {
+      const result = await authApi.forgotPassword({
+        Username: data.username.trim(),
+        Phone: data.phoneNumber.trim(),
+        Tac: data.otpCode.trim(),
+        Password: data.newPassword,
+      });
 
-    setIsLoading(false);
-
-    // After successful password reset
-    // router.push("/");
+      if (result.Code === 0) {
+        // Password reset successful - redirect to login
+        alert(t("auth.resetSuccess"));
+        router.push("/login");
+      } else {
+        setError("root", {
+          message: result.Message || t("auth.resetFailed"),
+        });
+      }
+    } catch {
+      setError("root", {
+        message: t("auth.resetFailed"),
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleRequestOTP = () => {
-    // TODO: Implement OTP request
-    console.log("Request OTP");
-  };
+  const canRequestOtp =
+    usernameValue &&
+    usernameValue.trim().length > 0 &&
+    phoneValue &&
+    phoneValue.trim().length >= 10 &&
+    sendTo &&
+    otpCountdown === 0;
 
   return (
-    <div className="min-h-screen flex flex-col bg-zinc-50">
+    <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-zinc-800 px-4 py-3 flex items-center justify-between">
-        <button
-          onClick={() => router.back()}
-          className="text-white hover:text-zinc-300 transition-colors"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-        <h1 className="text-white font-medium text-lg">Forgot Password</h1>
-        <div className="flex items-center gap-3">
-          <button className="text-primary hover:text-primary/80 transition-colors">
-            <Headphones className="w-6 h-6" />
-          </button>
-          <button className="text-white hover:text-zinc-300 transition-colors">
-            <Menu className="w-6 h-6" />
-          </button>
-        </div>
-      </header>
+      <Header variant="subpage" title={t("auth.forgotPassword")} />
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto">
         <form onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-3">
-          {/* UID */}
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">
-              <CreditCard className="w-5 h-5" />
-            </div>
-            <input
-              {...register("uid", { required: "UID is required" })}
-              type="text"
-              placeholder="UID"
-              className="w-full pl-10 pr-4 py-3.5 border border-zinc-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 bg-white"
-            />
-            {errors.uid && (
-              <p className="text-xs text-red-500 mt-1">{errors.uid.message}</p>
-            )}
-          </div>
+          {/* Username */}
+          <FormInput
+            {...register("username", { required: t("auth.usernameRequired") })}
+            type="text"
+            placeholder={t("auth.uid")}
+            prefix={
+              <Image
+                src="/images/icon/uuid_icon.png"
+                alt="AON1E uid"
+                width={24}
+                height={24}
+                unoptimized
+                className="h-6 w-auto object-contain"
+              />
+            }
+            error={errors.username?.message}
+          />
 
           {/* Phone Number */}
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">
-              <Phone className="w-5 h-5" />
-            </div>
-            <input
-              {...register("phoneNumber", {
-                required: "Phone number is required",
-              })}
-              type="tel"
-              placeholder="Phone Number"
-              className="w-full pl-10 pr-4 py-3.5 border border-zinc-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 bg-white"
-            />
-            {errors.phoneNumber && (
-              <p className="text-xs text-red-500 mt-1">
-                {errors.phoneNumber.message}
-              </p>
-            )}
-          </div>
+          <FormInput
+            {...register("phoneNumber", {
+              required: t("auth.phoneRequired"),
+              minLength: {
+                value: 10,
+                message: t("auth.phoneMinLength"),
+              },
+            })}
+            type="tel"
+            placeholder={t("auth.phone")}
+            prefix={
+              <Image
+                src="/images/icon/phone_icon.png"
+                alt="AON1E phone"
+                width={24}
+                height={24}
+                unoptimized
+                className="h-6 w-auto object-contain"
+              />
+            }
+            error={errors.phoneNumber?.message}
+          />
 
           {/* Send to Dropdown */}
           <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">
-              <Wallet className="w-5 h-5" />
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400">
+              <Image
+                src="/images/icon/otp_icon.png"
+                alt="AON1E otp"
+                width={24}
+                height={24}
+                unoptimized
+                className="h-6 w-auto object-contain"
+              />
             </div>
             <select
               value={sendTo}
-              onChange={(e) => setSendTo(e.target.value)}
-              className="w-full pl-10 pr-10 py-3.5 border border-zinc-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 bg-white appearance-none text-zinc-500"
+              onChange={(e) => setSendTo(e.target.value as SendToOption | "")}
+              className={`w-full pl-12 pr-10 py-3.5 border border-[#959595] rounded-lg focus:outline-none focus:border-[#0DC3B1] focus:bg-[#00D6C61A] focus:shadow-[0px_0px_20px_0px_#14BBB033] bg-white appearance-none ${
+                !sendTo ? "text-zinc-500" : "text-zinc-900"
+              }`}
             >
-              <option value="">Send to</option>
-              <option value="sms">SMS</option>
-              <option value="whatsapp">WhatsApp</option>
+              <option value="">{t("auth.sendTo")}</option>
+              <option value="SMS">{t("auth.sms")}</option>
+              <option value="WhatsApp">{t("auth.whatsapp")}</option>
             </select>
             <div className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">
-              <ChevronDown className="w-5 h-5" />
+              <ChevronDown className="w-auto h-6" />
             </div>
           </div>
 
           {/* OTP Code */}
           <div className="flex gap-2">
-            <div className="relative flex-1">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">
-                <Wallet className="w-5 h-5" />
-              </div>
-              <input
-                {...register("otpCode")}
-                type="text"
-                placeholder="OTP Code"
-                className="w-full pl-10 pr-4 py-3.5 border border-zinc-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 bg-white"
-              />
-            </div>
-            <button
-              type="button"
-              onClick={handleRequestOTP}
-              className="px-6 py-3.5 bg-primary text-white font-semibold rounded-xl hover:bg-primary/90 transition-colors whitespace-nowrap"
-            >
-              Request OTP
-            </button>
-          </div>
-
-          {/* New Password */}
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">
-              <Lock className="w-5 h-5" />
-            </div>
-            <input
-              {...register("newPassword", {
-                required: "New password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
-                },
+            <FormInput
+              {...register("otpCode", {
+                required: otpSent ? t("auth.otpRequired") : false,
               })}
-              type={showPassword ? "text" : "password"}
-              placeholder="New Password"
-              className="w-full pl-10 pr-12 py-3.5 border border-zinc-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 bg-white"
+              type="text"
+              placeholder={t("auth.otpCode")}
+              maxLength={6}
+              prefix={
+                <Image
+                  src="/images/icon/otp_icon.png"
+                  alt="AON1E otp"
+                  width={24}
+                  height={24}
+                  unoptimized
+                  className="h-6 w-auto object-contain"
+                />
+              }
+              error={errors.otpCode?.message}
+              wrapperClassName="flex-1"
             />
             <button
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+              onClick={handleRequestOTP}
+              disabled={!canRequestOtp || isRequestingOtp}
+              className="px-4 py-3.5 bg-primary text-white font-roboto-bold rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-sm"
             >
-              {showPassword ? (
-                <EyeOff className="w-5 h-5" />
+              {isRequestingOtp ? (
+                <Loader2 className="w-auto h-6 animate-spin" />
+              ) : otpCountdown > 0 ? (
+                `${t("auth.resendOtp")} (${otpCountdown}s)`
+              ) : otpSent ? (
+                t("auth.resendOtp")
               ) : (
-                <Eye className="w-5 h-5" />
+                t("auth.requestOtp")
               )}
             </button>
-            {errors.newPassword && (
-              <p className="text-xs text-red-500 mt-1">
-                {errors.newPassword.message}
-              </p>
-            )}
           </div>
+          {otpSent && otpCountdown > 0 && (
+            <p className="text-xs text-green-600 ml-1">
+              {t("auth.otpSent", { method: sendTo === "WhatsApp" ? t("auth.whatsapp") : t("auth.sms") })}
+            </p>
+          )}
+
+          {/* New Password */}
+          <FormInput
+            {...register("newPassword", {
+              required: t("auth.passwordRequired"),
+              minLength: {
+                value: 6,
+                message: t("auth.passwordMinLength"),
+              },
+            })}
+            type={showPassword ? "text" : "password"}
+            placeholder={t("auth.newPassword")}
+            prefix={
+              <Image
+                src="/images/icon/lock_icon.png"
+                alt="AON1E lock"
+                width={24}
+                height={24}
+                unoptimized
+                className="h-6 w-auto object-contain"
+              />
+            }
+            suffix={
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="text-zinc-400 hover:text-zinc-600"
+              >
+                {showPassword ? (
+                  <EyeOff className="w-auto h-6" />
+                ) : (
+                  <Eye className="w-auto h-6" />
+                )}
+              </button>
+            }
+            error={errors.newPassword?.message}
+          />
 
           {/* Error Message */}
           {errors.root && (
@@ -204,9 +326,16 @@ export default function ForgotPasswordPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3.5 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="mt-6 text-base w-full py-3.5 bg-primary text-white font-roboto-bold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            {isLoading ? "PROCESSING..." : "CONFIRM"}
+            {isLoading ? (
+              <>
+                <Loader2 className="w-auto h-6 animate-spin" />
+                {t("auth.processing")}
+              </>
+            ) : (
+              t("common.confirm").toUpperCase()
+            )}
           </button>
         </form>
       </main>

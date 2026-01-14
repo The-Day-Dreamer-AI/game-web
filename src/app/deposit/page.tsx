@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Header, BottomNav } from "@/components/layout";
+import { RequireAuth } from "@/components/auth";
 import { ChevronUp, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
@@ -90,15 +91,16 @@ export default function DepositPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-zinc-100">
+    <RequireAuth>
+    <div className="min-h-screen flex flex-col">
       {/* Header */}
       <Header variant="subpage" title={t("wallet.title")} backHref="/" />
 
       {/* Wallet Balance Section */}
-      <div className="bg-zinc-800 px-4 pt-4 pb-8">
+      <div className="bg-dark px-4 pt-4 pb-8">
         {/* Title with refresh */}
         <div className="flex items-center gap-2 mb-4">
-          <h2 className="text-white font-medium">{t("wallet.balance")}</h2>
+          <h2 className="text-white font-roboto-medium">{t("wallet.balance")}</h2>
           <button className="text-primary hover:text-primary/80 transition-colors">
             <RefreshCw className="w-4 h-4" />
           </button>
@@ -109,13 +111,13 @@ export default function DepositPage() {
           {/* Cash Card */}
           <div className="flex-1 bg-white rounded-xl p-4">
             <div className="flex justify-center mb-3">
-              <span className="px-6 py-1.5 rounded-full bg-primary text-white text-sm font-medium">
+              <span className="px-6 py-1.5 rounded-full bg-primary text-white text-sm font-roboto-medium">
                 {t("wallet.cash")}
               </span>
             </div>
             <div className="flex items-baseline justify-center gap-1">
               <span className="text-zinc-400 text-xs">MYR</span>
-              <span className="text-zinc-800 text-xl font-bold">
+              <span className="text-zinc-800 text-xl font-roboto-bold">
                 {formatCurrency(walletData.cashBalance)}
               </span>
             </div>
@@ -124,7 +126,7 @@ export default function DepositPage() {
           {/* Chips Card */}
           <div className="flex-1 bg-white rounded-xl p-4">
             <div className="flex justify-center mb-3">
-              <span className="px-6 py-1.5 rounded-full bg-primary text-white text-sm font-medium">
+              <span className="px-6 py-1.5 rounded-full bg-primary text-white text-sm font-roboto-medium">
                 {t("wallet.chips")}
               </span>
             </div>
@@ -132,7 +134,7 @@ export default function DepositPage() {
               <svg className="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor">
                 <circle cx="12" cy="12" r="10" />
               </svg>
-              <span className="text-zinc-800 text-xl font-bold">
+              <span className="text-zinc-800 text-xl font-roboto-bold">
                 {formatCurrency(walletData.chipsBalance)}
               </span>
             </div>
@@ -149,7 +151,7 @@ export default function DepositPage() {
             onClick={() => setDepositOpen(!depositOpen)}
             className="w-full flex items-center justify-between px-4 py-3 hover:bg-zinc-50 transition-colors"
           >
-            <span className="font-medium text-zinc-700">{t("wallet.deposit")}</span>
+            <span className="font-roboto-medium text-zinc-700">{t("wallet.deposit")}</span>
             <ChevronUp
               className={cn(
                 "w-5 h-5 text-zinc-400 transition-transform duration-200",
@@ -188,7 +190,7 @@ export default function DepositPage() {
             onClick={() => setWithdrawOpen(!withdrawOpen)}
             className="w-full flex items-center justify-between px-4 py-3 hover:bg-zinc-50 transition-colors"
           >
-            <span className="font-medium text-zinc-700">{t("wallet.withdraw")}</span>
+            <span className="font-roboto-medium text-zinc-700">{t("wallet.withdraw")}</span>
             <ChevronUp
               className={cn(
                 "w-5 h-5 text-zinc-400 transition-transform duration-200",
@@ -224,5 +226,6 @@ export default function DepositPage() {
       {/* Bottom Navigation */}
       <BottomNav />
     </div>
+    </RequireAuth>
   );
 }

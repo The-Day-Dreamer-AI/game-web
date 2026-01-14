@@ -25,7 +25,17 @@
     "verified": "Verified",
     "rejected": "Rejected",
     "progress": "Progress",
-    "failed": "Failed"
+    "failed": "Failed",
+    "errorLoading": "Failed to load data. Please try again.",
+    "loginRequired": "Please login to access this page",
+    "copied": "Copied!",
+    "copyLink": "Copy Link"
+  },
+  "referral": {
+    "title": "Referral",
+    "code": "Referral Code",
+    "link": "Referral Link",
+    "shareQr": "Share QR Code to"
   },
   "nav": {
     "home": "Home",
@@ -41,13 +51,27 @@
     "register": "Register",
     "logout": "Logout",
     "username": "Username",
+    "uid": "UID",
     "password": "Password",
     "confirmPassword": "Confirm Password",
+    "newPassword": "New Password",
     "phone": "Phone Number",
+    "fullName": "Full Name",
+    "referralCode": "Referral Code",
+    "referralCodeNote": "Note: If no referral code, system will auto assign a default referral code",
+    "sendTo": "Send to",
+    "sms": "SMS",
+    "whatsapp": "WhatsApp",
+    "otpCode": "OTP Code",
+    "requestOtp": "Request OTP",
+    "resendOtp": "Resend OTP",
+    "resendOtpCountdown": "Resend ({{seconds}}s)",
     "rememberMe": "Remember Me",
     "forgotPassword": "Forgot Password?",
     "noAccount": "Don't have an account?",
     "haveAccount": "Already have an account?",
+    "loginHere": "Login Here",
+    "registerHere": "Register Here",
     "welcomeBack": "Welcome back",
     "enterCredentials": "Enter your credentials to sign in to your account",
     "signIn": "Sign in",
@@ -56,7 +80,33 @@
     "createAccount": "Create an account",
     "enterDetails": "Enter your details to create your account",
     "creatingAccount": "Creating account...",
-    "email": "Email"
+    "processing": "PROCESSING...",
+    "email": "Email",
+    "termsAgree": "I have read & agree to the",
+    "termsConditions": "Terms & Conditions",
+    "supportNotice": "If you encounter any issues while logging in, please contact our Customer Service for further assist.",
+    "usernameRequired": "Username is required",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 6 characters",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordsNoMatch": "Passwords don't match",
+    "fullNameRequired": "Full name is required",
+    "phoneRequired": "Phone number is required",
+    "phoneMinLength": "Phone number must be at least 10 digits",
+    "otpRequired": "OTP code is required",
+    "otpInvalid": "Please enter a valid OTP code",
+    "referralInvalid": "Invalid referral code",
+    "referralVerifyFailed": "Failed to verify referral code. Please try again.",
+    "selectOtpMethod": "Please select how to receive OTP (SMS or WhatsApp)",
+    "requestOtpFirst": "Please request and enter OTP code",
+    "agreeTermsRequired": "Please agree to the Terms & Conditions",
+    "loginFailed": "Login failed",
+    "registrationFailed": "Registration failed. Please try again.",
+    "resetFailed": "Failed to reset password. Please try again.",
+    "otpSendFailed": "Failed to send OTP. Please try again.",
+    "otpSent": "OTP sent! Please check your {{method}}.",
+    "verifyingReferral": "Verifying referral code...",
+    "resetSuccess": "Password reset successfully! Please login with your new password."
   },
   "language": {
     "title": "Language",
@@ -117,11 +167,20 @@
     "resetPin": "Reset Pin",
     "myContact": "My Contact",
     "inbox": "Inbox",
+    "checkIn": "Check In",
+    "redeemGift": "Redeem Gift",
+    "rebateList": "Rebate List",
+    "redeemCode": "Redeem Code",
+    "logout": "Logout",
     "report": "Report",
     "overview": "Overview",
     "registered": "Registered",
     "activePlayer": "Active Player",
-    "turnover": "Turnover"
+    "turnover": "Turnover",
+    "noBankAccounts": "You have not added any bank accounts yet.",
+    "addBankAccount": "Add Bank Account",
+    "primaryAccount": "Primary Account",
+    "noBankData": "Bank account details are not available yet."
   },
   "inbox": {
     "title": "Inbox",
@@ -143,17 +202,21 @@
     "title": "Terms & Conditions",
     "intro": "Welcome to AONE Global Gaming. These terms and conditions (\"Terms\") apply to your use of our website and any associated services. By using our website, you agree to these Terms, which form a legal agreement between you and us. Please read them carefully before using our website.",
     "eligibility": "Eligibility",
-    "eligibilityContent": "You must be at least 18 years of age or the legal age for gambling in your jurisdiction, whichever is greater, to use our services. By accessing or using our website, you represent and warrant that you meet these age requirements.\n\nYou must not be a resident of any jurisdiction where online gambling is prohibited. It is your responsibility to ensure that your use of our services complies with all applicable laws and regulations in your jurisdiction.\n\nWe reserve the right to request proof of age and identity at any time. Failure to provide satisfactory proof may result in the suspension or termination of your account.",
+    "eligibilityContent": "You must be at least 18 years old to use our website. By using our website, you confirm that you are of legal age to gamble in your jurisdiction.",
     "userAccounts": "User Accounts",
-    "userAccountsContent": "To use certain features of our website, you may be required to register an account. You must provide accurate and complete information when registering an account. You are responsible for maintaining the confidentiality of your account information, including your username and password. You must not share your account information with anyone else. You are responsible for all activities that occur under your account.\n\nYou may only maintain one account with us. If we discover that you have multiple accounts, we reserve the right to close all accounts and forfeit any funds held in those accounts.\n\nYou are responsible for keeping your contact information up to date. We will not be liable for any communications sent to an outdated email address or phone number.",
+    "userAccountsContent": "To use certain features of our website, you may be required to register an account. You must provide accurate and complete information when registering an account. You are responsible for maintaining the confidentiality of your account information, including your username and password. You must not share your account information with anyone else. You are responsible for all activities that occur under your account.",
     "depositsWithdrawals": "Deposits and Withdrawals",
-    "depositsWithdrawalsContent": "All deposits must be made using payment methods that are registered in your name. We do not accept third-party payments.\n\nMinimum and maximum deposit and withdrawal limits apply and may vary depending on your account status and payment method. These limits are displayed on the relevant pages of our website.\n\nWithdrawal requests are subject to verification procedures to ensure the security of your account. We reserve the right to request additional documentation before processing any withdrawal.\n\nProcessing times for withdrawals vary depending on the payment method selected. We aim to process all withdrawals within 24-48 hours, but this may take longer during peak periods or if additional verification is required.",
+    "depositsWithdrawalsContent": "You may deposit funds into your account using one of the methods available on our website. We may require you to provide additional information before we can process your deposit. We may charge fees for certain deposit methods. Deposit by using internet bank transfer required using the same bank holder name which is registered during registration of your account, any deposit which is not meet these requirement shall be rejected. You may request a withdrawal of funds from your account at any time, subject to our withdrawal policy. We may require you to provide additional information before we can process your withdrawal. We may charge fees for certain withdrawal methods.",
     "wagering": "Wagering",
-    "wageringContent": "All bets placed on our platform are subject to these Terms and Conditions, as well as the specific rules for each game or betting market.\n\nWe reserve the right to void any bets that we reasonably believe were placed in error, or that were the result of technical malfunctions, fraud, or manipulation.\n\nMaximum bet limits apply to all games and betting markets. These limits may vary based on your account status and the specific game or market.\n\nOnce a bet is confirmed, it cannot be cancelled or changed. Please ensure that you review all bet details carefully before confirming.",
+    "wageringContent": "You may use funds in your account to place bets on our website. You are responsible for ensuring that you have sufficient funds in your account to cover any bets placed. You may only place bets with funds that are legally yours and not subject to any legal or equitable claim. We reserve the right to void any bets placed with funds that do not meet these requirements. Aone reserved the right to confiscate user's credit and ban user's account without notice and evidence to proof if player is found abnormal betting or group betting behaviour.",
     "bonusesRewards": "Bonuses/Rewards",
-    "bonusesRewardsContent": "All bonuses and promotions are subject to specific terms and conditions, which will be clearly stated at the time of the offer.\n\nWagering requirements must be met before any bonus funds or winnings derived from bonus funds can be withdrawn. The specific wagering requirements will be stated in the bonus terms.\n\nWe reserve the right to exclude any customer from participating in any bonus or promotion at our discretion.\n\nAbuse of bonuses, including but not limited to creating multiple accounts to claim bonuses, may result in the forfeiture of bonus funds and winnings, and the suspension or termination of your account.",
+    "bonusesRewardsContent": "We may offer bonuses, promotions and rewards from time to time. These are subject to their own terms and conditions, which will be provided to you at the time of the offer. You are responsible for understanding and complying with the terms and conditions of any bonuses or promotions that you accept.",
     "prohibitedConduct": "Prohibited Conduct",
-    "prohibitedConductContent": "You must not use our services for any illegal or unauthorized purpose. You must not violate any laws in your jurisdiction when using our services.\n\nYou must not attempt to gain unauthorized access to our systems or interfere with the proper functioning of our website.\n\nYou must not use any automated systems, software, or tools to access our website or place bets, unless expressly authorized by us.\n\nCollusion, fraud, or any form of cheating is strictly prohibited and will result in the immediate termination of your account and forfeiture of any funds.\n\nWe reserve the right to report any suspicious activity to the relevant authorities."
+    "prohibitedConductContent": "You must not use our website for any unlawful or fraudulent activity, or for any activity that may harm us or our users. You must not interfere with the operation of our website or attempt to gain unauthorized access to our systems. We reserve the right to suspend or terminate your account if we believe that you have engaged in prohibited conduct.",
+    "termination": "Termination",
+    "terminationContent": "We may terminate your account for any reason, including for violation of these Terms.",
+    "changesToTerms": "Changes to these Terms",
+    "changesToTermsContent": "We may update these Terms from time to time. We will notify you of any material changes by email or by posting a notice on our website. Your continued use of our website after the effective date of any changes constitutes your acceptance of the updated Terms."
   },
   "transaction": {
     "title": "Transaction",
@@ -167,6 +230,9 @@
   "home": {
     "announcement": "Welcome to AONE GLOBAL GAMING. Malaysia stable and trusted online platform"
   },
+  "event": {
+    "noEvents": "There are no events at the moment."
+  },
   "games": {
     "slots": "SLOTS",
     "appSlot": "APP SLOT",
@@ -174,6 +240,20 @@
     "sports": "SPORTS",
     "lottery": "LOTTERY",
     "fishing": "FISHING"
+  },
+  "profile": {
+    "changeUsername": "Change Username",
+    "changePassword": "Change Password",
+    "changeAvatar": "Change Avatar",
+    "phoneNumber": "Phone Number",
+    "sendTo": "Send to",
+    "sendToSms": "SMS",
+    "sendToEmail": "Email",
+    "otpCode": "OTP Code",
+    "requestOtp": "Request OTP",
+    "oldPassword": "Old Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password"
   },
   "sidebar": {
     "referral": "REFERRAL",
@@ -190,5 +270,18 @@
     "spinWheel": "SPIN WHEEL",
     "copyright": "Copyright © 2025 AONE.",
     "allRightsReserved": "All Rights Reserved."
+  },
+  "bank": {
+    "bankName": "Bank Name",
+    "selectBank": "Select a bank",
+    "accountNumber": "Account Number",
+    "enterAccountNumber": "Enter your account number",
+    "tacCode": "TAC Code",
+    "enterTac": "Enter TAC",
+    "requestTac": "Request TAC",
+    "tacSent": "TAC has been sent to your registered phone number",
+    "tacRequestFailed": "Failed to request TAC. Please try again.",
+    "addBankNote": "Please ensure your bank account name matches your registered full name. Third-party bank accounts are not accepted.",
+    "addFailed": "Failed to add bank account. Please try again."
   }
 }

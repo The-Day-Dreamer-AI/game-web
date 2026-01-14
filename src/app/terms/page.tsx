@@ -43,6 +43,16 @@ export default function TermsPage() {
       titleKey: "terms.prohibitedConduct",
       contentKey: "terms.prohibitedConductContent",
     },
+    {
+      id: 7,
+      titleKey: "terms.termination",
+      contentKey: "terms.terminationContent",
+    },
+    {
+      id: 8,
+      titleKey: "terms.changesToTerms",
+      contentKey: "terms.changesToTermsContent",
+    },
   ];
 
   const toggleSection = (id: number) => {
@@ -50,14 +60,14 @@ export default function TermsPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-zinc-100">
+    <div className="min-h-screen flex flex-col">
       {/* Header */}
       <Header variant="subpage" title={t("terms.title")} backHref="/account" />
 
       {/* Logo Section */}
-      <div className="bg-white py-8 flex justify-center">
+      <div className="bg-white py-16 flex justify-center">
         <Image
-          src="/logo.png"
+          src="/images/title.png"
           alt="AONE"
           width={160}
           height={50}
@@ -88,11 +98,11 @@ export default function TermsPage() {
                 className={cn(
                   "w-full flex items-center justify-between px-4 py-4 transition-colors bg-white",
                   isOpen
-                    ? "bg-primary/10 text-zinc-800 rounded-t-xl"
+                    ? "bg-[#D4F1F0] text-zinc-800 rounded-t-xl"
                     : "text-zinc-700 hover:bg-zinc-50 rounded-xl"
                 )}
               >
-                <span className="font-medium text-sm">
+                <span className="font-roboto-medium text-sm">
                   {section.id}. {t(section.titleKey)}
                 </span>
                 <ChevronDown

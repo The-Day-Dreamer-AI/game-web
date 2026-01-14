@@ -1,6 +1,115 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Roboto Font Family */
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Thin.woff2') format('woff2'),
+       url('/fonts/Roboto-Thin.woff') format('woff');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-ThinItalic.woff2') format('woff2'),
+       url('/fonts/Roboto-ThinItalic.woff') format('woff');
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Light.woff2') format('woff2'),
+       url('/fonts/Roboto-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-LightItalic.woff2') format('woff2'),
+       url('/fonts/Roboto-LightItalic.woff') format('woff');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Regular.woff2') format('woff2'),
+       url('/fonts/Roboto-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Italic.woff2') format('woff2'),
+       url('/fonts/Roboto-Italic.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Medium.woff2') format('woff2'),
+       url('/fonts/Roboto-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-MediumItalic.woff2') format('woff2'),
+       url('/fonts/Roboto-MediumItalic.woff') format('woff');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Bold.woff2') format('woff2'),
+       url('/fonts/Roboto-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-BoldItalic.woff2') format('woff2'),
+       url('/fonts/Roboto-BoldItalic.woff') format('woff');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Black.woff2') format('woff2'),
+       url('/fonts/Roboto-Black.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-BlackItalic.woff2') format('woff2'),
+       url('/fonts/Roboto-BlackItalic.woff') format('woff');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -8,6 +117,12 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-roboto-thin: 'Roboto', sans-serif;
+  --font-roboto-light: 'Roboto', sans-serif;
+  --font-roboto-regular: 'Roboto', sans-serif;
+  --font-roboto-medium: 'Roboto', sans-serif;
+  --font-roboto-bold: 'Roboto', sans-serif;
+  --font-roboto-black: 'Roboto', sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -37,6 +152,7 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-dark: var(--dark);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -54,8 +170,9 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.75 0.15 175);
+  --primary: #0EC6B4;
   --primary-foreground: oklch(0.985 0 0);
+  --dark: #28323C;
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -133,6 +250,36 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  /* Roboto font utilities */
+  .font-roboto-thin {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+  }
+  .font-roboto-light {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+  }
+  .font-roboto-regular {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+  }
+  .font-roboto-medium {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+  }
+  .font-roboto-semibold {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+  }
+  .font-roboto-bold {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+  }
+  .font-roboto-black {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+  }
 }
 
 /* Animations */
@@ -147,4 +294,33 @@
 
 .animate-marquee {
   animation: marquee 15s linear infinite;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out forwards;
+}
+
+/* FormInput focus styles using :focus-within */
+.form-input-wrapper:focus-within {
+  border-color: #0DC3B1;
+  background-color: rgba(0, 214, 198, 0.1);
+  box-shadow: 0px 0px 20px 0px rgba(20, 187, 176, 0.2);
+}
+
+/* Error state overrides focus state */
+.form-input-wrapper.border-red-500 {
+  border-color: #ef4444 !important;
+  background-color: white !important;
+  box-shadow: none !important;
 }

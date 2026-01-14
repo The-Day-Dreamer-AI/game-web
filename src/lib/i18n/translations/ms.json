@@ -25,7 +25,17 @@
     "verified": "Disahkan",
     "rejected": "Ditolak",
     "progress": "Dalam Proses",
-    "failed": "Gagal"
+    "failed": "Gagal",
+    "errorLoading": "Gagal memuatkan data. Sila cuba lagi.",
+    "loginRequired": "Sila log masuk untuk mengakses halaman ini",
+    "copied": "Disalin!",
+    "copyLink": "Salin Pautan"
+  },
+  "referral": {
+    "title": "Rujukan",
+    "code": "Kod Rujukan",
+    "link": "Pautan Rujukan",
+    "shareQr": "Kongsi Kod QR ke"
   },
   "nav": {
     "home": "Utama",
@@ -41,13 +51,27 @@
     "register": "Daftar",
     "logout": "Log Keluar",
     "username": "Nama Pengguna",
+    "uid": "UID",
     "password": "Kata Laluan",
     "confirmPassword": "Sahkan Kata Laluan",
+    "newPassword": "Kata Laluan Baru",
     "phone": "Nombor Telefon",
+    "fullName": "Nama Penuh",
+    "referralCode": "Kod Rujukan",
+    "referralCodeNote": "Nota: Jika tiada kod rujukan, sistem akan menetapkan kod rujukan lalai secara automatik",
+    "sendTo": "Hantar ke",
+    "sms": "SMS",
+    "whatsapp": "WhatsApp",
+    "otpCode": "Kod OTP",
+    "requestOtp": "Minta OTP",
+    "resendOtp": "Hantar Semula OTP",
+    "resendOtpCountdown": "Hantar Semula ({{seconds}}s)",
     "rememberMe": "Ingat Saya",
     "forgotPassword": "Lupa Kata Laluan?",
     "noAccount": "Tiada akaun?",
     "haveAccount": "Sudah ada akaun?",
+    "loginHere": "Log Masuk Di Sini",
+    "registerHere": "Daftar Di Sini",
     "welcomeBack": "Selamat kembali",
     "enterCredentials": "Masukkan kelayakan anda untuk log masuk ke akaun anda",
     "signIn": "Log masuk",
@@ -56,7 +80,33 @@
     "createAccount": "Cipta akaun",
     "enterDetails": "Masukkan butiran anda untuk mencipta akaun anda",
     "creatingAccount": "Sedang mencipta akaun...",
-    "email": "E-mel"
+    "processing": "MEMPROSES...",
+    "email": "E-mel",
+    "termsAgree": "Saya telah membaca & bersetuju dengan",
+    "termsConditions": "Terma & Syarat",
+    "supportNotice": "Jika anda menghadapi sebarang masalah semasa log masuk, sila hubungi Khidmat Pelanggan kami untuk bantuan lanjut.",
+    "usernameRequired": "Nama pengguna diperlukan",
+    "passwordRequired": "Kata laluan diperlukan",
+    "passwordMinLength": "Kata laluan mesti sekurang-kurangnya 6 aksara",
+    "confirmPasswordRequired": "Sila sahkan kata laluan anda",
+    "passwordsNoMatch": "Kata laluan tidak sepadan",
+    "fullNameRequired": "Nama penuh diperlukan",
+    "phoneRequired": "Nombor telefon diperlukan",
+    "phoneMinLength": "Nombor telefon mesti sekurang-kurangnya 10 digit",
+    "otpRequired": "Kod OTP diperlukan",
+    "otpInvalid": "Sila masukkan kod OTP yang sah",
+    "referralInvalid": "Kod rujukan tidak sah",
+    "referralVerifyFailed": "Gagal mengesahkan kod rujukan. Sila cuba lagi.",
+    "selectOtpMethod": "Sila pilih cara untuk menerima OTP (SMS atau WhatsApp)",
+    "requestOtpFirst": "Sila minta dan masukkan kod OTP",
+    "agreeTermsRequired": "Sila bersetuju dengan Terma & Syarat",
+    "loginFailed": "Log masuk gagal",
+    "registrationFailed": "Pendaftaran gagal. Sila cuba lagi.",
+    "resetFailed": "Gagal menetapkan semula kata laluan. Sila cuba lagi.",
+    "otpSendFailed": "Gagal menghantar OTP. Sila cuba lagi.",
+    "otpSent": "OTP dihantar! Sila semak {{method}} anda.",
+    "verifyingReferral": "Mengesahkan kod rujukan...",
+    "resetSuccess": "Kata laluan berjaya ditetapkan semula! Sila log masuk dengan kata laluan baru anda."
   },
   "language": {
     "title": "Bahasa",
@@ -117,11 +167,20 @@
     "resetPin": "Tetapkan Semula Pin",
     "myContact": "Kenalan Saya",
     "inbox": "Peti Masuk",
+    "checkIn": "Daftar Masuk",
+    "redeemGift": "Tebus Hadiah",
+    "rebateList": "Senarai Rebat",
+    "redeemCode": "Kod Tebusan",
+    "logout": "Log Keluar",
     "report": "Laporan",
     "overview": "Gambaran Keseluruhan",
     "registered": "Berdaftar",
     "activePlayer": "Pemain Aktif",
-    "turnover": "Pusing Ganti"
+    "turnover": "Pusing Ganti",
+    "noBankAccounts": "Anda belum menambah sebarang akaun bank.",
+    "addBankAccount": "Tambah Akaun Bank",
+    "primaryAccount": "Akaun Utama",
+    "noBankData": "Butiran akaun bank belum tersedia."
   },
   "inbox": {
     "title": "Peti Masuk",
@@ -143,17 +202,21 @@
     "title": "Terma & Syarat",
     "intro": "Selamat datang ke AONE Global Gaming. Terma dan syarat ini (\"Terma\") terpakai untuk penggunaan laman web kami dan sebarang perkhidmatan berkaitan. Dengan menggunakan laman web kami, anda bersetuju dengan Terma ini, yang membentuk perjanjian undang-undang antara anda dan kami. Sila baca dengan teliti sebelum menggunakan laman web kami.",
     "eligibility": "Kelayakan",
-    "eligibilityContent": "Anda mesti berumur sekurang-kurangnya 18 tahun atau umur sah untuk berjudi di bidang kuasa anda, yang mana lebih besar, untuk menggunakan perkhidmatan kami. Dengan mengakses atau menggunakan laman web kami, anda mewakili dan menjamin bahawa anda memenuhi keperluan umur ini.\n\nAnda tidak boleh menjadi penduduk mana-mana bidang kuasa di mana perjudian dalam talian dilarang. Adalah tanggungjawab anda untuk memastikan penggunaan perkhidmatan kami mematuhi semua undang-undang dan peraturan yang terpakai di bidang kuasa anda.\n\nKami berhak untuk meminta bukti umur dan identiti pada bila-bila masa. Kegagalan memberikan bukti yang memuaskan boleh mengakibatkan penggantungan atau penamatan akaun anda.",
+    "eligibilityContent": "Anda mesti berumur sekurang-kurangnya 18 tahun untuk menggunakan laman web kami. Dengan menggunakan laman web kami, anda mengesahkan bahawa anda telah mencapai umur sah untuk berjudi di bidang kuasa anda.",
     "userAccounts": "Akaun Pengguna",
-    "userAccountsContent": "Untuk menggunakan ciri-ciri tertentu laman web kami, anda mungkin perlu mendaftar akaun. Anda mesti memberikan maklumat yang tepat dan lengkap semasa mendaftar akaun. Anda bertanggungjawab untuk mengekalkan kerahsiaan maklumat akaun anda, termasuk nama pengguna dan kata laluan anda. Anda tidak boleh berkongsi maklumat akaun anda dengan orang lain. Anda bertanggungjawab untuk semua aktiviti yang berlaku di bawah akaun anda.\n\nAnda hanya boleh mengekalkan satu akaun dengan kami. Jika kami mendapati anda mempunyai berbilang akaun, kami berhak untuk menutup semua akaun dan merampas sebarang dana yang dipegang dalam akaun tersebut.\n\nAnda bertanggungjawab untuk memastikan maklumat hubungan anda sentiasa dikemas kini. Kami tidak akan bertanggungjawab untuk sebarang komunikasi yang dihantar ke alamat e-mel atau nombor telefon yang sudah lapuk.",
+    "userAccountsContent": "Untuk menggunakan ciri-ciri tertentu laman web kami, anda mungkin perlu mendaftar akaun. Anda mesti memberikan maklumat yang tepat dan lengkap semasa mendaftar akaun. Anda bertanggungjawab untuk mengekalkan kerahsiaan maklumat akaun anda, termasuk nama pengguna dan kata laluan anda. Anda tidak boleh berkongsi maklumat akaun anda dengan orang lain. Anda bertanggungjawab untuk semua aktiviti yang berlaku di bawah akaun anda.",
     "depositsWithdrawals": "Deposit dan Pengeluaran",
-    "depositsWithdrawalsContent": "Semua deposit mesti dibuat menggunakan kaedah pembayaran yang didaftarkan atas nama anda. Kami tidak menerima pembayaran pihak ketiga.\n\nHad deposit dan pengeluaran minimum dan maksimum terpakai dan mungkin berbeza bergantung pada status akaun dan kaedah pembayaran anda. Had ini dipaparkan pada halaman berkaitan laman web kami.\n\nPermintaan pengeluaran tertakluk kepada prosedur pengesahan untuk memastikan keselamatan akaun anda. Kami berhak meminta dokumentasi tambahan sebelum memproses sebarang pengeluaran.\n\nMasa pemprosesan untuk pengeluaran berbeza bergantung pada kaedah pembayaran yang dipilih. Kami bertujuan untuk memproses semua pengeluaran dalam masa 24-48 jam, tetapi ini mungkin mengambil masa lebih lama semasa tempoh sibuk atau jika pengesahan tambahan diperlukan.",
+    "depositsWithdrawalsContent": "Anda boleh mendepositkan dana ke dalam akaun anda menggunakan salah satu kaedah yang tersedia di laman web kami. Kami mungkin memerlukan anda memberikan maklumat tambahan sebelum kami dapat memproses deposit anda. Kami mungkin mengenakan bayaran untuk kaedah deposit tertentu. Deposit menggunakan pemindahan bank internet memerlukan penggunaan nama pemegang akaun bank yang sama yang didaftarkan semasa pendaftaran akaun anda, sebarang deposit yang tidak memenuhi keperluan ini akan ditolak. Anda boleh meminta pengeluaran dana dari akaun anda pada bila-bila masa, tertakluk kepada polisi pengeluaran kami. Kami mungkin memerlukan anda memberikan maklumat tambahan sebelum kami dapat memproses pengeluaran anda. Kami mungkin mengenakan bayaran untuk kaedah pengeluaran tertentu.",
     "wagering": "Pertaruhan",
-    "wageringContent": "Semua pertaruhan yang dibuat di platform kami tertakluk kepada Terma dan Syarat ini, serta peraturan khusus untuk setiap permainan atau pasaran pertaruhan.\n\nKami berhak untuk membatalkan sebarang pertaruhan yang kami percaya dengan munasabah telah dibuat secara silap, atau hasil daripada kerosakan teknikal, penipuan atau manipulasi.\n\nHad pertaruhan maksimum terpakai untuk semua permainan dan pasaran pertaruhan. Had ini mungkin berbeza berdasarkan status akaun anda dan permainan atau pasaran khusus.\n\nSetelah pertaruhan disahkan, ia tidak boleh dibatalkan atau diubah. Sila pastikan anda menyemak semua butiran pertaruhan dengan teliti sebelum mengesahkan.",
+    "wageringContent": "Anda boleh menggunakan dana dalam akaun anda untuk membuat pertaruhan di laman web kami. Anda bertanggungjawab untuk memastikan anda mempunyai dana yang mencukupi dalam akaun anda untuk menampung sebarang pertaruhan yang dibuat. Anda hanya boleh membuat pertaruhan dengan dana yang secara sah milik anda dan tidak tertakluk kepada sebarang tuntutan undang-undang atau ekuiti. Kami berhak untuk membatalkan sebarang pertaruhan yang dibuat dengan dana yang tidak memenuhi keperluan ini. Aone berhak untuk merampas kredit pengguna dan menyekat akaun pengguna tanpa notis dan bukti jika pemain didapati mempunyai tingkah laku pertaruhan yang tidak normal atau pertaruhan berkumpulan.",
     "bonusesRewards": "Bonus/Ganjaran",
-    "bonusesRewardsContent": "Semua bonus dan promosi tertakluk kepada terma dan syarat khusus, yang akan dinyatakan dengan jelas pada masa tawaran.\n\nKeperluan pertaruhan mesti dipenuhi sebelum sebarang dana bonus atau kemenangan yang diperoleh daripada dana bonus boleh dikeluarkan. Keperluan pertaruhan khusus akan dinyatakan dalam terma bonus.\n\nKami berhak untuk mengecualikan mana-mana pelanggan daripada menyertai sebarang bonus atau promosi mengikut budi bicara kami.\n\nPenyalahgunaan bonus, termasuk tetapi tidak terhad kepada mencipta berbilang akaun untuk menuntut bonus, boleh mengakibatkan kehilangan dana bonus dan kemenangan, serta penggantungan atau penamatan akaun anda.",
+    "bonusesRewardsContent": "Kami mungkin menawarkan bonus, promosi dan ganjaran dari semasa ke semasa. Ini tertakluk kepada terma dan syarat mereka sendiri, yang akan diberikan kepada anda pada masa tawaran. Anda bertanggungjawab untuk memahami dan mematuhi terma dan syarat sebarang bonus atau promosi yang anda terima.",
     "prohibitedConduct": "Kelakuan Dilarang",
-    "prohibitedConductContent": "Anda tidak boleh menggunakan perkhidmatan kami untuk sebarang tujuan haram atau tidak dibenarkan. Anda tidak boleh melanggar sebarang undang-undang di bidang kuasa anda semasa menggunakan perkhidmatan kami.\n\nAnda tidak boleh cuba mendapatkan akses tanpa kebenaran ke sistem kami atau mengganggu fungsi laman web kami yang betul.\n\nAnda tidak boleh menggunakan sebarang sistem automatik, perisian atau alat untuk mengakses laman web kami atau membuat pertaruhan, melainkan dibenarkan secara nyata oleh kami.\n\nPakatan sulit, penipuan atau sebarang bentuk penipuan adalah dilarang keras dan akan mengakibatkan penamatan serta-merta akaun anda dan kehilangan sebarang dana.\n\nKami berhak untuk melaporkan sebarang aktiviti mencurigakan kepada pihak berkuasa yang berkaitan."
+    "prohibitedConductContent": "Anda tidak boleh menggunakan laman web kami untuk sebarang aktiviti yang menyalahi undang-undang atau penipuan, atau untuk sebarang aktiviti yang boleh membahayakan kami atau pengguna kami. Anda tidak boleh mengganggu operasi laman web kami atau cuba mendapatkan akses tanpa kebenaran ke sistem kami. Kami berhak untuk menggantung atau menamatkan akaun anda jika kami percaya bahawa anda telah terlibat dalam kelakuan yang dilarang.",
+    "termination": "Penamatan",
+    "terminationContent": "Kami boleh menamatkan akaun anda atas sebarang sebab, termasuk pelanggaran Terma ini.",
+    "changesToTerms": "Perubahan kepada Terma ini",
+    "changesToTermsContent": "Kami mungkin mengemas kini Terma ini dari semasa ke semasa. Kami akan memberitahu anda tentang sebarang perubahan material melalui e-mel atau dengan menyiarkan notis di laman web kami. Penggunaan berterusan laman web kami selepas tarikh berkuatkuasa sebarang perubahan merupakan penerimaan anda terhadap Terma yang dikemas kini."
   },
   "transaction": {
     "title": "Transaksi",
@@ -167,6 +230,9 @@
   "home": {
     "announcement": "Selamat datang ke AONE GLOBAL GAMING. Platform dalam talian Malaysia yang stabil dan dipercayai"
   },
+  "event": {
+    "noEvents": "Tiada acara pada masa ini."
+  },
   "games": {
     "slots": "SLOT",
     "appSlot": "SLOT APP",
@@ -174,6 +240,20 @@
     "sports": "SUKAN",
     "lottery": "LOTERI",
     "fishing": "MEMANCING"
+  },
+  "profile": {
+    "changeUsername": "Tukar Nama Pengguna",
+    "changePassword": "Tukar Kata Laluan",
+    "changeAvatar": "Tukar Avatar",
+    "phoneNumber": "Nombor Telefon",
+    "sendTo": "Hantar ke",
+    "sendToSms": "SMS",
+    "sendToEmail": "E-mel",
+    "otpCode": "Kod OTP",
+    "requestOtp": "Minta OTP",
+    "oldPassword": "Kata Laluan Lama",
+    "newPassword": "Kata Laluan Baru",
+    "confirmNewPassword": "Sahkan Kata Laluan Baru"
   },
   "sidebar": {
     "referral": "RUJUKAN",
@@ -190,5 +270,18 @@
     "spinWheel": "RODA PUSING",
     "copyright": "Hak Cipta © 2025 AONE.",
     "allRightsReserved": "Hak Cipta Terpelihara."
+  },
+  "bank": {
+    "bankName": "Nama Bank",
+    "selectBank": "Pilih bank",
+    "accountNumber": "Nombor Akaun",
+    "enterAccountNumber": "Masukkan nombor akaun anda",
+    "tacCode": "Kod TAC",
+    "enterTac": "Masukkan TAC",
+    "requestTac": "Minta TAC",
+    "tacSent": "TAC telah dihantar ke nombor telefon berdaftar anda",
+    "tacRequestFailed": "Gagal meminta TAC. Sila cuba lagi.",
+    "addBankNote": "Sila pastikan nama akaun bank anda sepadan dengan nama penuh berdaftar anda. Akaun bank pihak ketiga tidak diterima.",
+    "addFailed": "Gagal menambah akaun bank. Sila cuba lagi."
   }
 }

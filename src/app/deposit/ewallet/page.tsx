@@ -54,7 +54,7 @@ export default function EWalletPage() {
   const selectedPayment = paymentTypes.find(p => p.id === selectedPaymentType);
 
   return (
-    <div className="min-h-screen flex flex-col bg-zinc-100">
+    <div className="min-h-screen flex flex-col">
       {/* Header */}
       <Header variant="subpage" title="E-Wallet" backHref="/deposit" />
 
@@ -62,7 +62,7 @@ export default function EWalletPage() {
       <main className="flex-1 overflow-auto px-4 py-4">
         {/* Method Selection */}
         <div className="mb-6">
-          <label className="text-sm font-medium text-zinc-700 mb-2 block">
+          <label className="text-sm font-roboto-medium text-zinc-700 mb-2 block">
             Method<span className="text-red-500">*</span>
           </label>
           <div className="flex gap-3">
@@ -81,8 +81,8 @@ export default function EWalletPage() {
                   )}
                 >
                   <div className="text-center">
-                    <span className="text-white text-[10px] font-bold block">Touch'n</span>
-                    <span className="text-yellow-300 text-[10px] font-bold block">eWallet</span>
+                    <span className="text-white text-[10px] font-roboto-bold block">Touch'n</span>
+                    <span className="text-yellow-300 text-[10px] font-roboto-bold block">eWallet</span>
                   </div>
                   {selectedMethod === method.id && (
                     <div className="absolute bottom-1 right-1 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
@@ -94,7 +94,7 @@ export default function EWalletPage() {
                 </div>
                 <span className={cn(
                   "text-xs mt-1",
-                  selectedMethod === method.id ? "text-primary font-medium" : "text-zinc-500"
+                  selectedMethod === method.id ? "text-primary font-roboto-medium" : "text-zinc-500"
                 )}>
                   {method.name}
                 </span>
@@ -105,7 +105,7 @@ export default function EWalletPage() {
 
         {/* Payment Type Selection */}
         <div className="mb-6">
-          <label className="text-sm font-medium text-zinc-700 mb-2 block">
+          <label className="text-sm font-roboto-medium text-zinc-700 mb-2 block">
             Payment Type<span className="text-red-500">*</span>
           </label>
           <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-1">
@@ -124,7 +124,7 @@ export default function EWalletPage() {
                       : "border-transparent"
                   )}
                 >
-                  <span className={cn("text-[10px] font-bold text-center px-1", type.textColor)}>
+                  <span className={cn("text-[10px] font-roboto-bold text-center px-1", type.textColor)}>
                     {type.name.split(' ')[0]}
                   </span>
                   {selectedPaymentType === type.id && (
@@ -137,7 +137,7 @@ export default function EWalletPage() {
                 </div>
                 <span className={cn(
                   "text-[10px] mt-1 whitespace-nowrap",
-                  selectedPaymentType === type.id ? "text-primary font-medium" : "text-zinc-500"
+                  selectedPaymentType === type.id ? "text-primary font-roboto-medium" : "text-zinc-500"
                 )}>
                   {type.name}
                 </span>
@@ -148,7 +148,7 @@ export default function EWalletPage() {
 
         {/* Enter Amount */}
         <div className="mb-4">
-          <label className="text-sm font-medium text-zinc-700 mb-2 block">
+          <label className="text-sm font-roboto-medium text-zinc-700 mb-2 block">
             Enter Amount<span className="text-red-500">*</span>
           </label>
           <div className="relative">
@@ -174,7 +174,7 @@ export default function EWalletPage() {
                 key={value}
                 onClick={() => handleQuickAmount(value)}
                 className={cn(
-                  "flex-1 py-2.5 rounded-lg border text-sm font-medium transition-colors",
+                  "flex-1 py-2.5 rounded-lg border text-sm font-roboto-medium transition-colors",
                   amount === value.toString()
                     ? "border-primary bg-primary/5 text-primary"
                     : "border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300"
@@ -188,7 +188,7 @@ export default function EWalletPage() {
 
         {/* Promotion Dropdown */}
         <div className="mb-4">
-          <label className="text-sm font-medium text-zinc-700 mb-2 block">
+          <label className="text-sm font-roboto-medium text-zinc-700 mb-2 block">
             Promotion
           </label>
           <div className="relative">
@@ -252,7 +252,7 @@ export default function EWalletPage() {
 
         {/* Important Notice */}
         <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 mb-4">
-          <h3 className="font-medium text-zinc-700 mb-3">Important Notice</h3>
+          <h3 className="font-roboto-medium text-zinc-700 mb-3">Important Notice</h3>
           <div className="space-y-1 text-sm text-zinc-500">
             <p>Option: {selectedPayment?.name || 'DuitNow'} E-Wallet</p>
             <p>Mode: online</p>
@@ -275,7 +275,7 @@ export default function EWalletPage() {
       <div className="sticky bottom-0 left-0 right-0 p-4 bg-white border-t border-zinc-200">
         <button
           onClick={handleSubmit}
-          className="w-full py-4 bg-primary text-white font-semibold rounded-xl hover:bg-primary/90 transition-colors"
+          className="w-full py-4 bg-primary text-white font-roboto-semibold rounded-xl hover:bg-primary/90 transition-colors"
         >
           SUBMIT
         </button>

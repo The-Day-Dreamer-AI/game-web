@@ -133,7 +133,7 @@ export default function InboxPage() {
   const hasSelected = messages.some((m) => m.selected);
 
   return (
-    <div className="min-h-screen flex flex-col bg-zinc-100">
+    <div className="min-h-screen flex flex-col">
       {/* Header */}
       <Header variant="subpage" title={t("inbox.title")} backHref="/account" />
 
@@ -146,7 +146,7 @@ export default function InboxPage() {
               setSelectAll(false);
             }}
             className={cn(
-              "flex-1 py-3 text-sm font-medium border-b-2 transition-colors",
+              "flex-1 py-3 text-sm font-roboto-medium border-b-2 transition-colors",
               activeTab === "system"
                 ? "text-primary border-primary"
                 : "text-zinc-500 border-transparent hover:text-zinc-700"
@@ -160,7 +160,7 @@ export default function InboxPage() {
               setSelectAll(false);
             }}
             className={cn(
-              "flex-1 py-3 text-sm font-medium border-b-2 transition-colors",
+              "flex-1 py-3 text-sm font-roboto-medium border-b-2 transition-colors",
               activeTab === "personal"
                 ? "text-primary border-primary"
                 : "text-zinc-500 border-transparent hover:text-zinc-700"
@@ -244,7 +244,7 @@ export default function InboxPage() {
                   {/* Title */}
                   <h3 className={cn(
                     "text-sm mb-1 truncate",
-                    !message.isRead ? "font-semibold text-zinc-800" : "font-medium text-zinc-700"
+                    !message.isRead ? "font-roboto-semibold text-zinc-800" : "font-roboto-medium text-zinc-700"
                   )}>
                     {message.title}
                   </h3>
@@ -280,7 +280,7 @@ export default function InboxPage() {
           {/* Modal Content */}
           <div className="relative w-full max-w-[400px] bg-white rounded-2xl max-h-[70vh] flex flex-col animate-in fade-in zoom-in-95 duration-200">
             {/* Modal Header */}
-            <div className="bg-zinc-800 rounded-t-2xl px-4 py-4 flex items-center justify-between">
+            <div className="bg-dark rounded-t-2xl px-4 py-4 flex items-center justify-between">
               <Image
                 src="/logo.png"
                 alt="AONE"
@@ -300,7 +300,7 @@ export default function InboxPage() {
             {/* Modal Body */}
             <div className="flex-1 overflow-auto p-4">
               {/* Title */}
-              <h2 className="text-lg font-semibold text-zinc-800 mb-2">
+              <h2 className="text-lg font-roboto-semibold text-zinc-800 mb-2">
                 {selectedMessage.title}
               </h2>
 
@@ -312,7 +312,7 @@ export default function InboxPage() {
 
               {/* Content - Render HTML */}
               <div
-                className="text-sm text-zinc-600 prose prose-sm prose-zinc max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_li]:mb-1 [&_strong]:font-semibold [&_strong]:text-zinc-700 [&_em]:italic [&_table]:w-full [&_table]:mb-3 [&_td]:py-1 [&_td]:pr-4"
+                className="text-sm text-zinc-600 prose prose-sm prose-zinc max-w-none [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_li]:mb-1 [&_strong]:font-roboto-semibold [&_strong]:text-zinc-700 [&_em]:italic [&_table]:w-full [&_table]:mb-3 [&_td]:py-1 [&_td]:pr-4"
                 dangerouslySetInnerHTML={{ __html: selectedMessage.content }}
               />
             </div>

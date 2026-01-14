@@ -7,7 +7,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { FormInput } from "@/components/ui/form-input";
+import { User, Lock } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -22,7 +23,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { loginSchema, type LoginFormData } from "@/schemas/auth";
 import { useAuth } from "@/hooks/use-auth";
@@ -34,9 +34,8 @@ export function LoginForm() {
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      // DEV ONLY: Pre-filled dummy credentials
-      email: "admin@test.com",
-      password: "password123",
+      username: "",
+      password: "",
     },
   });
 
@@ -57,7 +56,7 @@ export function LoginForm() {
     >
       <Card className="w-full border-0 shadow-none">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">
+          <CardTitle className="text-2xl font-roboto-bold text-center">
             Welcome back
           </CardTitle>
           <CardDescription className="text-center">
@@ -69,35 +68,37 @@ export function LoginForm() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
-                name="email"
-                render={({ field }) => (
+                name="username"
+                render={({ field, fieldState }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Username</FormLabel>
                     <FormControl>
-                      <Input
-                        type="email"
-                        placeholder="you@example.com"
+                      <FormInput
+                        type="text"
+                        placeholder="Enter your username"
+                        prefix={<User className="w-auto h-auto" />}
+                        error={fieldState.error?.message}
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
               <FormField
                 control={form.control}
                 name="password"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
+                      <FormInput
                         type="password"
                         placeholder="••••••••"
+                        prefix={<Lock className="w-auto h-auto" />}
+                        error={fieldState.error?.message}
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -121,7 +122,7 @@ export function LoginForm() {
             Don&apos;t have an account?{" "}
             <Link
               href="/register"
-              className="text-primary hover:underline font-medium"
+              className="text-primary hover:underline font-roboto-medium"
             >
               Sign up
             </Link>

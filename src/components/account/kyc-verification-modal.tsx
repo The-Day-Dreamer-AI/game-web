@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { X, Phone, Wallet, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { X, Phone, KeyRound, ChevronDown } from "lucide-react";
+import { FormInput } from "@/components/ui/form-input";
 
 interface KycVerificationModalProps {
   isOpen: boolean;
@@ -45,10 +45,22 @@ export function KycVerificationModal({
     console.log("Request OTP");
   };
 
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 overflow-hidden">
       <div className="bg-white rounded-2xl w-full max-w-sm p-6 relative">
         {/* Close Button */}
         <button
@@ -59,46 +71,34 @@ export function KycVerificationModal({
         </button>
 
         {/* Title */}
-        <h2 className="text-xl font-semibold text-zinc-800 mb-6">
+        <h2 className="text-xl font-roboto-semibold text-zinc-800 mb-6">
           KYC Verification
         </h2>
 
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Phone Number */}
-          <div>
-            <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">
-                <Phone className="w-5 h-5" />
-              </div>
-              <input
-                {...register("phoneNumber", {
-                  required: "Phone number is required",
-                })}
-                type="tel"
-                placeholder="Phone Number"
-                className={cn(
-                  "w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50",
-                  errors.phoneNumber ? "border-red-500" : "border-zinc-300"
-                )}
-              />
-            </div>
-            {errors.phoneNumber && (
-              <p className="text-xs text-red-500 mt-1">
-                {errors.phoneNumber.message}
-              </p>
-            )}
-          </div>
+          <FormInput
+            {...register("phoneNumber", {
+              required: "Phone number is required",
+            })}
+            type="tel"
+            placeholder="Phone Number"
+            prefix={<Phone className="h-6 w-auto" />}
+            error={errors.phoneNumber?.message}
+          />
 
           {/* Send to Dropdown */}
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">
-              <Wallet className="w-5 h-5" />
+          <div className="form-input-wrapper relative flex items-center w-full rounded-lg border border-[#959595] bg-white transition-all duration-200">
+            <div className="flex items-center justify-center pl-4 text-zinc-400">
+              <KeyRound className="w-5 h-5" />
             </div>
             <select
               value={sendTo}
               onChange={(e) => setSendTo(e.target.value)}
-              className="w-full pl-10 pr-10 py-3 border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 bg-white appearance-none text-zinc-500"
+              className={`flex-1 w-full py-3.5 pl-3 pr-10 bg-transparent focus:outline-none appearance-none ${
+                !sendTo ? "text-zinc-500" : "text-zinc-900"
+              }`}
             >
               <option value="">Send to</option>
               <option value="sms">SMS</option>
@@ -111,21 +111,17 @@ export function KycVerificationModal({
 
           {/* OTP Code */}
           <div className="flex gap-2">
-            <div className="relative flex-1">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">
-                <Wallet className="w-5 h-5" />
-              </div>
-              <input
-                {...register("otpCode")}
-                type="text"
-                placeholder="OTP Code"
-                className="w-full pl-10 pr-4 py-3 border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 bg-white"
-              />
-            </div>
+            <FormInput
+              {...register("otpCode")}
+              type="text"
+              placeholder="OTP Code"
+              prefix={<KeyRound className="w-auto h-6" />}
+              wrapperClassName="flex-1"
+            />
             <button
               type="button"
               onClick={handleRequestOTP}
-              className="px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap"
+              className="px-6 py-3 bg-primary text-white font-roboto-semibold rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap"
             >
               Request OTP
             </button>
@@ -142,7 +138,7 @@ export function KycVerificationModal({
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 bg-primary text-white font-roboto-semibold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? "PROCESSING..." : "CONFIRM"}
           </button>

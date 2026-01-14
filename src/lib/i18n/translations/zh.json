@@ -25,7 +25,17 @@
     "verified": "已验证",
     "rejected": "已拒绝",
     "progress": "进行中",
-    "failed": "失败"
+    "failed": "失败",
+    "errorLoading": "加载数据失败，请重试。",
+    "loginRequired": "请登录以访问此页面",
+    "copied": "已复制!",
+    "copyLink": "复制链接"
+  },
+  "referral": {
+    "title": "推荐",
+    "code": "推荐码",
+    "link": "推荐链接",
+    "shareQr": "分享二维码至"
   },
   "nav": {
     "home": "首页",
@@ -41,13 +51,27 @@
     "register": "注册",
     "logout": "退出",
     "username": "用户名",
+    "uid": "用户ID",
     "password": "密码",
     "confirmPassword": "确认密码",
+    "newPassword": "新密码",
     "phone": "手机号码",
+    "fullName": "全名",
+    "referralCode": "推荐码",
+    "referralCodeNote": "注意：如果没有推荐码，系统将自动分配一个默认推荐码",
+    "sendTo": "发送至",
+    "sms": "短信",
+    "whatsapp": "WhatsApp",
+    "otpCode": "验证码",
+    "requestOtp": "获取验证码",
+    "resendOtp": "重新发送验证码",
+    "resendOtpCountdown": "重新发送 ({{seconds}}秒)",
     "rememberMe": "记住我",
     "forgotPassword": "忘记密码？",
     "noAccount": "还没有账户？",
     "haveAccount": "已有账户？",
+    "loginHere": "点此登录",
+    "registerHere": "点此注册",
     "welcomeBack": "欢迎回来",
     "enterCredentials": "请输入您的登录信息",
     "signIn": "登录",
@@ -56,7 +80,33 @@
     "createAccount": "创建账户",
     "enterDetails": "请输入您的信息以创建账户",
     "creatingAccount": "创建中...",
-    "email": "电子邮件"
+    "processing": "处理中...",
+    "email": "电子邮件",
+    "termsAgree": "我已阅读并同意",
+    "termsConditions": "条款与条件",
+    "supportNotice": "如果您在登录过程中遇到任何问题，请联系我们的客服获取进一步帮助。",
+    "usernameRequired": "请输入用户名",
+    "passwordRequired": "请输入密码",
+    "passwordMinLength": "密码至少需要6个字符",
+    "confirmPasswordRequired": "请确认您的密码",
+    "passwordsNoMatch": "密码不匹配",
+    "fullNameRequired": "请输入全名",
+    "phoneRequired": "请输入手机号码",
+    "phoneMinLength": "手机号码至少需要10位数字",
+    "otpRequired": "请输入验证码",
+    "otpInvalid": "请输入有效的验证码",
+    "referralInvalid": "推荐码无效",
+    "referralVerifyFailed": "验证推荐码失败，请重试。",
+    "selectOtpMethod": "请选择接收验证码的方式（短信或WhatsApp）",
+    "requestOtpFirst": "请先获取并输入验证码",
+    "agreeTermsRequired": "请同意条款与条件",
+    "loginFailed": "登录失败",
+    "registrationFailed": "注册失败，请重试。",
+    "resetFailed": "重置密码失败，请重试。",
+    "otpSendFailed": "发送验证码失败，请重试。",
+    "otpSent": "验证码已发送！请查看您的{{method}}。",
+    "verifyingReferral": "正在验证推荐码...",
+    "resetSuccess": "密码重置成功！请使用新密码登录。"
   },
   "language": {
     "title": "语言",
@@ -117,11 +167,20 @@
     "resetPin": "重置密码",
     "myContact": "我的联系人",
     "inbox": "收件箱",
+    "checkIn": "签到",
+    "redeemGift": "兑换礼物",
+    "rebateList": "返水列表",
+    "redeemCode": "兑换码",
+    "logout": "登出",
     "report": "报告",
     "overview": "概览",
     "registered": "已注册",
     "activePlayer": "活跃玩家",
-    "turnover": "流水"
+    "turnover": "流水",
+    "noBankAccounts": "您还没有添加任何银行账户。",
+    "addBankAccount": "添加银行账户",
+    "primaryAccount": "主要账户",
+    "noBankData": "银行账户详情暂不可用。"
   },
   "inbox": {
     "title": "收件箱",
@@ -143,17 +202,21 @@
     "title": "条款与条件",
     "intro": "欢迎使用AONE Global Gaming。这些条款与条件（\"条款\"）适用于您对我们网站及任何相关服务的使用。使用我们的网站即表示您同意这些条款，它构成您与我们之间的法律协议。请在使用我们的网站前仔细阅读。",
     "eligibility": "资格要求",
-    "eligibilityContent": "您必须年满18岁或您所在司法管辖区的法定赌博年龄（以较大者为准）才能使用我们的服务。访问或使用我们的网站即表示您声明并保证您符合这些年龄要求。\n\n您不得是禁止在线赌博的任何司法管辖区的居民。确保您对我们服务的使用符合您所在司法管辖区的所有适用法律和法规是您的责任。\n\n我们保留随时要求提供年龄和身份证明的权利。未能提供令人满意的证明可能导致您的账户被暂停或终止。",
+    "eligibilityContent": "您必须年满18岁才能使用我们的网站。使用我们的网站即表示您确认您已达到您所在司法管辖区的法定赌博年龄。",
     "userAccounts": "用户账户",
-    "userAccountsContent": "要使用我们网站的某些功能，您可能需要注册一个账户。注册账户时，您必须提供准确完整的信息。您有责任维护账户信息的保密性，包括您的用户名和密码。您不得与他人分享您的账户信息。您对您账户下发生的所有活动负责。\n\n您只能在我们这里维护一个账户。如果我们发现您有多个账户，我们保留关闭所有账户并没收这些账户中持有的任何资金的权利。\n\n您有责任保持联系信息的更新。我们不对发送到过期电子邮件地址或电话号码的任何通信承担责任。",
+    "userAccountsContent": "要使用我们网站的某些功能，您可能需要注册一个账户。注册账户时，您必须提供准确完整的信息。您有责任维护账户信息的保密性，包括您的用户名和密码。您不得与他人分享您的账户信息。您对您账户下发生的所有活动负责。",
     "depositsWithdrawals": "存款和取款",
-    "depositsWithdrawalsContent": "所有存款必须使用以您名义注册的支付方式进行。我们不接受第三方付款。\n\n存款和取款的最低和最高限额适用，可能因您的账户状态和支付方式而异。这些限额显示在我们网站的相关页面上。\n\n取款请求需经过验证程序以确保您账户的安全。我们保留在处理任何取款前要求提供额外文件的权利。\n\n取款的处理时间因所选支付方式而异。我们的目标是在24-48小时内处理所有取款，但在高峰期或需要额外验证时可能需要更长时间。",
+    "depositsWithdrawalsContent": "您可以使用我们网站上提供的方式之一将资金存入您的账户。在处理您的存款之前，我们可能会要求您提供额外信息。我们可能会对某些存款方式收取费用。使用网上银行转账存款时，必须使用与您注册账户时相同的银行账户持有人姓名，任何不符合此要求的存款将被拒绝。您可以随时根据我们的取款政策申请从您的账户中提取资金。在处理您的取款之前，我们可能会要求您提供额外信息。我们可能会对某些取款方式收取费用。",
     "wagering": "投注",
-    "wageringContent": "在我们平台上进行的所有投注均受这些条款与条件以及每个游戏或投注市场的具体规则约束。\n\n我们保留作废我们合理认为是错误下注的任何投注的权利，或由技术故障、欺诈或操纵导致的投注。\n\n所有游戏和投注市场均适用最高投注限额。这些限额可能因您的账户状态和特定游戏或市场而异。\n\n投注一旦确认，就无法取消或更改。请确保在确认前仔细检查所有投注详情。",
+    "wageringContent": "您可以使用账户中的资金在我们的网站上进行投注。您有责任确保您的账户中有足够的资金来支付所有投注。您只能使用合法属于您且不受任何法律或衡平法索赔的资金进行投注。我们保留作废使用不符合这些要求的资金进行的任何投注的权利。如果发现玩家存在异常投注或团体投注行为，Aone保留在不另行通知和无需提供证据的情况下没收用户信用额度并封禁用户账户的权利。",
     "bonusesRewards": "奖金/奖励",
-    "bonusesRewardsContent": "所有奖金和促销活动均受特定条款和条件约束，这些条款将在优惠时明确说明。\n\n在提取任何奖金资金或源自奖金资金的奖金之前，必须满足流水要求。具体的流水要求将在奖金条款中说明。\n\n我们保留自行决定排除任何客户参与任何奖金或促销活动的权利。\n\n滥用奖金，包括但不限于创建多个账户领取奖金，可能导致奖金资金和奖金被没收，以及您的账户被暂停或终止。",
+    "bonusesRewardsContent": "我们可能会不时提供奖金、促销活动和奖励。这些都受其自身条款和条件的约束，这些条款将在优惠时提供给您。您有责任理解并遵守您接受的任何奖金或促销活动的条款和条件。",
     "prohibitedConduct": "禁止行为",
-    "prohibitedConductContent": "您不得将我们的服务用于任何非法或未经授权的目的。使用我们的服务时，您不得违反您所在司法管辖区的任何法律。\n\n您不得试图未经授权访问我们的系统或干扰我们网站的正常运行。\n\n除非经我们明确授权，否则您不得使用任何自动化系统、软件或工具访问我们的网站或下注。\n\n串通、欺诈或任何形式的作弊都是严格禁止的，将导致您的账户立即终止并没收任何资金。\n\n我们保留向相关当局报告任何可疑活动的权利。"
+    "prohibitedConductContent": "您不得将我们的网站用于任何非法或欺诈活动，或任何可能损害我们或我们用户的活动。您不得干扰我们网站的运营或试图未经授权访问我们的系统。如果我们认为您从事了禁止行为，我们保留暂停或终止您账户的权利。",
+    "termination": "终止",
+    "terminationContent": "我们可以出于任何原因终止您的账户，包括违反这些条款。",
+    "changesToTerms": "条款变更",
+    "changesToTermsContent": "我们可能会不时更新这些条款。我们将通过电子邮件或在我们的网站上发布通知的方式通知您任何重大变更。在任何变更生效日期之后您继续使用我们的网站即表示您接受更新后的条款。"
   },
   "transaction": {
     "title": "交易",
@@ -167,6 +230,9 @@
   "home": {
     "announcement": "欢迎来到 AONE GLOBAL GAMING。马来西亚稳定可信的在线平台"
   },
+  "event": {
+    "noEvents": "目前没有活动。"
+  },
   "games": {
     "slots": "老虎机",
     "appSlot": "APP老虎机",
@@ -174,6 +240,20 @@
     "sports": "体育",
     "lottery": "彩票",
     "fishing": "捕鱼"
+  },
+  "profile": {
+    "changeUsername": "更改用户名",
+    "changePassword": "更改密码",
+    "changeAvatar": "更改头像",
+    "phoneNumber": "手机号码",
+    "sendTo": "发送至",
+    "sendToSms": "短信",
+    "sendToEmail": "电子邮件",
+    "otpCode": "验证码",
+    "requestOtp": "获取验证码",
+    "oldPassword": "旧密码",
+    "newPassword": "新密码",
+    "confirmNewPassword": "确认新密码"
   },
   "sidebar": {
     "referral": "推荐",
@@ -190,5 +270,18 @@
     "spinWheel": "转盘",
     "copyright": "版权所有 © 2025 AONE.",
     "allRightsReserved": "保留所有权利。"
+  },
+  "bank": {
+    "bankName": "银行名称",
+    "selectBank": "选择银行",
+    "accountNumber": "账户号码",
+    "enterAccountNumber": "输入您的账户号码",
+    "tacCode": "验证码",
+    "enterTac": "输入验证码",
+    "requestTac": "获取验证码",
+    "tacSent": "验证码已发送至您注册的手机号码",
+    "tacRequestFailed": "获取验证码失败，请重试。",
+    "addBankNote": "请确保您的银行账户名与您的注册全名一致。不接受第三方银行账户。",
+    "addFailed": "添加银行账户失败，请重试。"
   }
 }

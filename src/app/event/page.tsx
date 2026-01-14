@@ -3,9 +3,13 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import { Header, BottomNav } from "@/components/layout";
+import { RequireAuth } from "@/components/auth";
 import { Button } from "@/components/ui/button";
 import { EventDetailsModal } from "@/components/event";
 import { cn } from "@/lib/utils";
+import { useEvents, useClaimPromo } from "@/hooks/use-events";
+import { useI18n } from "@/providers/i18n-provider";
+import type { Promo } from "@/lib/api/types";
 
 const categories = [
   { id: "all", label: "ALL" },
@@ -17,183 +21,237 @@ const categories = [
   { id: "fishing", label: "FISHING" },
 ];
 
-interface Event {
+// Transform API promo to component format
+interface TransformedEvent {
   id: string;
   image: string;
   title: string;
   description: string;
   category: string[];
   htmlContent: string;
+  mode?: string;
+  type?: string;
+  freq?: string;
 }
 
-const events: Event[] = [
-  {
-    id: "1",
-    image: "/events/daily-deposit.jpg",
-    title: "Top Up Free MYR 5",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
-    category: ["all", "slots", "live", "sports", "lottery"],
+function transformPromo(promo: Promo, lang: string): TransformedEvent {
+  // Get localized name based on language
+  const getName = () => {
+    if (lang === "zh" && promo.NameCn) return promo.NameCn;
+    if (lang === "ms" && promo.NameMy) return promo.NameMy;
+    return promo.Name;
+  };
+
+  // Get localized terms & conditions based on language
+  const getTnc = () => {
+    if (lang === "zh" && promo.TncCn) return promo.TncCn;
+    if (lang === "ms" && promo.TncMy) return promo.TncMy;
+    return promo.Tnc;
+  };
+
+  // Get localized image based on language
+  const getImage = () => {
+    if (lang === "zh" && promo.ImageCn) return promo.ImageCn;
+    if (lang === "ms" && promo.ImageMy) return promo.ImageMy;
+    return promo.Image;
+  };
+
+  const name = getName();
+  const tnc = getTnc();
+
+  return {
+    id: promo.Id,
+    image: getImage(),
+    title: name,
+    description: tnc,
+    // Map Type to categories - show in all for now since API doesn't provide exact category mapping
+    category: [
+      "all",
+      "slots",
+      "app-slots",
+      "live",
+      "sports",
+      "lottery",
+      "fishing",
+    ],
     htmlContent: `
-      <h2>Top Up Free MYR 5</h2>
-      <ul>
-        <li><strong>FREE MYR 5</strong>.</li>
-        <li>Minimum Deposit MYR 30 or USDT 30 and above.</li>
-        <li>One Promotion Required.</li>
-        <li>Minimum Withdrawal MYR 100.</li>
-        <li>ONLY ONE USER/MOBILE NUMBER/ NAME / BANK claimable per (1)day.</li>
-        <li>Transfer credit function disable after claimed this promotion and successfully achieve the target Turnover.</li>
-      </ul>
-      <ol>
-        <li>This promotion is only available for AONE Global Gaming members.</li>
-        <li>Promotion is subject to availability. Applicable to all aforementioned providers only.</li>
-        <li>All customer offers are limited to one per person. Meaning one per family, household address, IP address, email address, telephone number, credit or debit card and/or e-payment account, and shared computer (e.g. school, public library or workplace).</li>
-        <li>Bonuses are valid for thirty (30) days upon issuance unless stated otherwise. Any unused bonus funds will be removed from the member's account if prerequisites are not fulfilled within the given time frame.</li>
-        <li>Any bets resulting in void, tie, cancelled, or made on opposite or the same outcome will not be counted towards wagering requirement.</li>
-      </ol>
+      <h2>${name}</h2>
+      <p>${tnc}</p>
+      ${promo.Mode ? `<p><strong>Mode:</strong> ${promo.Mode}</p>` : ""}
+      ${promo.Type ? `<p><strong>Type:</strong> ${promo.Type}</p>` : ""}
+      ${promo.Freq ? `<p><strong>Frequency:</strong> ${promo.Freq}</p>` : ""}
+      ${promo.Rate > 0 ? `<p><strong>Rate:</strong> ${promo.Rate}%</p>` : ""}
+      ${
+        promo.Amount > 0
+          ? `<p><strong>Amount:</strong> ${promo.Amount}</p>`
+          : ""
+      }
     `,
-  },
-  {
-    id: "2",
-    image: "/events/welcome-bonus.jpg",
-    title: "150% Welcome Bonus",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
-    category: ["all", "slots", "app-slots"],
-    htmlContent: `
-      <h2>150% Welcome Bonus</h2>
-      <p>Get up to 150% bonus on your first deposit! New members only.</p>
-      <ul>
-        <li>Minimum deposit: MYR 30</li>
-        <li>Maximum bonus: MYR 500</li>
-        <li>Wagering requirement: 30x</li>
-        <li>Valid for slots and app slots only</li>
-      </ul>
-      <p><strong>Terms and Conditions:</strong></p>
-      <ol>
-        <li>Available for new members only</li>
-        <li>Bonus must be claimed within 24 hours of registration</li>
-        <li>One-time offer per member</li>
-      </ol>
-    `,
-  },
-  {
-    id: "3",
-    image: "/events/sport-bonus.jpg",
-    title: "100% Sport Welcome Bonus",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
-    category: ["all", "sports"],
-    htmlContent: `
-      <h2>100% Sport Welcome Bonus</h2>
-      <p>Double your first sports deposit with our 100% welcome bonus!</p>
-      <ul>
-        <li>Minimum deposit: MYR 50</li>
-        <li>Maximum bonus: MYR 1000</li>
-        <li>Wagering requirement: 15x</li>
-        <li>Valid for sports betting only</li>
-      </ul>
-      <p><strong>Eligible Sports:</strong></p>
-      <ul>
-        <li>Football</li>
-        <li>Basketball</li>
-        <li>Tennis</li>
-        <li>Esports</li>
-      </ul>
-    `,
-  },
-];
+    mode: promo.Mode,
+    type: promo.Type,
+    freq: promo.Freq,
+  };
+}
 
 export default function EventPage() {
   const [activeCategory, setActiveCategory] = useState("all");
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<TransformedEvent | null>(
+    null
+  );
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { t, locale } = useI18n();
 
+  // Fetch events from API
+  const { data: promos, isLoading, error } = useEvents();
+  const claimPromoMutation = useClaimPromo();
+
+  // Transform API promos
+  const events = promos?.map((promo) => transformPromo(promo, locale)) || [];
+
+  // Filter events by category (currently all events show in all categories since API doesn't provide category)
   const filteredEvents = events.filter((event) =>
     event.category.includes(activeCategory)
   );
 
+  const handleClaimPromo = async (eventId: string) => {
+    try {
+      await claimPromoMutation.mutateAsync(eventId);
+      // Show success message or update UI
+    } catch {
+      // Error is handled by the mutation
+    }
+  };
+
   return (
-    <div className="relative min-h-screen flex flex-col bg-white">
-      {/* Header */}
-      <Header variant="logo" />
+    <RequireAuth>
+      <div className="relative min-h-screen flex flex-col">
+        {/* Header */}
+        <Header variant="logo" />
 
-      {/* Horizontally Scrollable Categories */}
-      <div
-        ref={scrollRef}
-        className="flex gap-2 px-4 py-3 overflow-x-auto scrollbar-hide"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        {categories.map((category) => (
-          <button
-            key={category.id}
-            onClick={() => setActiveCategory(category.id)}
-            className={cn(
-              "flex-shrink-0 px-4 py-2 rounded-full text-xs font-medium transition-colors whitespace-nowrap",
-              activeCategory === category.id
-                ? "bg-primary text-white"
-                : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-            )}
-          >
-            {category.label}
-          </button>
-        ))}
-      </div>
+        {/* Horizontally Scrollable Categories */}
+        <div
+          ref={scrollRef}
+          className="flex gap-1 px-4 py-3 overflow-x-auto scrollbar-hide"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setActiveCategory(category.id)}
+              className={cn(
+                "shrink-0 px-3 py-2 rounded-lg text-[10px] font-roboto-bold whitespace-nowrap shadow-md cursor-pointer",
+                activeCategory === category.id
+                  ? "bg-primary text-white"
+                  : "bg-linear-to-b from-white to-[#F2F4F9] text-[#28323C] border border-white"
+              )}
+            >
+              {category.label}
+            </button>
+          ))}
+        </div>
 
-      {/* Event Cards */}
-      <div className="flex-1 px-4 pb-4 space-y-4 overflow-auto">
-        {filteredEvents.map((event) => (
-          <div
-            key={event.id}
-            className="bg-white rounded-xl border border-zinc-100 overflow-hidden shadow-sm"
-          >
-            {/* Event Image */}
-            <div className="relative h-40 bg-gradient-to-r from-zinc-700 to-zinc-500">
-              <Image
-                src={event.image}
-                alt={event.title}
-                fill
-                className="object-cover"
-                onError={(e) => {
-                  // Hide broken image, show gradient background
-                  e.currentTarget.style.display = "none";
-                }}
-              />
-            </div>
-
-            {/* Event Content */}
-            <div className="p-4">
-              <h3 className="text-base font-semibold text-zinc-800 mb-1">
-                {event.title}
-              </h3>
-              <p className="text-sm text-zinc-500 mb-4 line-clamp-2">
-                {event.description}
-              </p>
-
-              {/* Action Buttons */}
-              <div className="flex gap-3">
-                <Button
-                  variant="secondary"
-                  className="flex-1 bg-zinc-700 hover:bg-zinc-800 text-white rounded-full"
-                  onClick={() => setSelectedEvent(event)}
-                >
-                  INFO
-                </Button>
-                <Button className="flex-1 bg-primary hover:bg-primary/90 text-white rounded-full">
-                  APPLY
-                </Button>
+        {/* Event Cards */}
+        <div className="flex-1 px-4 pb-4 space-y-4 overflow-auto">
+          {isLoading ? (
+            // Loading skeleton
+            [...Array(3)].map((_, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-xl border border-zinc-100 overflow-hidden shadow-sm"
+              >
+                <div className="h-40 bg-zinc-200 animate-pulse" />
+                <div className="p-4 space-y-3">
+                  <div className="h-5 bg-zinc-200 rounded animate-pulse w-3/4" />
+                  <div className="h-4 bg-zinc-200 rounded animate-pulse" />
+                  <div className="flex gap-3">
+                    <div className="h-10 bg-zinc-200 rounded-full animate-pulse flex-1" />
+                    <div className="h-10 bg-zinc-200 rounded-full animate-pulse flex-1" />
+                  </div>
+                </div>
               </div>
+            ))
+          ) : error ? (
+            <div className="text-center py-8 text-zinc-500 text-sm">
+              {t("common.errorLoading")}
             </div>
-          </div>
-        ))}
+          ) : filteredEvents.length === 0 ? (
+            <div className="flex flex-col justify-center items-center py-26 text-[#A9ADB1] text-xs font-roboto-medium gap-9">
+              <Image
+                src="/images/icon/no_info_calender_icon.png"
+                alt="AON1E"
+                width={200}
+                height={200}
+                unoptimized
+                className="h-36 w-auto object-contain"
+              />
+              {t("event.noEvents")}
+            </div>
+          ) : (
+            filteredEvents.map((event) => (
+              <div
+                key={event.id}
+                className="bg-white rounded-xl border border-zinc-100 overflow-hidden shadow-sm"
+              >
+                {/* Event Image */}
+                <div className="relative h-36 bg-primary">
+                  <Image
+                    src={event.image}
+                    alt={event.title}
+                    unoptimized
+                    fill
+                    className="object-cover"
+                    onError={(e) => {
+                      // Hide broken image, show gradient background
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                </div>
+
+                {/* Event Content */}
+                <div className="p-3 flex flex-col gap-1">
+                  <div className="text-base font-roboto-bold text-[#28323C]">
+                    {event.title}
+                  </div>
+                  <p className="text-xs text-zinc-500 line-clamp-2 mb-1">
+                    {event.description}
+                  </p>
+                  {event.freq && (
+                    <p className="text-xs text-primary mb-1">{event.freq}</p>
+                  )}
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-2">
+                    <Button
+                      variant="secondary"
+                      className="flex-1 bg-dark hover:bg-dark text-white rounded-lg font-roboto-bold text-sm py-6"
+                      onClick={() => setSelectedEvent(event)}
+                    >
+                      INFO
+                    </Button>
+                    <Button
+                      className="flex-1 bg-primary hover:bg-primary text-white rounded-lg font-roboto-bold text-sm py-6"
+                      onClick={() => handleClaimPromo(event.id)}
+                      disabled={claimPromoMutation.isPending}
+                    >
+                      {claimPromoMutation.isPending ? "..." : "APPLY"}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Bottom Navigation */}
+        <BottomNav />
+
+        {/* Event Details Modal */}
+        <EventDetailsModal
+          isOpen={!!selectedEvent}
+          onClose={() => setSelectedEvent(null)}
+          event={selectedEvent}
+        />
       </div>
-
-      {/* Bottom Navigation */}
-      <BottomNav />
-
-      {/* Event Details Modal */}
-      <EventDetailsModal
-        isOpen={!!selectedEvent}
-        onClose={() => setSelectedEvent(null)}
-        event={selectedEvent}
-      />
-    </div>
+    </RequireAuth>
   );
 }

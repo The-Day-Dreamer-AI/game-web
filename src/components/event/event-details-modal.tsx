@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { X } from "lucide-react";
 import Image from "next/image";
 
@@ -18,11 +19,29 @@ export function EventDetailsModal({
   onClose,
   event,
 }: EventDetailsModalProps) {
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   if (!isOpen || !event) return null;
 
   return (
-    <div className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-      <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col relative overflow-hidden">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 overflow-hidden"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-2xl w-full max-w-[398px] max-h-[85vh] flex flex-col relative overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -37,6 +56,7 @@ export function EventDetailsModal({
             src={event.image}
             alt={event.title}
             fill
+            unoptimized
             className="object-cover"
             onError={(e) => {
               e.currentTarget.style.display = "none";
@@ -46,7 +66,7 @@ export function EventDetailsModal({
 
         {/* Header */}
         <div className="p-6 border-b border-zinc-100">
-          <h2 className="text-xl font-semibold text-zinc-800">
+          <h2 className="text-xl font-roboto-semibold text-zinc-800">
             {event.title}
           </h2>
         </div>
@@ -63,7 +83,7 @@ export function EventDetailsModal({
         <div className="p-6 border-t border-zinc-100">
           <button
             onClick={onClose}
-            className="w-full py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+            className="w-full py-3 bg-primary text-white font-roboto-semibold rounded-lg hover:bg-primary/90 transition-colors"
           >
             APPLY
           </button>

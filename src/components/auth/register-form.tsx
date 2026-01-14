@@ -3,10 +3,11 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { FormInput } from "@/components/ui/form-input";
+import { User, Mail, Lock } from "lucide-react";
+import { useLoginModal } from "@/providers/login-modal-provider";
 import {
   Card,
   CardContent,
@@ -21,13 +22,13 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { registerSchema, type RegisterFormData } from "@/schemas/auth";
 import { useAuth } from "@/hooks/use-auth";
 
 export function RegisterForm() {
   const { register, isLoading } = useAuth();
+  const { openLoginModal } = useLoginModal();
 
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -40,7 +41,14 @@ export function RegisterForm() {
   });
 
   async function onSubmit(data: RegisterFormData) {
-    const result = await register(data);
+    // Transform form data to match RegisterCredentials
+    const result = await register({
+      username: data.name,
+      email: data.email,
+      password: data.password,
+      confirmPassword: data.confirmPassword,
+      phone: "", // This legacy form doesn't have phone field
+    });
     if (!result.success) {
       form.setError("root", { message: result.error });
     }
@@ -54,7 +62,7 @@ export function RegisterForm() {
     >
       <Card className="w-full border-0 shadow-none">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">
+          <CardTitle className="text-2xl font-roboto-bold text-center">
             Create an account
           </CardTitle>
           <CardDescription className="text-center">
@@ -67,64 +75,71 @@ export function RegisterForm() {
               <FormField
                 control={form.control}
                 name="name"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="John Doe" {...field} />
+                      <FormInput
+                        placeholder="John Doe"
+                        prefix={<User className="w-auto h-auto" />}
+                        error={fieldState.error?.message}
+                        {...field}
+                      />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
               <FormField
                 control={form.control}
                 name="email"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input
+                      <FormInput
                         type="email"
                         placeholder="you@example.com"
+                        prefix={<Mail className="w-auto h-6" />}
+                        error={fieldState.error?.message}
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
               <FormField
                 control={form.control}
                 name="password"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
+                      <FormInput
                         type="password"
                         placeholder="••••••••"
+                        prefix={<Lock className="w-auto h-6" />}
+                        error={fieldState.error?.message}
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
               <FormField
                 control={form.control}
                 name="confirmPassword"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
-                      <Input
+                      <FormInput
                         type="password"
                         placeholder="••••••••"
+                        prefix={<Lock className="w-auto h-6" />}
+                        error={fieldState.error?.message}
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -146,12 +161,13 @@ export function RegisterForm() {
         <CardFooter className="flex justify-center">
           <p className="text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Link
-              href="/login"
-              className="text-primary hover:underline font-medium"
+            <button
+              type="button"
+              onClick={openLoginModal}
+              className="text-primary hover:underline font-roboto-medium"
             >
               Sign in
-            </Link>
+            </button>
           </p>
         </CardFooter>
       </Card>

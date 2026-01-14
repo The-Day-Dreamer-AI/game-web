@@ -7,6 +7,8 @@ import Image from "next/image";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
+import { useAuth } from "@/providers/auth-provider";
+import { useLoginModal } from "@/providers/login-modal-provider";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -24,6 +26,7 @@ const mainMenuItems = [
       </svg>
     ),
     color: "text-primary",
+    requiresAuth: true,
   },
   {
     id: "deposit",
@@ -35,6 +38,7 @@ const mainMenuItems = [
       </svg>
     ),
     color: "text-primary",
+    requiresAuth: true,
   },
   {
     id: "withdrawal",
@@ -46,6 +50,7 @@ const mainMenuItems = [
       </svg>
     ),
     color: "text-primary",
+    requiresAuth: true,
   },
   {
     id: "events",
@@ -57,6 +62,7 @@ const mainMenuItems = [
       </svg>
     ),
     color: "text-primary",
+    requiresAuth: true,
   },
   {
     id: "transactions",
@@ -68,6 +74,7 @@ const mainMenuItems = [
       </svg>
     ),
     color: "text-primary",
+    requiresAuth: true,
   },
   {
     id: "inbox",
@@ -80,6 +87,7 @@ const mainMenuItems = [
     ),
     color: "text-primary",
     badge: 1,
+    requiresAuth: true,
   },
 ];
 
@@ -89,7 +97,7 @@ const secondaryMenuItems = [
     labelKey: "sidebar.aboutUs",
     href: "/about",
     icon: (
-      <span className="text-xs font-bold text-primary">A1</span>
+      <span className="text-xs font-roboto-bold text-primary">A1</span>
     ),
   },
   {
@@ -119,6 +127,17 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const [imgError, setImgError] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { t } = useI18n();
+  const { logout, isAuthenticated } = useAuth();
+  const { openLoginModal } = useLoginModal();
+
+  const handleProtectedNavigation = (href: string, requiresAuth?: boolean) => {
+    if (requiresAuth && !isAuthenticated) {
+      onClose();
+      openLoginModal();
+      return false;
+    }
+    return true;
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -180,7 +199,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Sidebar Panel */}
       <div
         className={cn(
-          "absolute top-0 right-0 h-full w-[85%] max-w-[360px] bg-white transform transition-transform duration-300 ease-out overflow-y-auto",
+          "absolute top-0 right-0 h-[100dvh] w-[85%] max-w-[360px] bg-white transform transition-transform duration-300 ease-out flex flex-col",
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
@@ -192,123 +211,134 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           <X className="w-6 h-6" />
         </button>
 
-        {/* Header Section */}
-        <div className="pt-8 pb-4 px-6 text-center">
-          {/* Logo */}
-          <div className="flex justify-center mb-2">
-            {!imgError ? (
-              <Image
-                src="/logo-header.png"
-                alt="AON1E"
-                width={140}
-                height={48}
-                className="h-12 w-auto object-contain"
-                onError={() => setImgError(true)}
-              />
-            ) : (
-              <span className="text-3xl font-bold text-zinc-800">
-                AON<span className="text-primary">1</span>E
-              </span>
-            )}
+        {/* Scrollable Content */}
+        <div className="flex-1 min-h-0 overflow-y-auto">
+          {/* Header Section */}
+          <div className="pt-8 pb-4 px-6 text-center">
+            {/* Logo */}
+            <div className="flex justify-center mb-2">
+              {!imgError ? (
+                <Image
+                  src="/logo-header.png"
+                  alt="AON1E"
+                  width={140}
+                  height={48}
+                  unoptimized
+                  className="h-12 w-auto object-contain"
+                  onError={() => setImgError(true)}
+                />
+              ) : (
+                <span className="text-3xl font-roboto-bold text-zinc-800">
+                  AON<span className="text-primary">1</span>E
+                </span>
+              )}
+            </div>
+            {/* DateTime */}
+            <p className="text-xs text-zinc-500">{currentTime}</p>
           </div>
-          {/* DateTime */}
-          <p className="text-xs text-zinc-500">{currentTime}</p>
-        </div>
 
-        {/* Feature Buttons */}
-        <div className="px-6 pb-4">
-          <div className="flex gap-3">
-            <Link
-              href="/check-in"
-              onClick={onClose}
-              className="flex-1 flex items-center justify-center gap-2 py-3 bg-zinc-50 rounded-xl hover:bg-zinc-100 transition-colors"
-            >
-              <svg viewBox="0 0 24 24" className="w-10 h-10" fill="none">
-                <rect x="3" y="4" width="18" height="16" rx="2" stroke="#4FD1C5" strokeWidth="1.5"/>
-                <path d="M3 9h18" stroke="#4FD1C5" strokeWidth="1.5"/>
-                <path d="M9 4V2M15 4V2" stroke="#4FD1C5" strokeWidth="1.5" strokeLinecap="round"/>
-                <path d="M8 13l2 2 4-4" stroke="#4FD1C5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              <span className="text-xs font-medium text-zinc-700">{t("sidebar.checkIn")}</span>
-            </Link>
-            <Link
-              href="/spin-wheel"
-              onClick={onClose}
-              className="flex-1 flex items-center justify-center gap-2 py-3 bg-zinc-50 rounded-xl hover:bg-zinc-100 transition-colors"
-            >
-              <svg viewBox="0 0 24 24" className="w-10 h-10" fill="none">
-                <circle cx="12" cy="12" r="9" stroke="#4FD1C5" strokeWidth="1.5"/>
-                <path d="M12 3v9l6 3" stroke="#4FD1C5" strokeWidth="1.5" strokeLinecap="round"/>
-                <circle cx="12" cy="12" r="2" fill="#4FD1C5"/>
-              </svg>
-              <span className="text-xs font-medium text-zinc-700">{t("sidebar.spinWheel")}</span>
-            </Link>
-          </div>
-        </div>
-
-        {/* Main Menu */}
-        <div className="px-6 py-2">
-          <div className="bg-white rounded-xl border border-zinc-100 overflow-hidden">
-            {mainMenuItems.map((item, index) => (
+          {/* Feature Buttons */}
+          <div className="px-6 pb-4">
+            <div className="flex gap-3">
               <Link
-                key={item.id}
-                href={item.href}
+                href="/check-in"
                 onClick={onClose}
-                className={cn(
-                  "flex items-center gap-4 px-4 py-3.5 hover:bg-zinc-50 transition-colors",
-                  index !== mainMenuItems.length - 1 && "border-b border-zinc-100"
-                )}
+                className="flex-1 flex items-center justify-center gap-2 py-3 bg-zinc-50 rounded-xl hover:bg-zinc-100 transition-colors"
               >
-                <span className={item.color}>{item.icon}</span>
-                <span className="flex-1 text-sm font-medium text-zinc-700">{t(item.labelKey)}</span>
-                {item.badge && (
-                  <span className="w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
-                    {item.badge}
-                  </span>
-                )}
+                <svg viewBox="0 0 24 24" className="w-10 h-10" fill="none">
+                  <rect x="3" y="4" width="18" height="16" rx="2" stroke="#4FD1C5" strokeWidth="1.5"/>
+                  <path d="M3 9h18" stroke="#4FD1C5" strokeWidth="1.5"/>
+                  <path d="M9 4V2M15 4V2" stroke="#4FD1C5" strokeWidth="1.5" strokeLinecap="round"/>
+                  <path d="M8 13l2 2 4-4" stroke="#4FD1C5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <span className="text-xs font-roboto-medium text-zinc-700">{t("sidebar.checkIn")}</span>
               </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* Secondary Menu */}
-        <div className="px-6 py-2">
-          <div className="bg-white rounded-xl border border-zinc-100 overflow-hidden">
-            {secondaryMenuItems.map((item, index) => (
               <Link
-                key={item.id}
-                href={item.href}
+                href="/spin-wheel"
                 onClick={onClose}
-                className={cn(
-                  "flex items-center gap-4 px-4 py-3.5 hover:bg-zinc-50 transition-colors",
-                  index !== secondaryMenuItems.length - 1 && "border-b border-zinc-100"
-                )}
+                className="flex-1 flex items-center justify-center gap-2 py-3 bg-zinc-50 rounded-xl hover:bg-zinc-100 transition-colors"
               >
-                <span className="w-5 h-5 flex items-center justify-center">{item.icon}</span>
-                <span className="text-sm font-medium text-zinc-700">{t(item.labelKey)}</span>
+                <svg viewBox="0 0 24 24" className="w-10 h-10" fill="none">
+                  <circle cx="12" cy="12" r="9" stroke="#4FD1C5" strokeWidth="1.5"/>
+                  <path d="M12 3v9l6 3" stroke="#4FD1C5" strokeWidth="1.5" strokeLinecap="round"/>
+                  <circle cx="12" cy="12" r="2" fill="#4FD1C5"/>
+                </svg>
+                <span className="text-xs font-roboto-medium text-zinc-700">{t("sidebar.spinWheel")}</span>
               </Link>
-            ))}
-
-            {/* Logout */}
-            <button
-              onClick={() => {
-                onClose();
-                // Handle logout logic
-              }}
-              className="w-full flex items-center gap-4 px-4 py-3.5 hover:bg-zinc-50 transition-colors border-t border-zinc-100"
-            >
-              <svg viewBox="0 0 24 24" className="w-5 h-5 text-red-500" fill="currentColor">
-                <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
-              </svg>
-              <span className="text-sm font-medium text-zinc-700">{t("sidebar.logout")}</span>
-            </button>
+            </div>
           </div>
-        </div>
 
-        {/* Footer */}
-        <div className="px-6 py-6 text-center">
-          <p className="text-xs text-zinc-400">{t("sidebar.copyright")}</p>
-          <p className="text-xs text-zinc-400">{t("sidebar.allRightsReserved")}</p>
+          {/* Main Menu */}
+          <div className="px-6 py-2">
+            <div className="bg-white rounded-xl border border-zinc-100 overflow-hidden">
+              {mainMenuItems.map((item, index) => (
+                <Link
+                  key={item.id}
+                  href={item.href}
+                  onClick={(e) => {
+                    if (!handleProtectedNavigation(item.href, item.requiresAuth)) {
+                      e.preventDefault();
+                    } else {
+                      onClose();
+                    }
+                  }}
+                  className={cn(
+                    "flex items-center gap-4 px-4 py-3.5 hover:bg-zinc-50 transition-colors",
+                    index !== mainMenuItems.length - 1 && "border-b border-zinc-100"
+                  )}
+                >
+                  <span className={item.color}>{item.icon}</span>
+                  <span className="flex-1 text-sm font-roboto-medium text-zinc-700">{t(item.labelKey)}</span>
+                  {item.badge && (
+                    <span className="w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Secondary Menu */}
+          <div className="px-6 py-2">
+            <div className="bg-white rounded-xl border border-zinc-100 overflow-hidden">
+              {secondaryMenuItems.map((item, index) => (
+                <Link
+                  key={item.id}
+                  href={item.href}
+                  onClick={onClose}
+                  className={cn(
+                    "flex items-center gap-4 px-4 py-3.5 hover:bg-zinc-50 transition-colors",
+                    index !== secondaryMenuItems.length - 1 && "border-b border-zinc-100"
+                  )}
+                >
+                  <span className="w-5 h-5 flex items-center justify-center">{item.icon}</span>
+                  <span className="text-sm font-roboto-medium text-zinc-700">{t(item.labelKey)}</span>
+                </Link>
+              ))}
+
+              {/* Logout */}
+              <button
+                onClick={async () => {
+                  onClose();
+                  await logout();
+                  openLoginModal();
+                }}
+                className="w-full flex items-center gap-4 px-4 py-3.5 hover:bg-zinc-50 transition-colors border-t border-zinc-100"
+              >
+                <svg viewBox="0 0 24 24" className="w-5 h-5 text-red-500" fill="currentColor">
+                  <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+                </svg>
+                <span className="text-sm font-roboto-medium text-zinc-700">{t("sidebar.logout")}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="px-6 py-6 text-center">
+            <p className="text-xs text-zinc-400">{t("sidebar.copyright")}</p>
+            <p className="text-xs text-zinc-400">{t("sidebar.allRightsReserved")}</p>
+          </div>
         </div>
       </div>
     </div>,

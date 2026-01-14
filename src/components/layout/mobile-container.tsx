@@ -14,9 +14,16 @@ export function MobileContainer({ children, className }: MobileContainerProps) {
       <div
         id="mobile-container"
         className={cn(
-          "w-full max-w-[430px] min-h-screen bg-background shadow-xl relative",
+          "w-full max-w-[430px] min-h-screen shadow-xl relative",
           className
         )}
+        style={{
+          backgroundImage: "url('/images/background/background_light.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
+        }}
       >
         {children}
       </div>

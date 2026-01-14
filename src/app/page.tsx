@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { Volume2 } from "lucide-react";
-import { BottomNav, Header } from "@/components/layout";
+import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { BottomNav, Header, AppDownloadBanner } from "@/components/layout";
 import {
   BannerSlider,
   WelcomeCard,
@@ -12,8 +14,12 @@ import {
 } from "@/components/home";
 import { useI18n } from "@/providers/i18n-provider";
 import { useAuth } from "@/providers/auth-provider";
+import { useLoadingOverlay } from "@/providers/loading-overlay-provider";
+import { useDiscover, useLaunchGame } from "@/hooks/use-discover";
+import { ApiError } from "@/lib/api";
+import type { Game } from "@/lib/api/types";
 
-// Mock user data
+// Mock user data (TODO: Replace with user profile API when available)
 const userData = {
   username: "design111",
   avatar: "/avatar.png",
@@ -23,8 +29,8 @@ const userData = {
   aPoints: 900,
 };
 
-// Mock banner data
-const banners = [
+// Fallback banner data (used if API returns no banners)
+const fallbackBanners = [
   {
     id: "1",
     image: "/banners/banner-1.png",
@@ -42,204 +48,161 @@ const banners = [
   },
 ];
 
-// Game provider type
-interface GameProvider {
-  id: string;
-  name: string;
-  image: string;
-  href: string;
-  isHot?: boolean;
-  isNew?: boolean;
-  badge?: string;
-}
-
-// Mock game providers data - organized by category
-const gameProvidersByCategory: Record<string, GameProvider[]> = {
-  slots: [
-    {
-      id: "advantplay",
-      name: "ADVANTPLAY",
-      image: "/providers/advantplay.png",
-      href: "/games/advantplay",
-      isHot: true,
-    },
-    {
-      id: "pragmatic",
-      name: "PRAGMATIC PLAY",
-      image: "/providers/pragmatic.png",
-      href: "/games/pragmatic",
-      isHot: true,
-    },
-    {
-      id: "lucky365",
-      name: "Lucky365",
-      image: "/providers/lucky365.png",
-      href: "/games/lucky365",
-      isHot: true,
-    },
-    {
-      id: "bng",
-      name: "BNG",
-      image: "/providers/bng.png",
-      href: "/games/bng",
-      isHot: true,
-    },
-    {
-      id: "mega888",
-      name: "MEGA888",
-      image: "/providers/mega888.png",
-      href: "/games/mega888",
-      isHot: true,
-    },
-    {
-      id: "afb777",
-      name: "AFB777",
-      image: "/providers/afb777.png",
-      href: "/games/afb777",
-      isHot: true,
-    },
-    {
-      id: "relax",
-      name: "RELAX GAMING",
-      image: "/providers/relax.png",
-      href: "/games/relax",
-      isHot: true,
-    },
-    {
-      id: "nextspin",
-      name: "NEXTSPIN",
-      image: "/providers/nextspin.png",
-      href: "/games/nextspin",
-      isHot: true,
-    },
-    {
-      id: "918kiss",
-      name: "918Kiss",
-      image: "/providers/918kiss.png",
-      href: "/games/918kiss",
-      badge: "H5",
-    },
-    {
-      id: "mega888-2",
-      name: "MEGA888",
-      image: "/providers/mega888-2.png",
-      href: "/games/mega888-h5",
-      badge: "H5",
-    },
-    {
-      id: "ace333",
-      name: "ACE333",
-      image: "/providers/ace333.png",
-      href: "/games/ace333",
-    },
-    {
-      id: "jili",
-      name: "JILI",
-      image: "/providers/jili.png",
-      href: "/games/jili",
-    },
-  ],
-  appSlot: [
-    {
-      id: "918kiss-app",
-      name: "918Kiss",
-      image: "/providers/918kiss.png",
-      href: "/games/918kiss",
-    },
-    {
-      id: "mega888-app",
-      name: "MEGA888",
-      image: "/providers/mega888.png",
-      href: "/games/mega888",
-    },
-    {
-      id: "pussy888",
-      name: "Pussy888",
-      image: "/providers/pussy888.png",
-      href: "/games/pussy888",
-    },
-  ],
-  live: [
-    {
-      id: "evolution",
-      name: "Evolution",
-      image: "/providers/evolution.png",
-      href: "/games/evolution",
-      isHot: true,
-    },
-    {
-      id: "ae-sexy",
-      name: "AE Sexy",
-      image: "/providers/ae-sexy.png",
-      href: "/games/ae-sexy",
-      isHot: true,
-    },
-    {
-      id: "sa-gaming",
-      name: "SA Gaming",
-      image: "/providers/sa-gaming.png",
-      href: "/games/sa-gaming",
-    },
-  ],
-  sports: [
-    {
-      id: "sbobet",
-      name: "SBOBET",
-      image: "/providers/sbobet.png",
-      href: "/games/sbobet",
-      isHot: true,
-    },
-    {
-      id: "cmd368",
-      name: "CMD368",
-      image: "/providers/cmd368.png",
-      href: "/games/cmd368",
-    },
-    {
-      id: "im-sports",
-      name: "IM Sports",
-      image: "/providers/im-sports.png",
-      href: "/games/im-sports",
-    },
-  ],
-  lottery: [
-    {
-      id: "gd-lotto",
-      name: "GD Lotto",
-      image: "/providers/gd-lotto.png",
-      href: "/games/gd-lotto",
-    },
-    {
-      id: "magnum",
-      name: "Magnum 4D",
-      image: "/providers/magnum.png",
-      href: "/games/magnum",
-    },
-  ],
-  fishing: [
-    {
-      id: "jili-fishing",
-      name: "JILI Fishing",
-      image: "/providers/jili-fishing.png",
-      href: "/games/jili-fishing",
-      isHot: true,
-    },
-    {
-      id: "spadegaming",
-      name: "Spadegaming",
-      image: "/providers/spadegaming.png",
-      href: "/games/spadegaming",
-    },
-  ],
+// Map API category names to our internal category IDs
+const categoryNameMapping: Record<string, string> = {
+  slots: "slots",
+  slots2: "appSlot", // API uses "Slots2" for App Slots
+  live: "live",
+  sports: "sports",
+  lottery: "lottery",
+  fishing: "fishing",
 };
 
-export default function HomePage() {
-  const [activeCategory, setActiveCategory] = useState("slots");
-  const { t } = useI18n();
-  const { isAuthenticated, user } = useAuth();
+// Transform API game to component format
+function transformGame(game: Game) {
+  return {
+    id: game.Id,
+    name: game.Name,
+    image: game.Image || "/placeholder-game.png",
+    isHot: game.IsHot,
+  };
+}
 
-  const currentProviders =
-    gameProvidersByCategory[activeCategory] || gameProvidersByCategory.slots;
+export default function HomePage() {
+  const router = useRouter();
+  const [activeCategory, setActiveCategory] = useState("slots");
+  const [slideDirection, setSlideDirection] = useState<"left" | "right">("right");
+  const [launchingGameId, setLaunchingGameId] = useState<string | null>(null);
+  const previousCategoryRef = useRef(activeCategory);
+  const { t, locale } = useI18n();
+  const { isAuthenticated, user } = useAuth();
+  const { showLoading, hideLoading } = useLoadingOverlay();
+
+  // Fetch discover data from API
+  const { data: discoverData, isLoading, error } = useDiscover();
+
+  // Track category changes to determine slide direction
+  useEffect(() => {
+    if (discoverData?.GameCategories && previousCategoryRef.current !== activeCategory) {
+      const categories = discoverData.GameCategories;
+      const prevIndex = categories.findIndex(
+        (cat) => cat.Name.toLowerCase() === previousCategoryRef.current
+      );
+      const currentIndex = categories.findIndex(
+        (cat) => cat.Name.toLowerCase() === activeCategory
+      );
+
+      setSlideDirection(currentIndex > prevIndex ? "right" : "left");
+      previousCategoryRef.current = activeCategory;
+    }
+  }, [activeCategory, discoverData?.GameCategories]);
+  const launchGameMutation = useLaunchGame();
+
+  const handleLaunchGame = async (game: { id: string; name: string }) => {
+    try {
+      setLaunchingGameId(game.id);
+      showLoading("Launching game...");
+      const result = await launchGameMutation.mutateAsync(game.id);
+
+      if (result.LaunchType === "Browser" && result.Url) {
+        // Browser type opens in new tab, hide loading
+        hideLoading();
+        window.open(result.Url, "_blank");
+      } else if (result.Url) {
+        // Webview/App types - navigate to game page with iframe
+        hideLoading();
+        const params = new URLSearchParams({
+          url: result.Url,
+          name: game.name,
+        });
+        router.push(`/game?${params.toString()}`);
+      } else {
+        // No URL returned, hide loading
+        hideLoading();
+      }
+    } catch (err) {
+      hideLoading();
+      const errorMessage =
+        err instanceof ApiError
+          ? err.code === 401
+            ? "Please sign in to play this game."
+            : err.message || "Failed to launch game."
+          : "Failed to launch game. Please try again.";
+
+      alert(errorMessage);
+    } finally {
+      setLaunchingGameId(null);
+    }
+  };
+
+  // Transform banners from API
+  const banners = (() => {
+    if (!discoverData?.Banners?.length) return fallbackBanners;
+
+    return discoverData.Banners.map((banner) => {
+      // Select image based on locale
+      let image = banner.Image;
+      if (locale === "zh" && banner.ImageCn) {
+        image = banner.ImageCn;
+      } else if (locale === "ms" && banner.ImageMy) {
+        image = banner.ImageMy;
+      }
+
+      return {
+        id: banner.Id,
+        image: image,
+        alt: `Banner ${banner.Id}`,
+      };
+    });
+  })();
+
+  // Get running message for marquee
+  const runningMessage = (() => {
+    if (!discoverData?.RunningMessages?.length) return t("home.announcement");
+
+    const messages = discoverData.RunningMessages;
+    // Combine all messages, selecting based on locale
+    return messages
+      .map((msg) => {
+        if (locale === "zh" && msg.MessageCn) return msg.MessageCn;
+        if (locale === "ms" && msg.MessageMy) return msg.MessageMy;
+        return msg.Message;
+      })
+      .filter(Boolean)
+      .join(" | ");
+  })();
+
+  // Group games by category
+  const gamesByCategory = (() => {
+    if (!discoverData?.Games) return {};
+
+    const result: Record<string, ReturnType<typeof transformGame>[]> = {};
+
+    // Only include active games (Status = "A")
+    const activeGames = discoverData.Games.filter(
+      (game) => game.Status === "A"
+    );
+
+    activeGames.forEach((game) => {
+      if (!game.GameCategory) return; // Skip games without a category
+
+      // Normalize the category name to our internal ID
+      const normalizedCategory =
+        categoryNameMapping[game.GameCategory.toLowerCase()] ||
+        game.GameCategory.toLowerCase();
+
+      if (!result[normalizedCategory]) {
+        result[normalizedCategory] = [];
+      }
+
+      result[normalizedCategory].push(transformGame(game));
+    });
+
+    return result;
+  })();
+
+  // Get current providers for selected category
+  const currentProviders = gamesByCategory[activeCategory] || [];
 
   // Build user data from auth context when authenticated
   const authenticatedUserData = user
@@ -247,36 +210,49 @@ export default function HomePage() {
         username: user.name,
         avatar: user.avatar,
         isVerified: true,
-        cashBalance: 128000.0, // TODO: Fetch from API
-        chipsBalance: 0.0,
-        aPoints: 900,
+        cashBalance: discoverData?.Cash ?? 128000.0,
+        chipsBalance: discoverData?.Chip ?? 0.0,
+        aPoints: discoverData?.Point ?? 900,
       }
     : userData;
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col">
+      {/* App Download Banner */}
+      <AppDownloadBanner />
+
       {/* Header */}
       <Header variant="logo" />
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto pb-2">
-        {/* Banner Slider */}
-        <div className="px-2 pt-2">
-          <BannerSlider banners={banners} autoPlayInterval={4000} />
-        </div>
+      <main className="flex-1 overflow-auto pb-7">
+        {/* Banner Slider - Full width, no padding, no dots, no border radius */}
+        <BannerSlider
+          banners={banners}
+          autoPlayInterval={4000}
+          showDots={false}
+          rounded={false}
+        />
 
-        {/* Announcement Bar */}
-        <div className="mx-2 mt-2 flex items-center gap-2 px-3 py-2 bg-zinc-100 rounded-full">
-          <Volume2 className="w-4 h-4 text-primary flex-shrink-0" />
+        {/* Announcement Bar - Full width, no border radius */}
+        <div className="flex items-center gap-2 py-1.5 px-3 bg-[#D4F1F0] border border-primary">
+          <Image
+            src="/images/marquee/sound_icon.png"
+            alt="AON1E sound"
+            width={24}
+            height={24}
+            unoptimized
+            className="h-4 w-auto object-contain"
+          />
           <div className="overflow-hidden flex-1">
-            <p className="text-xs text-zinc-600 whitespace-nowrap animate-marquee">
-              {t("home.announcement")}
+            <p className="text-[11px] font-roboto-medium text-dark whitespace-nowrap animate-marquee">
+              {runningMessage}
             </p>
           </div>
         </div>
 
         {/* Welcome Card / Guest Login */}
-        <div className="px-2 mt-3">
+        <div className="px-4 mt-4">
           {isAuthenticated ? (
             <WelcomeCard user={authenticatedUserData} />
           ) : (
@@ -285,16 +261,71 @@ export default function HomePage() {
         </div>
 
         {/* Game Categories */}
-        <div className="px-2 mt-4">
-          <GameCategories
-            activeCategory={activeCategory}
-            onCategoryChange={setActiveCategory}
-          />
+        <div className="px-4 mt-4">
+          {discoverData?.GameCategories && (
+            <GameCategories
+              categories={discoverData.GameCategories}
+              activeCategory={activeCategory}
+              onCategoryChange={setActiveCategory}
+            />
+          )}
         </div>
 
-        {/* Game Providers Grid */}
-        <div className="px-2 mt-3">
-          <GameProviderGrid providers={currentProviders} columns={4} />
+        {/* Game Providers Grid with slide animation */}
+        <div className="px-4 mt-4">
+          {isLoading ? (
+            <div className="grid grid-cols-4 gap-1">
+              {[...Array(8)].map((_, i) => (
+                <div
+                  key={i}
+                  className="aspect-square rounded-xl bg-zinc-200 animate-pulse"
+                />
+              ))}
+            </div>
+          ) : error ? (
+            <div className="text-center py-8 text-zinc-500 text-sm">
+              {t("common.errorLoading")}
+            </div>
+          ) : (
+            <div className="relative overflow-hidden">
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.div
+                  key={activeCategory}
+                  initial={{
+                    x: slideDirection === "right" ? "100%" : "-100%",
+                  }}
+                  animate={{
+                    x: 0,
+                  }}
+                  exit={{
+                    x: slideDirection === "right" ? "-100%" : "100%",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 30,
+                  }}
+                >
+                  {currentProviders.length > 0 ? (
+                    <GameProviderGrid
+                      providers={currentProviders}
+                      columns={4}
+                      onSelect={handleLaunchGame}
+                      loadingId={launchingGameId}
+                    />
+                  ) : (
+                    <div className="text-center py-8 text-zinc-500 text-sm">
+                      {t("common.noData")}
+                    </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          )}
         </div>
       </main>
 
