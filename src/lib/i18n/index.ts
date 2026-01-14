@@ -20,10 +20,11 @@ export const translations = {
 
 export type TranslationKeys = typeof en;
 
-// Helper to get nested translation value
+// Helper to get nested translation value with optional interpolation
 export function getTranslation(
   locale: Locale,
-  key: string
+  key: string,
+  params?: Record<string, string | number>
 ): string {
   const keys = key.split(".");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,11 +44,21 @@ export function getTranslation(
           return key; // Return key if not found
         }
       }
-      return typeof fallback === "string" ? fallback : key;
+      value = typeof fallback === "string" ? fallback : key;
+      break;
     }
   }
 
-  return typeof value === "string" ? value : key;
+  let result = typeof value === "string" ? value : key;
+
+  // Handle interpolation: replace {{key}} with params[key]
+  if (params) {
+    Object.entries(params).forEach(([paramKey, paramValue]) => {
+      result = result.replace(new RegExp(`\\{\\{${paramKey}\\}\\}`, "g"), String(paramValue));
+    });
+  }
+
+  return result;
 }
 
 export const defaultLocale: Locale = "en";

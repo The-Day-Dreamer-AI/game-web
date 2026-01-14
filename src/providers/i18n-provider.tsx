@@ -18,7 +18,7 @@ import {
 interface I18nContextType {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, string | number>) => string;
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
@@ -46,10 +46,10 @@ export function I18nProvider({ children }: I18nProviderProps) {
     localStorage.setItem(LOCALE_STORAGE_KEY, newLocale);
   }, []);
 
-  // Translation function
+  // Translation function with optional interpolation
   const t = useCallback(
-    (key: string): string => {
-      return getTranslation(locale, key);
+    (key: string, params?: Record<string, string | number>): string => {
+      return getTranslation(locale, key, params);
     },
     [locale]
   );
