@@ -157,7 +157,13 @@ export interface TransactionsResponse extends PaginatedResponse<Transaction> {}
 export interface QrCodeResponse {
   Code: number;
   Message: string;
-  QrCode: string; // Base64 encoded
+  Id: string;
+  Username: string;
+  Name: string;
+  Avatar: string;
+  QrImageUrl: string;
+  Link: string;
+  ReferralCode: string;
 }
 
 export interface HaveBankAccountResponse {
