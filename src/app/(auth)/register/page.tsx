@@ -77,14 +77,14 @@ export default function RegisterPage() {
   const handleRequestOTP = useCallback(async () => {
     // Validate phone number
     if (!phoneValue || phoneValue.trim().length < 10) {
-      setError("phone", { message: "Please enter a valid phone number" });
+      setError("phone", { message: t("auth.phoneMinLength") });
       return;
     }
 
     // Validate send to option
     if (!sendTo) {
       setError("root", {
-        message: "Please select how to receive OTP (SMS or WhatsApp)",
+        message: t("auth.selectOtpMethod"),
       });
       return;
     }
@@ -102,34 +102,34 @@ export default function RegisterPage() {
         setOtpSent(true);
         setOtpCountdown(result.ExpiresIn || 300);
       } else {
-        setError("root", { message: result.Message || "Failed to send OTP" });
+        setError("root", { message: result.Message || t("auth.otpSendFailed") });
       }
     } catch {
-      setError("root", { message: "Failed to send OTP. Please try again." });
+      setError("root", { message: t("auth.otpSendFailed") });
     } finally {
       setIsRequestingOtp(false);
     }
-  }, [phoneValue, sendTo, setError, clearErrors]);
+  }, [phoneValue, sendTo, setError, clearErrors, t]);
 
   const onSubmit = async (data: RegisterFormData) => {
     if (!agreeTerms) {
-      setError("root", { message: "Please agree to the Terms & Conditions" });
+      setError("root", { message: t("auth.agreeTermsRequired") });
       return;
     }
 
     if (data.password !== data.confirmPassword) {
-      setError("confirmPassword", { message: "Passwords don't match" });
+      setError("confirmPassword", { message: t("auth.passwordsNoMatch") });
       return;
     }
 
     // Validate OTP was requested and code is entered
     if (!otpSent) {
-      setError("root", { message: "Please request and enter OTP code" });
+      setError("root", { message: t("auth.requestOtpFirst") });
       return;
     }
 
     if (!data.otpCode || data.otpCode.trim().length < 4) {
-      setError("otpCode", { message: "Please enter a valid OTP code" });
+      setError("otpCode", { message: t("auth.otpInvalid") });
       return;
     }
 
@@ -145,7 +145,7 @@ export default function RegisterPage() {
 
           if (uplineResult.Code !== 0) {
             setError("referralCode", {
-              message: uplineResult.Message || "Invalid referral code",
+              message: uplineResult.Message || t("auth.referralInvalid"),
             });
             setIsValidatingUpline(false);
             return;
@@ -155,7 +155,7 @@ export default function RegisterPage() {
           uplineValue = uplineResult.ReferralCode;
         } catch {
           setError("referralCode", {
-            message: "Failed to verify referral code. Please try again.",
+            message: t("auth.referralVerifyFailed"),
           });
           setIsValidatingUpline(false);
           return;
@@ -181,10 +181,10 @@ export default function RegisterPage() {
         // Registration successful - redirect to login
         router.push("/login");
       } else {
-        setError("root", { message: result.Message || "Registration failed" });
+        setError("root", { message: result.Message || t("auth.registrationFailed") });
       }
     } catch {
-      setError("root", { message: "Registration failed. Please try again." });
+      setError("root", { message: t("auth.registrationFailed") });
     }
   };
 
@@ -198,7 +198,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex flex-col relative">
       {/* Header */}
-      <Header variant="subpage" title={t("auth.register")} backHref="/account" />
+      <Header variant="subpage" title={t("auth.register")} backHref="/" />
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto">
@@ -230,7 +230,7 @@ export default function RegisterPage() {
               <input
                 {...register("referralCode")}
                 type="text"
-                placeholder="Referral Code"
+                placeholder={t("auth.referralCode")}
                 className="flex-1 w-full py-3.5 pl-3 pr-20 bg-transparent text-black placeholder:text-zinc-500 focus:outline-none"
               />
               <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-2 items-center">
@@ -268,17 +268,16 @@ export default function RegisterPage() {
               </p>
             ) : (
               <p className="text-xs text-[#5F7182] mt-1 mx-2">
-                <span className="font-roboto-bold">Note:</span> If no referral
-                code, system will auto assign a default referral code
+                {t("auth.referralCodeNote")}
               </p>
             )}
           </div>
 
           {/* Username */}
           <FormInput
-            {...register("username", { required: "Username is required" })}
+            {...register("username", { required: t("auth.usernameRequired") })}
             type="text"
-            placeholder="UID"
+            placeholder={t("auth.uid")}
             prefix={
               <Image
                 src="/images/icon/uuid_icon.png"
@@ -295,14 +294,14 @@ export default function RegisterPage() {
           {/* Password */}
           <FormInput
             {...register("password", {
-              required: "Password is required",
+              required: t("auth.passwordRequired"),
               minLength: {
                 value: 6,
-                message: "Password must be at least 6 characters",
+                message: t("auth.passwordMinLength"),
               },
             })}
             type={showPassword ? "text" : "password"}
-            placeholder="Password"
+            placeholder={t("auth.password")}
             prefix={
               <Image
                 src="/images/icon/lock_icon.png"
@@ -332,10 +331,10 @@ export default function RegisterPage() {
           {/* Confirm Password */}
           <FormInput
             {...register("confirmPassword", {
-              required: "Please confirm your password",
+              required: t("auth.confirmPasswordRequired"),
             })}
             type={showConfirmPassword ? "text" : "password"}
-            placeholder="Confirm Password"
+            placeholder={t("auth.confirmPassword")}
             prefix={
               <Image
                 src="/images/icon/lock_icon.png"
@@ -364,9 +363,9 @@ export default function RegisterPage() {
 
           {/* Full Name */}
           <FormInput
-            {...register("fullName", { required: "Full name is required" })}
+            {...register("fullName", { required: t("auth.fullNameRequired") })}
             type="text"
-            placeholder="Full Name"
+            placeholder={t("auth.fullName")}
             prefix={
               <Image
                 src="/images/icon/user_icon.png"
@@ -383,14 +382,14 @@ export default function RegisterPage() {
           {/* Phone Number */}
           <FormInput
             {...register("phone", {
-              required: "Phone number is required",
+              required: t("auth.phoneRequired"),
               minLength: {
                 value: 10,
-                message: "Phone number must be at least 10 digits",
+                message: t("auth.phoneMinLength"),
               },
             })}
             type="tel"
-            placeholder="Phone Number"
+            placeholder={t("auth.phone")}
             prefix={
               <Image
                 src="/images/icon/phone_icon.png"
@@ -423,9 +422,9 @@ export default function RegisterPage() {
                 !sendTo ? "text-zinc-500" : "text-zinc-900"
               }`}
             >
-              <option value="">Send to</option>
-              <option value="SMS">SMS</option>
-              <option value="WhatsApp">WhatsApp</option>
+              <option value="">{t("auth.sendTo")}</option>
+              <option value="SMS">{t("auth.sms")}</option>
+              <option value="WhatsApp">{t("auth.whatsapp")}</option>
             </select>
             <div className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">
               <ChevronDown className="w-5 h-6" />
@@ -436,10 +435,10 @@ export default function RegisterPage() {
           <div className="flex gap-2">
             <FormInput
               {...register("otpCode", {
-                required: otpSent ? "OTP code is required" : false,
+                required: otpSent ? t("auth.otpRequired") : false,
               })}
               type="text"
-              placeholder="OTP Code"
+              placeholder={t("auth.otpCode")}
               maxLength={6}
               prefix={
                 <Image
@@ -463,18 +462,17 @@ export default function RegisterPage() {
               {isRequestingOtp ? (
                 <Loader2 className="w-6 h-6 animate-spin" />
               ) : otpCountdown > 0 ? (
-                `Resend (${otpCountdown}s)`
+                `${t("auth.resendOtp")} (${otpCountdown}s)`
               ) : otpSent ? (
-                "Resend OTP"
+                t("auth.resendOtp")
               ) : (
-                "Request OTP"
+                t("auth.requestOtp")
               )}
             </button>
           </div>
           {otpSent && otpCountdown > 0 && (
             <p className="text-xs text-green-600 ml-1">
-              OTP sent! Please check your{" "}
-              {sendTo === "WhatsApp" ? "WhatsApp" : "SMS"}.
+              {t("auth.otpSent", { method: sendTo === "WhatsApp" ? t("auth.whatsapp") : t("auth.sms") })}
             </p>
           )}
 
@@ -487,9 +485,9 @@ export default function RegisterPage() {
               className="mt-0.5 w-4 h-4 rounded border-zinc-300 text-primary focus:ring-primary"
             />
             <span className="text-sm text-[#5F7182] font-roboto-regular">
-              I have read & agree to the{" "}
+              {t("auth.termsAgree")}{" "}
               <Link href="/terms" className="text-primary hover:underline text-sm font-roboto-regular">
-                Terms & Conditions
+                {t("auth.termsConditions")}
               </Link>
             </span>
           </label>
@@ -511,7 +509,7 @@ export default function RegisterPage() {
               <>
                 <Loader2 className="w-6 h-6 animate-spin" />
                 {isValidatingUpline
-                  ? "Verifying referral code..."
+                  ? t("auth.verifyingReferral")
                   : t("auth.creatingAccount")}
               </>
             ) : (
@@ -521,13 +519,13 @@ export default function RegisterPage() {
 
           {/* Login Link */}
           <p className="text-center text-sm text-[#5F7182] pb-4 font-roboto-regular">
-            Already have an account?{" "}
+            {t("auth.haveAccount")}{" "}
             <button
               type="button"
               onClick={() => setIsLoginModalOpen(true)}
               className="text-primary hover:underline font-roboto-regular text-sm"
             >
-              Login Here
+              {t("auth.loginHere")}
             </button>
           </p>
         </form>

@@ -8,13 +8,11 @@ import {
   EyeOff,
   Eye,
   Loader2,
-  Phone,
-  KeyRound,
-  Lock,
 } from "lucide-react";
 import { authApi } from "@/lib/api";
 import { Header } from "@/components/layout";
 import { FormInput } from "@/components/ui/form-input";
+import { useI18n } from "@/providers/i18n-provider";
 import Image from "next/image";
 
 type SendToOption = "SMS" | "WhatsApp";
@@ -28,6 +26,7 @@ interface ForgotPasswordFormData {
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
+  const { t } = useI18n();
   const [showPassword, setShowPassword] = useState(false);
   const [sendTo, setSendTo] = useState<SendToOption | "">("");
   const [isLoading, setIsLoading] = useState(false);
@@ -67,20 +66,20 @@ export default function ForgotPasswordPage() {
   const handleRequestOTP = useCallback(async () => {
     // Validate username
     if (!usernameValue || usernameValue.trim().length < 1) {
-      setError("username", { message: "Please enter your username" });
+      setError("username", { message: t("auth.usernameRequired") });
       return;
     }
 
     // Validate phone number
     if (!phoneValue || phoneValue.trim().length < 10) {
-      setError("phoneNumber", { message: "Please enter a valid phone number" });
+      setError("phoneNumber", { message: t("auth.phoneMinLength") });
       return;
     }
 
     // Validate send to option
     if (!sendTo) {
       setError("root", {
-        message: "Please select how to receive OTP (SMS or WhatsApp)",
+        message: t("auth.selectOtpMethod"),
       });
       return;
     }
@@ -99,24 +98,24 @@ export default function ForgotPasswordPage() {
         setOtpSent(true);
         setOtpCountdown(result.ExpiresIn || 300);
       } else {
-        setError("root", { message: result.Message || "Failed to send OTP" });
+        setError("root", { message: result.Message || t("auth.otpSendFailed") });
       }
     } catch {
-      setError("root", { message: "Failed to send OTP. Please try again." });
+      setError("root", { message: t("auth.otpSendFailed") });
     } finally {
       setIsRequestingOtp(false);
     }
-  }, [usernameValue, phoneValue, sendTo, setError, clearErrors]);
+  }, [usernameValue, phoneValue, sendTo, setError, clearErrors, t]);
 
   const onSubmit = async (data: ForgotPasswordFormData) => {
     // Validate OTP was requested and code is entered
     if (!otpSent) {
-      setError("root", { message: "Please request and enter OTP code" });
+      setError("root", { message: t("auth.requestOtpFirst") });
       return;
     }
 
     if (!data.otpCode || data.otpCode.trim().length < 4) {
-      setError("otpCode", { message: "Please enter a valid OTP code" });
+      setError("otpCode", { message: t("auth.otpInvalid") });
       return;
     }
 
@@ -132,18 +131,16 @@ export default function ForgotPasswordPage() {
 
       if (result.Code === 0) {
         // Password reset successful - redirect to login
-        alert(
-          "Password reset successfully! Please login with your new password."
-        );
+        alert(t("auth.resetSuccess"));
         router.push("/login");
       } else {
         setError("root", {
-          message: result.Message || "Failed to reset password",
+          message: result.Message || t("auth.resetFailed"),
         });
       }
     } catch {
       setError("root", {
-        message: "Failed to reset password. Please try again.",
+        message: t("auth.resetFailed"),
       });
     } finally {
       setIsLoading(false);
@@ -161,16 +158,16 @@ export default function ForgotPasswordPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <Header variant="subpage" title="Forgot Password" />
+      <Header variant="subpage" title={t("auth.forgotPassword")} />
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto">
         <form onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-3">
           {/* Username */}
           <FormInput
-            {...register("username", { required: "Username is required" })}
+            {...register("username", { required: t("auth.usernameRequired") })}
             type="text"
-            placeholder="UID"
+            placeholder={t("auth.uid")}
             prefix={
               <Image
                 src="/images/icon/uuid_icon.png"
@@ -187,14 +184,14 @@ export default function ForgotPasswordPage() {
           {/* Phone Number */}
           <FormInput
             {...register("phoneNumber", {
-              required: "Phone number is required",
+              required: t("auth.phoneRequired"),
               minLength: {
                 value: 10,
-                message: "Phone number must be at least 10 digits",
+                message: t("auth.phoneMinLength"),
               },
             })}
             type="tel"
-            placeholder="Phone Number"
+            placeholder={t("auth.phone")}
             prefix={
               <Image
                 src="/images/icon/phone_icon.png"
@@ -227,9 +224,9 @@ export default function ForgotPasswordPage() {
                 !sendTo ? "text-zinc-500" : "text-zinc-900"
               }`}
             >
-              <option value="">Send to</option>
-              <option value="SMS">SMS</option>
-              <option value="WhatsApp">WhatsApp</option>
+              <option value="">{t("auth.sendTo")}</option>
+              <option value="SMS">{t("auth.sms")}</option>
+              <option value="WhatsApp">{t("auth.whatsapp")}</option>
             </select>
             <div className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">
               <ChevronDown className="w-auto h-6" />
@@ -240,10 +237,10 @@ export default function ForgotPasswordPage() {
           <div className="flex gap-2">
             <FormInput
               {...register("otpCode", {
-                required: otpSent ? "OTP code is required" : false,
+                required: otpSent ? t("auth.otpRequired") : false,
               })}
               type="text"
-              placeholder="OTP Code"
+              placeholder={t("auth.otpCode")}
               maxLength={6}
               prefix={
                 <Image
@@ -267,32 +264,31 @@ export default function ForgotPasswordPage() {
               {isRequestingOtp ? (
                 <Loader2 className="w-auto h-6 animate-spin" />
               ) : otpCountdown > 0 ? (
-                `Resend (${otpCountdown}s)`
+                `${t("auth.resendOtp")} (${otpCountdown}s)`
               ) : otpSent ? (
-                "Resend OTP"
+                t("auth.resendOtp")
               ) : (
-                "Request OTP"
+                t("auth.requestOtp")
               )}
             </button>
           </div>
           {otpSent && otpCountdown > 0 && (
             <p className="text-xs text-green-600 ml-1">
-              OTP sent! Please check your{" "}
-              {sendTo === "WhatsApp" ? "WhatsApp" : "SMS"}.
+              {t("auth.otpSent", { method: sendTo === "WhatsApp" ? t("auth.whatsapp") : t("auth.sms") })}
             </p>
           )}
 
           {/* New Password */}
           <FormInput
             {...register("newPassword", {
-              required: "New password is required",
+              required: t("auth.passwordRequired"),
               minLength: {
                 value: 6,
-                message: "Password must be at least 6 characters",
+                message: t("auth.passwordMinLength"),
               },
             })}
             type={showPassword ? "text" : "password"}
-            placeholder="New Password"
+            placeholder={t("auth.newPassword")}
             prefix={
               <Image
                 src="/images/icon/lock_icon.png"
@@ -335,10 +331,10 @@ export default function ForgotPasswordPage() {
             {isLoading ? (
               <>
                 <Loader2 className="w-auto h-6 animate-spin" />
-                PROCESSING...
+                {t("auth.processing")}
               </>
             ) : (
-              "CONFIRM"
+              t("common.confirm").toUpperCase()
             )}
           </button>
         </form>

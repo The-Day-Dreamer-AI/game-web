@@ -46,7 +46,7 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
       reset();
       onClose();
     } else {
-      setError("root", { message: result.error || "Login failed" });
+      setError("root", { message: result.error || t("auth.loginFailed") });
     }
   };
 
@@ -182,7 +182,7 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
               onClick={onClose}
               className="text-primary hover:underline font-roboto-regular"
             >
-              {t("auth.register")} Here
+              {t("auth.registerHere")}
             </Link>
           </p>
 
@@ -190,9 +190,7 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
           {/* Support Notice */}
           <p className="text-xs text-center text-[#959595] mt-4 font-roboto-regular">
-            If you encounter any issues while logging in,
-            <br />
-            please contact our Customer Service for further assist.
+            {t("auth.supportNotice")}
           </p>
         </form>
       </div>

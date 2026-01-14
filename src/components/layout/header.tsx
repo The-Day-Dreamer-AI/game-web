@@ -48,7 +48,7 @@ export function Header({
         )}
       >
         {/* Left Section */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 cursor-pointer">
           {variant === "logo" ? (
             <Link href="/" className="flex items-center">
               {!imgError ? (
@@ -70,7 +70,7 @@ export function Header({
           ) : (
             <button
               onClick={handleBack}
-              className="flex items-center gap-1 text-white"
+              className="flex items-center gap-1 text-white cursor-pointer"
             >
               <ChevronLeft className="w-7 h-7" />
             </button>
