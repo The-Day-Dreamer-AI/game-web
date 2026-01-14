@@ -230,6 +230,9 @@
   "home": {
     "announcement": "Selamat datang ke AONE GLOBAL GAMING. Platform dalam talian Malaysia yang stabil dan dipercayai"
   },
+  "event": {
+    "noEvents": "Tiada acara pada masa ini."
+  },
   "games": {
     "slots": "SLOT",
     "appSlot": "SLOT APP",

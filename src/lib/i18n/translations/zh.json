@@ -230,6 +230,9 @@
   "home": {
     "announcement": "欢迎来到 AONE GLOBAL GAMING。马来西亚稳定可信的在线平台"
   },
+  "event": {
+    "noEvents": "目前没有活动。"
+  },
   "games": {
     "slots": "老虎机",
     "appSlot": "APP老虎机",
