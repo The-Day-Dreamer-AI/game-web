@@ -4,6 +4,15 @@ import type {
   HaveBankAccountResponse,
   AboutUsResponse,
   UserProfileResponse,
+  GetNameResponse,
+  ChangeNameRequest,
+  ChangeNameResponse,
+  GetAvatarsResponse,
+  ChangeAvatarRequest,
+  ChangeAvatarResponse,
+  ChangePasswordGetTacResponse,
+  ChangePasswordRequest,
+  ChangePasswordResponse,
 } from "../types";
 
 export const userApi = {
@@ -40,6 +49,60 @@ export const userApi = {
   async getAboutUs(): Promise<AboutUsResponse> {
     return apiClient.get<AboutUsResponse>("/api/MapiDiscover/AboutUs", {
       authenticated: false,
+    });
+  },
+
+  /**
+   * Get current username/name
+   */
+  async getName(): Promise<GetNameResponse> {
+    return apiClient.get<GetNameResponse>("/api/mapiuser/changename", {
+      authenticated: true,
+    });
+  },
+
+  /**
+   * Change username/name
+   */
+  async changeName(data: ChangeNameRequest): Promise<ChangeNameResponse> {
+    return apiClient.post<ChangeNameResponse>("/api/mapiuser/changename", data, {
+      authenticated: true,
+    });
+  },
+
+  /**
+   * Get available avatars and current avatar selection
+   */
+  async getAvatars(): Promise<GetAvatarsResponse> {
+    return apiClient.get<GetAvatarsResponse>("/api/mapiuser/changeavatar", {
+      authenticated: true,
+    });
+  },
+
+  /**
+   * Change user avatar
+   */
+  async changeAvatar(data: ChangeAvatarRequest): Promise<ChangeAvatarResponse> {
+    return apiClient.post<ChangeAvatarResponse>("/api/mapiuser/changeavatar", data, {
+      authenticated: true,
+    });
+  },
+
+  /**
+   * Request TAC/OTP for password change
+   */
+  async changePasswordGetTac(): Promise<ChangePasswordGetTacResponse> {
+    return apiClient.post<ChangePasswordGetTacResponse>("/api/mapiuser/changepassword_gettac", {}, {
+      authenticated: true,
+    });
+  },
+
+  /**
+   * Change user password
+   */
+  async changePassword(data: ChangePasswordRequest): Promise<ChangePasswordResponse> {
+    return apiClient.post<ChangePasswordResponse>("/api/mapiuser/changepassword", data, {
+      authenticated: true,
     });
   },
 };

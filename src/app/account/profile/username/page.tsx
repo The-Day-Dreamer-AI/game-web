@@ -1,20 +1,64 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Header } from "@/components/layout";
 import { FormInput } from "@/components/ui/form-input";
+import { Loader2 } from "lucide-react";
 import { useI18n } from "@/providers/i18n-provider";
+import { useName, useChangeName } from "@/hooks";
 
 export default function ChangeUsernamePage() {
-  const [username, setUsername] = useState("");
+  const router = useRouter();
   const { t } = useI18n();
+  const [username, setUsername] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Fetch current name
+  const { data: nameData, isLoading: isLoadingName } = useName();
+  const changeNameMutation = useChangeName();
+
+  // Pre-populate username when data loads
+  useEffect(() => {
+    if (nameData?.Name) {
+      setUsername(nameData.Name);
+    }
+  }, [nameData]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock submit - in real app would call API
-    console.log("Changing username to:", username);
+    setError("");
+
+    if (!username.trim()) {
+      setError(t("auth.usernameRequired"));
+      return;
+    }
+
+    try {
+      await changeNameMutation.mutateAsync({ Name: username.trim() });
+      // Navigate back on success
+      router.push("/account/profile");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("common.error"));
+    }
   };
+
+  // Loading state while fetching current name
+  if (isLoadingName) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header
+          variant="subpage"
+          title={t("profile.changeUsername")}
+          backHref="/account/profile"
+        />
+        <div className="flex-1 flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -44,14 +88,23 @@ export default function ChangeUsernamePage() {
                 className="h-6 w-auto object-contain"
               />
             }
+            error={error}
           />
 
           {/* Submit Button */}
           <button
             type="submit"
-            className="uppercase w-full py-3.5 bg-primary text-white font-roboto-bold rounded-lg hover:bg-primary/90 transition-colors"
+            disabled={changeNameMutation.isPending}
+            className="uppercase w-full py-3.5 bg-primary text-white font-roboto-bold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            {t("common.confirm")}
+            {changeNameMutation.isPending ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                {t("common.loading")}
+              </>
+            ) : (
+              t("common.confirm")
+            )}
           </button>
         </form>
       </main>

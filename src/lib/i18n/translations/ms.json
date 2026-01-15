@@ -105,6 +105,7 @@
     "resetFailed": "Gagal menetapkan semula kata laluan. Sila cuba lagi.",
     "otpSendFailed": "Gagal menghantar OTP. Sila cuba lagi.",
     "otpSent": "OTP dihantar! Sila semak {{method}} anda.",
+    "otpSentSuccess": "OTP berjaya dihantar!",
     "verifyingReferral": "Mengesahkan kod rujukan...",
     "resetSuccess": "Kata laluan berjaya ditetapkan semula! Sila log masuk dengan kata laluan baru anda."
   },
@@ -253,7 +254,11 @@
     "requestOtp": "Minta OTP",
     "oldPassword": "Kata Laluan Lama",
     "newPassword": "Kata Laluan Baru",
-    "confirmNewPassword": "Sahkan Kata Laluan Baru"
+    "confirmNewPassword": "Sahkan Kata Laluan Baru",
+    "oldPasswordRequired": "Kata laluan lama diperlukan",
+    "newPasswordRequired": "Kata laluan baru diperlukan",
+    "confirmPasswordRequired": "Sila sahkan kata laluan baru anda",
+    "selectAvatar": "Sila pilih avatar"
   },
   "sidebar": {
     "referral": "RUJUKAN",

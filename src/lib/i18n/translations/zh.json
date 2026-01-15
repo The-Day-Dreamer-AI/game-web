@@ -105,6 +105,7 @@
     "resetFailed": "重置密码失败，请重试。",
     "otpSendFailed": "发送验证码失败，请重试。",
     "otpSent": "验证码已发送！请查看您的{{method}}。",
+    "otpSentSuccess": "验证码发送成功！",
     "verifyingReferral": "正在验证推荐码...",
     "resetSuccess": "密码重置成功！请使用新密码登录。"
   },
@@ -253,7 +254,11 @@
     "requestOtp": "获取验证码",
     "oldPassword": "旧密码",
     "newPassword": "新密码",
-    "confirmNewPassword": "确认新密码"
+    "confirmNewPassword": "确认新密码",
+    "oldPasswordRequired": "请输入旧密码",
+    "newPasswordRequired": "请输入新密码",
+    "confirmPasswordRequired": "请确认新密码",
+    "selectAvatar": "请选择头像"
   },
   "sidebar": {
     "referral": "推荐",

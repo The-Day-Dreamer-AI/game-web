@@ -531,3 +531,68 @@ export interface UserProfileResponse {
   Turnover: number;
   Pin: string | null;
 }
+
+// ===========================================
+// Change Name Types
+// ===========================================
+
+export interface GetNameResponse {
+  Code: number;
+  Message: string;
+  Name: string;
+}
+
+export interface ChangeNameRequest {
+  Name: string;
+}
+
+export interface ChangeNameResponse {
+  Code: number;
+  Message: string;
+}
+
+// ===========================================
+// Change Avatar Types
+// ===========================================
+
+export interface Avatar {
+  Id: string;
+  Image: string;
+}
+
+export interface GetAvatarsResponse {
+  Code: number;
+  Message: string;
+  AvatarId: string;
+  Avatars: Avatar[];
+}
+
+export interface ChangeAvatarRequest {
+  Id: string;
+}
+
+export interface ChangeAvatarResponse {
+  Code: number;
+  Message: string;
+}
+
+// ===========================================
+// Change Password Types
+// ===========================================
+
+export interface ChangePasswordGetTacResponse {
+  Code: number;
+  Message: string;
+  ExpiresIn?: number;
+}
+
+export interface ChangePasswordRequest {
+  OldPassword: string;
+  NewPassword: string;
+  Tac: string;
+}
+
+export interface ChangePasswordResponse {
+  Code: number;
+  Message: string;
+}
