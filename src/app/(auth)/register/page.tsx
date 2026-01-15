@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -39,6 +39,8 @@ export default function RegisterPage() {
   const [isRequestingOtp, setIsRequestingOtp] = useState(false);
   const [otpCountdown, setOtpCountdown] = useState(0);
   const [otpSent, setOtpSent] = useState(false);
+  const [isSendToDropdownOpen, setIsSendToDropdownOpen] = useState(false);
+  const sendToDropdownRef = useRef<HTMLDivElement | null>(null);
 
   // API hooks
   const registerMutation = useRegister();
@@ -63,6 +65,10 @@ export default function RegisterPage() {
   });
 
   const phoneValue = watch("phone");
+  const sendToOptions: Array<{ value: SendToOption; label: string }> = [
+    { value: "SMS", label: t("auth.sms") },
+    { value: "WhatsApp", label: t("auth.whatsapp") },
+  ];
 
   // OTP countdown timer
   useEffect(() => {
@@ -72,6 +78,23 @@ export default function RegisterPage() {
     }
     return () => clearTimeout(timer);
   }, [otpCountdown]);
+
+  // Close the send-to dropdown when clicking outside
+  useEffect(() => {
+    if (!isSendToDropdownOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        sendToDropdownRef.current &&
+        !sendToDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsSendToDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isSendToDropdownOpen]);
 
   // Handle OTP request
   const handleRequestOTP = useCallback(async () => {
@@ -216,8 +239,11 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-3">
           {/* Referral Code */}
           <div>
-            <div className="form-input-wrapper relative flex items-center w-full rounded-lg border border-[#959595] bg-white transition-all duration-200">
-              <div className="flex items-center justify-center pl-4 text-zinc-400">
+            <FormInput
+              {...register("referralCode")}
+              type="text"
+              placeholder={t("auth.referralCode")}
+              prefix={
                 <Image
                   src="/images/icon/referral_icon.png"
                   alt="AON1E referral"
@@ -226,47 +252,40 @@ export default function RegisterPage() {
                   unoptimized
                   className="h-6 w-auto object-contain"
                 />
-              </div>
-              <input
-                {...register("referralCode")}
-                type="text"
-                placeholder={t("auth.referralCode")}
-                className="flex-1 w-full py-3.5 pl-3 pr-20 bg-transparent text-black placeholder:text-zinc-500 focus:outline-none"
-              />
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-2 items-center">
-                <button
-                  type="button"
-                  className="text-zinc-400 hover:text-zinc-600"
-                >
-                  <Image
-                    src="/images/icon/folder_icon.png"
-                    alt="AON1E folder"
-                    width={24}
-                    height={24}
-                    unoptimized
-                    className="h-6 w-auto object-contain"
-                  />
-                </button>
-                <button
-                  type="button"
-                  className="text-zinc-400 hover:text-zinc-600"
-                >
-                  <Image
-                    src="/images/icon/camera_icon.png"
-                    alt="AON1E camera"
-                    width={24}
-                    height={24}
-                    unoptimized
-                    className="h-6 w-auto object-contain"
-                  />
-                </button>
-              </div>
-            </div>
-            {errors.referralCode ? (
-              <p className="text-xs text-red-500 mt-1 ml-1">
-                {errors.referralCode.message}
-              </p>
-            ) : (
+              }
+              suffix={
+                <div className="flex gap-2 items-center">
+                  <button
+                    type="button"
+                    className="text-zinc-400 hover:text-zinc-600 cursor-pointer"
+                  >
+                    <Image
+                      src="/images/icon/folder_icon.png"
+                      alt="AON1E folder"
+                      width={24}
+                      height={24}
+                      unoptimized
+                      className="h-6 w-auto object-contain"
+                    />
+                  </button>
+                  <button
+                    type="button"
+                    className="text-zinc-400 hover:text-zinc-600 cursor-pointer"
+                  >
+                    <Image
+                      src="/images/icon/camera_icon.png"
+                      alt="AON1E camera"
+                      width={24}
+                      height={24}
+                      unoptimized
+                      className="h-6 w-auto object-contain"
+                    />
+                  </button>
+                </div>
+              }
+              error={errors.referralCode?.message}
+            />
+            {!errors.referralCode && (
               <p className="text-xs text-[#5F7182] mt-1 mx-2">
                 {t("auth.referralCodeNote")}
               </p>
@@ -316,7 +335,7 @@ export default function RegisterPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="text-zinc-400 hover:text-zinc-600"
+                className="text-zinc-400 cursor-pointer"
               >
                 {showPassword ? (
                   <EyeOff className="w-5 h-6" />
@@ -349,7 +368,7 @@ export default function RegisterPage() {
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="text-zinc-400 hover:text-zinc-600"
+                className="text-zinc-400 cursor-pointer"
               >
                 {showConfirmPassword ? (
                   <EyeOff className="w-5 h-6" />
@@ -404,31 +423,74 @@ export default function RegisterPage() {
           />
 
           {/* Send to Dropdown */}
-          <div className="form-input-wrapper relative flex items-center w-full rounded-lg border border-[#959595] bg-white transition-all duration-200">
-            <div className="flex items-center justify-center pl-4 text-zinc-400">
-              <Image
-                src="/images/icon/otp_icon.png"
-                alt="AON1E otp"
-                width={24}
-                height={24}
-                unoptimized
-                className="h-6 w-auto object-contain"
-              />
-            </div>
-            <select
-              value={sendTo}
-              onChange={(e) => setSendTo(e.target.value as SendToOption | "")}
-              className={`flex-1 w-full py-3.5 pl-3 pr-10 bg-transparent focus:outline-none appearance-none ${
-                !sendTo ? "text-zinc-500" : "text-zinc-900"
+          <div className="relative w-full" ref={sendToDropdownRef}>
+            <button
+              type="button"
+              onClick={() => setIsSendToDropdownOpen((prev) => !prev)}
+              className={`cursor-pointer form-input-wrapper relative flex w-full items-center justify-between rounded-lg border px-4 py-3 transition-all duration-200 focus:outline-none ${
+                isSendToDropdownOpen
+                  ? "border-[#0DC3B1] bg-[rgba(0,214,198,0.1)] shadow-[0_0_20px_rgba(20,187,176,0.2)]"
+                  : "border-[#959595] bg-white"
               }`}
+              aria-haspopup="listbox"
+              aria-expanded={isSendToDropdownOpen}
             >
-              <option value="">{t("auth.sendTo")}</option>
-              <option value="SMS">{t("auth.sms")}</option>
-              <option value="WhatsApp">{t("auth.whatsapp")}</option>
-            </select>
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">
-              <ChevronDown className="w-5 h-6" />
-            </div>
+              <span className="flex items-center gap-3">
+                <Image
+                  src="/images/icon/otp_icon.png"
+                  alt="AON1E otp"
+                  width={24}
+                  height={24}
+                  unoptimized
+                  className="h-6 w-auto object-contain"
+                />
+                <span
+                  className={`text-sm font-roboto-regular ${
+                    sendTo ? "text-zinc-900" : "text-[#959595]"
+                  }`}
+                >
+                  {sendTo
+                    ? sendTo === "WhatsApp"
+                      ? t("auth.whatsapp")
+                      : t("auth.sms")
+                    : t("auth.sendTo")}
+                </span>
+              </span>
+              <ChevronDown
+                className={`w-5 h-6 text-zinc-400 ${
+                  isSendToDropdownOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            {isSendToDropdownOpen && (
+              <div className="absolute left-0 right-0 mt-1 rounded-lg border border-[#959595] bg-white shadow-lg z-20 py-2 flex flex-col gap-2">
+                {sendToOptions.map((option) => {
+                  const isSelected = sendTo === option.value;
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      className="w-full px-2 text-left group cursor-pointer"
+                      onClick={() => {
+                        setSendTo(option.value);
+                        setIsSendToDropdownOpen(false);
+                      }}
+                    >
+                      <span
+                        className={`block rounded-lg px-3 py-2 text-sm font-roboto-regular transition-colors ${
+                          isSelected
+                            ? "border border-[#1ECAD3] bg-[#DDF7F7] text-[#008D92]"
+                            : "text-zinc-900 group-hover:bg-zinc-100"
+                        }`}
+                      >
+                        {option.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* OTP Code */}
@@ -503,7 +565,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="mt-6 text-base w-full py-3.5 bg-primary text-white font-roboto-bold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="cursor-pointer mt-6 text-base w-full py-3.5 bg-primary text-white font-roboto-bold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isSubmitting ? (
               <>

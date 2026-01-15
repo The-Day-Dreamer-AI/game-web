@@ -169,7 +169,7 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
           <button
             type="submit"
             disabled={isLoading}
-            className="mt-3 w-full py-3 bg-primary text-white text-base font-roboto-bold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="cursor-pointer mt-3 w-full py-3 bg-primary text-white text-base font-roboto-bold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? t("auth.signingIn") : t("auth.login").toUpperCase()}
           </button>
