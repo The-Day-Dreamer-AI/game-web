@@ -78,6 +78,7 @@ export default function HomePage() {
   const { t, locale } = useI18n();
   const { isAuthenticated, user } = useAuth();
   const { showLoading, hideLoading } = useLoadingOverlay();
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
 
   // Fetch discover data from API
   const { data: discoverData, isLoading, error } = useDiscover();
@@ -97,6 +98,21 @@ export default function HomePage() {
       previousCategoryRef.current = activeCategory;
     }
   }, [activeCategory, discoverData?.GameCategories]);
+
+  useEffect(() => {
+    if (typeof navigator === "undefined") return;
+
+    const ua = navigator.userAgent;
+    const isIOS = /iPad|iPhone|iPod/.test(ua);
+    const isSafari = /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
+    const isWKWebView = isIOS && /AppleWebKit/.test(ua) && !/Safari/.test(ua);
+    const isAndroid = /Android/.test(ua);
+    const isGenericMobile = /Mobile|Mobi/.test(ua);
+
+    setIsMobileDevice(
+      isIOS || isWKWebView || (isIOS && isSafari) || isAndroid || isGenericMobile
+    );
+  }, []);
   const launchGameMutation = useLaunchGame();
 
   const handleLaunchGame = async (game: { id: string; name: string }) => {
@@ -221,7 +237,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* App Download Banner */}
-      <AppDownloadBanner />
+      {isMobileDevice && <AppDownloadBanner />}
 
       {/* Header */}
       <Header variant="logo" />

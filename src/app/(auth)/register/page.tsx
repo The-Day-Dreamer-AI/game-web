@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff, ChevronDown, Loader2 } from "lucide-react";
 import { useI18n } from "@/providers/i18n-provider";
@@ -29,6 +29,7 @@ const DEFAULT_REFERRAL_CODE = "196B48";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { t } = useI18n();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -52,6 +53,7 @@ export default function RegisterPage() {
     setError,
     watch,
     clearErrors,
+    setValue,
   } = useForm<RegisterFormData>({
     defaultValues: {
       referralCode: "",
@@ -63,6 +65,14 @@ export default function RegisterPage() {
       otpCode: "",
     },
   });
+
+  // Handle referral code from URL params (e.g., from QR scanner)
+  useEffect(() => {
+    const referralCodeFromUrl = searchParams.get("referralCode");
+    if (referralCodeFromUrl) {
+      setValue("referralCode", referralCodeFromUrl);
+    }
+  }, [searchParams, setValue]);
 
   const phoneValue = watch("phone");
   const sendToOptions: Array<{ value: SendToOption; label: string }> = [
@@ -270,6 +280,7 @@ export default function RegisterPage() {
                   </button>
                   <button
                     type="button"
+                    onClick={() => router.push("/register/scan-qr?returnTo=/register")}
                     className="text-zinc-400 hover:text-zinc-600 cursor-pointer"
                   >
                     <Image

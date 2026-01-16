@@ -288,5 +288,15 @@
     "tacRequestFailed": "Gagal meminta TAC. Sila cuba lagi.",
     "addBankNote": "Sila pastikan nama akaun bank anda sepadan dengan nama penuh berdaftar anda. Akaun bank pihak ketiga tidak diterima.",
     "addFailed": "Gagal menambah akaun bank. Sila cuba lagi."
+  },
+  "scanner": {
+    "title": "Imbas Kod QR",
+    "scanReferralQr": "Letakkan kod QR dalam bingkai untuk mengimbas kod rujukan anda",
+    "invalidQr": "Kod QR Tidak Sah",
+    "invalidQrMessage": "Kod QR yang diimbas tidak mengandungi kod rujukan yang sah. Sila cuba lagi dengan kod QR rujukan yang sah.",
+    "tryAgain": "Cuba Lagi",
+    "cameraError": "Tidak dapat mengakses kamera",
+    "cameraAccessDenied": "Akses Kamera Diperlukan",
+    "cameraAccessInfo": "Sila benarkan akses kamera dalam tetapan pelayar anda untuk mengimbas kod QR."
   }
 }

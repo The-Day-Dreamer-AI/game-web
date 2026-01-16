@@ -288,5 +288,15 @@
     "tacRequestFailed": "Failed to request TAC. Please try again.",
     "addBankNote": "Please ensure your bank account name matches your registered full name. Third-party bank accounts are not accepted.",
     "addFailed": "Failed to add bank account. Please try again."
+  },
+  "scanner": {
+    "title": "Scan QR Code",
+    "scanReferralQr": "Position the QR code within the frame to scan your referral code",
+    "invalidQr": "Invalid QR Code",
+    "invalidQrMessage": "The scanned QR code does not contain a valid referral code. Please try again with a valid referral QR code.",
+    "tryAgain": "Try Again",
+    "cameraError": "Unable to access camera",
+    "cameraAccessDenied": "Camera Access Required",
+    "cameraAccessInfo": "Please allow camera access in your browser settings to scan QR codes."
   }
 }
