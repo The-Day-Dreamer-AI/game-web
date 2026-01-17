@@ -105,6 +105,7 @@
     "resetFailed": "重置密码失败，请重试。",
     "otpSendFailed": "发送验证码失败，请重试。",
     "otpSent": "验证码已发送！请查看您的{{method}}。",
+    "otpSentSuccess": "验证码发送成功！",
     "verifyingReferral": "正在验证推荐码...",
     "resetSuccess": "密码重置成功！请使用新密码登录。"
   },
@@ -138,11 +139,29 @@
     "minMax": "最低 MYR 10/ 最高 MYR 30,000",
     "uploadReceipt": "上传收据",
     "promotion": "优惠",
+    "selectPromotion": "选择优惠",
+    "noPromotion": "无优惠",
     "promoCode": "优惠码",
     "bankAccount": "银行账户",
     "accountName": "户名",
     "accountNo": "账号",
-    "importantNotice": "重要提示"
+    "importantNotice": "重要提示",
+    "option": "选项",
+    "mode": "模式",
+    "online": "在线",
+    "minMaxLimit": "最低/最高限额",
+    "dailyLimitBalance": "每日限额余额",
+    "totalAllowed": "总允许次数",
+    "unlimited": "无限制",
+    "conversionRate": "汇率",
+    "chargeRate": "手续费率",
+    "confirmDeposit": "确认存款",
+    "bankNotice1": "在存款前，请务必查看最新的有效存款银行详情。",
+    "bankNotice2": "使用银行转账存款选项时，请在提交交易前完成转账，以避免交易被拒绝。",
+    "ewalletNotice1": "在存款前，请务必查看AONE的最新通知。",
+    "ewalletNotice2": "使用电子钱包存款选项时，请按照所有说明操作，以避免交易被拒绝。",
+    "cryptoNotice1": "在进行加密货币存款前，请务必查看AONE的最新通知。",
+    "cryptoNotice2": "使用加密货币存款选项时，请按照所有说明操作，以避免交易被拒绝。"
   },
   "withdrawal": {
     "title": "取款",
@@ -253,7 +272,11 @@
     "requestOtp": "获取验证码",
     "oldPassword": "旧密码",
     "newPassword": "新密码",
-    "confirmNewPassword": "确认新密码"
+    "confirmNewPassword": "确认新密码",
+    "oldPasswordRequired": "请输入旧密码",
+    "newPasswordRequired": "请输入新密码",
+    "confirmPasswordRequired": "请确认新密码",
+    "selectAvatar": "请选择头像"
   },
   "sidebar": {
     "referral": "推荐",
@@ -283,5 +306,15 @@
     "tacRequestFailed": "获取验证码失败，请重试。",
     "addBankNote": "请确保您的银行账户名与您的注册全名一致。不接受第三方银行账户。",
     "addFailed": "添加银行账户失败，请重试。"
+  },
+  "scanner": {
+    "title": "扫描二维码",
+    "scanReferralQr": "将二维码放置在框内以扫描您的推荐码",
+    "invalidQr": "无效的二维码",
+    "invalidQrMessage": "扫描的二维码不包含有效的推荐码。请使用有效的推荐二维码重试。",
+    "tryAgain": "重试",
+    "cameraError": "无法访问相机",
+    "cameraAccessDenied": "需要相机权限",
+    "cameraAccessInfo": "请在浏览器设置中允许相机访问以扫描二维码。"
   }
 }

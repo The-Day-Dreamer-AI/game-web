@@ -86,7 +86,7 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
         {/* Main Content Row - all items same height */}
         <div className="flex items-stretch gap-2">
           {/* Avatar - matches full height of row */}
-          <div className="w-[60px] aspect-square rounded-full overflow-hidden bg-zinc-600 shrink-0 border-2 border-white/20 self-center">
+          <div className="w-16 aspect-square rounded-full overflow-hidden shrink-0 border-2 border-[#0DC3B1] self-center">
             {!imgError && user.avatar ? (
               <Image
                 src={user.avatar}

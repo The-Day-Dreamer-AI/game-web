@@ -60,14 +60,14 @@ export function AppDownloadBanner({ className }: AppDownloadBannerProps) {
             // TODO: Link to app store
             window.open("#download", "_blank");
           }}
-          className="bg-white py-1.5 px-2.5 rounded-md font-roboto-bold text-xs text-primary shadow-xl"
+          className="bg-white py-1.5 px-2.5 rounded-md font-roboto-bold text-xs text-primary shadow-xl cursor-pointer"
         >
           DOWNLOAD NOW
         </button>
 
         <button
           onClick={() => setIsVisible(false)}
-          className="text-white hover:opacity-80 transition-opacity shrink-0"
+          className="text-white shrink-0 cursor-pointer"
           aria-label="Close download banner"
         >
           <IoIosCloseCircleOutline size={32.5} />

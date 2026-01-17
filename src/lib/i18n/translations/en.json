@@ -105,6 +105,7 @@
     "resetFailed": "Failed to reset password. Please try again.",
     "otpSendFailed": "Failed to send OTP. Please try again.",
     "otpSent": "OTP sent! Please check your {{method}}.",
+    "otpSentSuccess": "OTP sent successfully!",
     "verifyingReferral": "Verifying referral code...",
     "resetSuccess": "Password reset successfully! Please login with your new password."
   },
@@ -138,11 +139,29 @@
     "minMax": "Min. MYR 10/ Max. MYR 30,000",
     "uploadReceipt": "Upload Receipt",
     "promotion": "Promotion",
+    "selectPromotion": "Select Promotion",
+    "noPromotion": "No Promotion",
     "promoCode": "Promo Code",
     "bankAccount": "Bank Account",
     "accountName": "Name",
     "accountNo": "Account No.",
-    "importantNotice": "Important Notice"
+    "importantNotice": "Important Notice",
+    "option": "Option",
+    "mode": "Mode",
+    "online": "Online",
+    "minMaxLimit": "Min/Max Limit",
+    "dailyLimitBalance": "Daily Limit Balance",
+    "totalAllowed": "Total Allowed",
+    "unlimited": "Unlimited",
+    "conversionRate": "Conversion Rate",
+    "chargeRate": "Charge Rate",
+    "confirmDeposit": "Confirm Deposit",
+    "bankNotice1": "Always check for the latest active deposit bank details before making a deposit.",
+    "bankNotice2": "For using deposit option - Bank Transfer, Please make the transfer before submit the transaction to avoid the transaction to be rejected.",
+    "ewalletNotice1": "Always check for the latest active notice from AONE before making a deposit.",
+    "ewalletNotice2": "For using deposit option - E-Wallet Deposit. Please follow all the instruction to avoid the transaction to be rejected.",
+    "cryptoNotice1": "Always check for the latest active notice from AONE before making a crypto deposit.",
+    "cryptoNotice2": "For using deposit option - Crypto Deposit. Please follow all the instruction to avoid the transaction to be rejected."
   },
   "withdrawal": {
     "title": "Withdrawal",
@@ -253,7 +272,11 @@
     "requestOtp": "Request OTP",
     "oldPassword": "Old Password",
     "newPassword": "New Password",
-    "confirmNewPassword": "Confirm New Password"
+    "confirmNewPassword": "Confirm New Password",
+    "oldPasswordRequired": "Old password is required",
+    "newPasswordRequired": "New password is required",
+    "confirmPasswordRequired": "Please confirm your new password",
+    "selectAvatar": "Please select an avatar"
   },
   "sidebar": {
     "referral": "REFERRAL",
@@ -283,5 +306,15 @@
     "tacRequestFailed": "Failed to request TAC. Please try again.",
     "addBankNote": "Please ensure your bank account name matches your registered full name. Third-party bank accounts are not accepted.",
     "addFailed": "Failed to add bank account. Please try again."
+  },
+  "scanner": {
+    "title": "Scan QR Code",
+    "scanReferralQr": "Position the QR code within the frame to scan your referral code",
+    "invalidQr": "Invalid QR Code",
+    "invalidQrMessage": "The scanned QR code does not contain a valid referral code. Please try again with a valid referral QR code.",
+    "tryAgain": "Try Again",
+    "cameraError": "Unable to access camera",
+    "cameraAccessDenied": "Camera Access Required",
+    "cameraAccessInfo": "Please allow camera access in your browser settings to scan QR codes."
   }
 }

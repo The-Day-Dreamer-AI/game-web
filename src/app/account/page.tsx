@@ -200,21 +200,38 @@ export default function AccountPage() {
               <h2 className="text-white text-xl font-roboto-bold">
                 {profile.Username}
               </h2>
-              <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                <svg
-                  className="w-3 h-3 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <span className="px-2 py-0.5 rounded-full text-xs font-roboto-medium bg-primary/20 text-primary border border-primary">
+              <button
+                type="button"
+                className="cursor-pointer self-auto"
+                aria-label="Refresh cash"
+              >
+                <Image
+                  src="/images/icon/refresh_icon.png"
+                  alt="Refresh"
+                  width={12}
+                  height={12}
+                  className="object-contain w-4 h-4"
+                />
+              </button>
+              <span className="px-2 py-1 rounded-full text-xs font-roboto-medium bg-[#71B6FB1A] text-[#71B6FB] border border-[#71B6FB] flex gap-1">
+                <Image
+                  src="/images/icon/verified_icon.png"
+                  alt="verified"
+                  width={12}
+                  height={12}
+                  className="object-contain w-4 h-4"
+                />
                 {t("common.verified")}
+              </span>
+              <span className="px-2 py-1 rounded-full text-xs font-roboto-medium bg-[#FFC0361A] border border-[#FFC036] text-[#FFC036] flex gap-1">
+                <Image
+                  src="/images/icon/pending_icon.png"
+                  alt="pending"
+                  width={12}
+                  height={12}
+                  className="object-contain w-4 h-4"
+                />
+                {t("common.pending")}
               </span>
             </div>
             <p className="text-white text-xs">UID: {profile.Id}</p>
@@ -301,7 +318,7 @@ export default function AccountPage() {
         </div>
 
         {/* Overview Section - Card Style similar to welcome-card */}
-        <div className="relative rounded-2xl p-4 overflow-hidden border shadow-lg mx-4">
+        <div className="relative rounded-2xl px-4 py-2 overflow-hidden border shadow-lg mx-4">
           {/* Background Image with rounded corners */}
           <div className="absolute inset-[2px] z-0 overflow-hidden rounded-3xl">
             <Image
@@ -315,36 +332,38 @@ export default function AccountPage() {
 
           {/* Content */}
           <div className="relative z-10 p-4">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-sm font-roboto-medium text-zinc-700">
+            <div className="flex items-center gap-1 mb-3">
+              <span className="text-sm font-roboto-bold text-[#28323C]">
                 {t("account.overview")}
               </span>
-              <span className="text-sm text-primary">
+              <span className="text-sm text-primary font-roboto-bold">
                 ({formatOverviewDate(profile.OverviewDate)})
               </span>
             </div>
-            <div className="flex items-center divide-x divide-zinc-300">
+            <div className="grid grid-cols-[1fr_1fr_1fr] items-center divide-x divide-[#5F7182]">
               <div className="flex-1 text-center">
-                <p className="text-xl font-roboto-bold text-primary">
+                <p className="text-xl font-roboto-bold text-[#28323C]">
                   {profile.RegisteredDownline}
                 </p>
-                <p className="text-xs text-zinc-500">
+                <p className="text-sm text-[#5F7182]">
                   {t("account.registered")}
                 </p>
               </div>
               <div className="flex-1 text-center">
-                <p className="text-xl font-roboto-bold text-primary">
+                <p className="text-xl font-roboto-bold text-[#28323C]">
                   {profile.ActiveDownline}
                 </p>
-                <p className="text-xs text-zinc-500">
+                <p className="text-sm text-[#5F7182]">
                   {t("account.activePlayer")}
                 </p>
               </div>
               <div className="flex-1 text-center">
-                <p className="text-xl font-roboto-bold text-primary">
+                <p className="text-xl font-roboto-bold text-[#28323C]">
                   {formatCurrency(profile.Turnover)}
                 </p>
-                <p className="text-xs text-zinc-500">{t("account.turnover")}</p>
+                <p className="text-sm text-[#5F7182]">
+                  {t("account.turnover")}
+                </p>
               </div>
             </div>
           </div>
@@ -402,12 +421,16 @@ export default function AccountPage() {
               );
 
               const className = cn(
-                "flex items-center justify-between px-4 py-3.5 hover:bg-zinc-50 transition-colors w-full",
-                index !== menuItems.length - 1 && "border-b border-zinc-100"
+                "flex items-center justify-between px-4 py-3.5 w-full"
               );
 
               return item.isLink ? (
-                <Link key={item.href} href={item.href!} prefetch={false} className={className}>
+                <Link
+                  key={item.href}
+                  href={item.href!}
+                  prefetch={false}
+                  className={className}
+                >
                   {content}
                 </Link>
               ) : (
@@ -424,10 +447,10 @@ export default function AccountPage() {
         </div>
 
         {/* Logout Section */}
-        <div className="bg-white rounded-2xl overflow-hidden mt-2 mb-8 mx-4 shadow-lg">
+        <div className="bg-white rounded-2xl overflow-hidden mt-4 mb-8 mx-4 shadow-lg">
           <button
             onClick={handleLogout}
-            className="flex items-center justify-between px-4 py-3.5 hover:bg-zinc-200 transition-colors w-full"
+            className="flex items-center justify-between pl-3 pr-6 py-3.5 w-full cursor-pointer"
           >
             <div className="flex items-center gap-3 px-4">
               <Image

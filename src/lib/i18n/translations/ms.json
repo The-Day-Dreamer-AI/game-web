@@ -105,6 +105,7 @@
     "resetFailed": "Gagal menetapkan semula kata laluan. Sila cuba lagi.",
     "otpSendFailed": "Gagal menghantar OTP. Sila cuba lagi.",
     "otpSent": "OTP dihantar! Sila semak {{method}} anda.",
+    "otpSentSuccess": "OTP berjaya dihantar!",
     "verifyingReferral": "Mengesahkan kod rujukan...",
     "resetSuccess": "Kata laluan berjaya ditetapkan semula! Sila log masuk dengan kata laluan baru anda."
   },
@@ -138,11 +139,29 @@
     "minMax": "Min. MYR 10/ Maks. MYR 30,000",
     "uploadReceipt": "Muat Naik Resit",
     "promotion": "Promosi",
+    "selectPromotion": "Pilih Promosi",
+    "noPromotion": "Tiada Promosi",
     "promoCode": "Kod Promo",
     "bankAccount": "Akaun Bank",
     "accountName": "Nama",
     "accountNo": "No. Akaun",
-    "importantNotice": "Notis Penting"
+    "importantNotice": "Notis Penting",
+    "option": "Pilihan",
+    "mode": "Mod",
+    "online": "Dalam Talian",
+    "minMaxLimit": "Had Min/Maks",
+    "dailyLimitBalance": "Baki Had Harian",
+    "totalAllowed": "Jumlah Dibenarkan",
+    "unlimited": "Tanpa Had",
+    "conversionRate": "Kadar Penukaran",
+    "chargeRate": "Kadar Caj",
+    "confirmDeposit": "Sahkan Deposit",
+    "bankNotice1": "Sentiasa semak butiran bank deposit aktif terkini sebelum membuat deposit.",
+    "bankNotice2": "Untuk menggunakan pilihan deposit - Pindahan Bank, sila buat pindahan sebelum menghantar transaksi untuk mengelakkan transaksi ditolak.",
+    "ewalletNotice1": "Sentiasa semak notis aktif terkini dari AONE sebelum membuat deposit.",
+    "ewalletNotice2": "Untuk menggunakan pilihan deposit - E-Dompet. Sila ikut semua arahan untuk mengelakkan transaksi ditolak.",
+    "cryptoNotice1": "Sentiasa semak notis aktif terkini dari AONE sebelum membuat deposit kripto.",
+    "cryptoNotice2": "Untuk menggunakan pilihan deposit - Kripto. Sila ikut semua arahan untuk mengelakkan transaksi ditolak."
   },
   "withdrawal": {
     "title": "Pengeluaran",
@@ -253,7 +272,11 @@
     "requestOtp": "Minta OTP",
     "oldPassword": "Kata Laluan Lama",
     "newPassword": "Kata Laluan Baru",
-    "confirmNewPassword": "Sahkan Kata Laluan Baru"
+    "confirmNewPassword": "Sahkan Kata Laluan Baru",
+    "oldPasswordRequired": "Kata laluan lama diperlukan",
+    "newPasswordRequired": "Kata laluan baru diperlukan",
+    "confirmPasswordRequired": "Sila sahkan kata laluan baru anda",
+    "selectAvatar": "Sila pilih avatar"
   },
   "sidebar": {
     "referral": "RUJUKAN",
@@ -283,5 +306,15 @@
     "tacRequestFailed": "Gagal meminta TAC. Sila cuba lagi.",
     "addBankNote": "Sila pastikan nama akaun bank anda sepadan dengan nama penuh berdaftar anda. Akaun bank pihak ketiga tidak diterima.",
     "addFailed": "Gagal menambah akaun bank. Sila cuba lagi."
+  },
+  "scanner": {
+    "title": "Imbas Kod QR",
+    "scanReferralQr": "Letakkan kod QR dalam bingkai untuk mengimbas kod rujukan anda",
+    "invalidQr": "Kod QR Tidak Sah",
+    "invalidQrMessage": "Kod QR yang diimbas tidak mengandungi kod rujukan yang sah. Sila cuba lagi dengan kod QR rujukan yang sah.",
+    "tryAgain": "Cuba Lagi",
+    "cameraError": "Tidak dapat mengakses kamera",
+    "cameraAccessDenied": "Akses Kamera Diperlukan",
+    "cameraAccessInfo": "Sila benarkan akses kamera dalam tetapan pelayar anda untuk mengimbas kod QR."
   }
 }

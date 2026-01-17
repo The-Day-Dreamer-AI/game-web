@@ -5,3 +5,4 @@ export { userApi } from "./user";
 export { authApi } from "./auth";
 export { withdrawalApi } from "./withdrawal";
 export { bankApi } from "./bank";
+export { depositApi } from "./deposit";

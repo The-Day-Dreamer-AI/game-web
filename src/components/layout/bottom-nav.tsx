@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
 import { ProtectedLink } from "@/components/auth";
+import { discoverKeys } from "@/hooks/use-discover";
 
 interface NavItem {
   labelKey: string;
@@ -30,12 +32,21 @@ const labelTranslations: Record<string, string> = {
 
 export function BottomNav() {
   const pathname = usePathname();
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const { t } = useI18n();
+
+  const handleHomeClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // Invalidate discover data to force refetch when navigating to home
+    queryClient.invalidateQueries({ queryKey: discoverKeys.data() });
+    router.push("/");
+  };
 
   const renderNavItem = (item: NavItem) => {
     const isActive = pathname === item.href;
     const imageState = isActive ? "Active" : "Default";
-    const imagePath = `/images/footer/${item.imageName}_icon_${imageState}.png`;
+    const imagePath = `/images/footer/${item.imageName.toLowerCase()}_icon_${imageState.toLowerCase()}.png`;
 
     return (
       <ProtectedLink
@@ -68,6 +79,7 @@ export function BottomNav() {
         {/* Center Home Button */}
         <Link
           href="/"
+          onClick={handleHomeClick}
           className="flex flex-col items-center justify-end -mt-10"
         >
           <Image

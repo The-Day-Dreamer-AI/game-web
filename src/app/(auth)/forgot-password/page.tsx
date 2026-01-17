@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import {
@@ -33,6 +33,8 @@ export default function ForgotPasswordPage() {
   const [isRequestingOtp, setIsRequestingOtp] = useState(false);
   const [otpCountdown, setOtpCountdown] = useState(0);
   const [otpSent, setOtpSent] = useState(false);
+  const [isSendToDropdownOpen, setIsSendToDropdownOpen] = useState(false);
+  const sendToDropdownRef = useRef<HTMLDivElement | null>(null);
 
   const {
     register,
@@ -52,6 +54,10 @@ export default function ForgotPasswordPage() {
 
   const usernameValue = watch("username");
   const phoneValue = watch("phoneNumber");
+  const sendToOptions: Array<{ value: SendToOption; label: string }> = [
+    { value: "SMS", label: t("auth.sms") },
+    { value: "WhatsApp", label: t("auth.whatsapp") },
+  ];
 
   // OTP countdown timer
   useEffect(() => {
@@ -61,6 +67,22 @@ export default function ForgotPasswordPage() {
     }
     return () => clearTimeout(timer);
   }, [otpCountdown]);
+
+  useEffect(() => {
+    if (!isSendToDropdownOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        sendToDropdownRef.current &&
+        !sendToDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsSendToDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isSendToDropdownOpen]);
 
   // Handle OTP request
   const handleRequestOTP = useCallback(async () => {
@@ -206,31 +228,74 @@ export default function ForgotPasswordPage() {
           />
 
           {/* Send to Dropdown */}
-          <div className="relative">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400">
-              <Image
-                src="/images/icon/otp_icon.png"
-                alt="AON1E otp"
-                width={24}
-                height={24}
-                unoptimized
-                className="h-6 w-auto object-contain"
-              />
-            </div>
-            <select
-              value={sendTo}
-              onChange={(e) => setSendTo(e.target.value as SendToOption | "")}
-              className={`w-full pl-12 pr-10 py-3.5 border border-[#959595] rounded-lg focus:outline-none focus:border-[#0DC3B1] focus:bg-[#00D6C61A] focus:shadow-[0px_0px_20px_0px_#14BBB033] bg-white appearance-none ${
-                !sendTo ? "text-zinc-500" : "text-zinc-900"
+          <div className="relative w-full" ref={sendToDropdownRef}>
+            <button
+              type="button"
+              onClick={() => setIsSendToDropdownOpen((prev) => !prev)}
+              className={`cursor-pointer form-input-wrapper relative flex w-full items-center justify-between rounded-lg border px-4 py-3 transition-all duration-200 focus:outline-none ${
+                isSendToDropdownOpen
+                  ? "border-[#0DC3B1] bg-[rgba(0,214,198,0.1)] shadow-[0_0_20px_rgba(20,187,176,0.2)]"
+                  : "border-[#959595] bg-white"
               }`}
+              aria-haspopup="listbox"
+              aria-expanded={isSendToDropdownOpen}
             >
-              <option value="">{t("auth.sendTo")}</option>
-              <option value="SMS">{t("auth.sms")}</option>
-              <option value="WhatsApp">{t("auth.whatsapp")}</option>
-            </select>
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">
-              <ChevronDown className="w-auto h-6" />
-            </div>
+              <span className="flex items-center gap-3">
+                <Image
+                  src="/images/icon/otp_icon.png"
+                  alt="AON1E otp"
+                  width={24}
+                  height={24}
+                  unoptimized
+                  className="h-6 w-auto object-contain"
+                />
+                <span
+                  className={`text-sm font-roboto-regular ${
+                    sendTo ? "text-zinc-900" : "text-[#959595]"
+                  }`}
+                >
+                  {sendTo
+                    ? sendTo === "WhatsApp"
+                      ? t("auth.whatsapp")
+                      : t("auth.sms")
+                    : t("auth.sendTo")}
+                </span>
+              </span>
+              <ChevronDown
+                className={`w-5 h-6 text-zinc-400 ${
+                  isSendToDropdownOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            {isSendToDropdownOpen && (
+              <div className="absolute left-0 right-0 mt-1 rounded-lg border border-[#959595] bg-white shadow-lg z-20 py-2 flex flex-col gap-2">
+                {sendToOptions.map((option) => {
+                  const isSelected = sendTo === option.value;
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      className="w-full px-2 text-left group cursor-pointer"
+                      onClick={() => {
+                        setSendTo(option.value);
+                        setIsSendToDropdownOpen(false);
+                      }}
+                    >
+                      <span
+                        className={`block rounded-lg px-3 py-2 text-sm font-roboto-regular transition-colors ${
+                          isSelected
+                            ? "border border-[#1ECAD3] bg-[#DDF7F7] text-[#008D92]"
+                            : "text-zinc-900 group-hover:bg-zinc-100"
+                        }`}
+                      >
+                        {option.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* OTP Code */}
@@ -274,7 +339,7 @@ export default function ForgotPasswordPage() {
           </div>
           {otpSent && otpCountdown > 0 && (
             <p className="text-xs text-green-600 ml-1">
-              {t("auth.otpSent", { method: sendTo === "WhatsApp" ? t("auth.whatsapp") : t("auth.sms") })}
+              {t("auth.otpSentSuccess")}
             </p>
           )}
 

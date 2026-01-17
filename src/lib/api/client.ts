@@ -202,4 +202,51 @@ export const apiClient = {
 
     return data;
   },
+
+  /**
+   * POST request with FormData (multipart/form-data) for file uploads
+   */
+  async postFormData<T>(
+    endpoint: string,
+    formData: FormData,
+    options?: {
+      authenticated?: boolean;
+    }
+  ): Promise<T> {
+    const url = buildUrl(endpoint);
+
+    // Build headers without Content-Type (browser sets it automatically with boundary for multipart)
+    const headers: HeadersInit = {
+      Accept: "application/json",
+      Lang: getCurrentLanguage(),
+    };
+
+    if (options?.authenticated !== false) {
+      const token = getAuthToken();
+      if (token) {
+        headers["Authorization"] = `bearer ${token.trim()}`;
+      }
+    }
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers,
+      body: formData,
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new ApiError(401, "Authentication required.", response.status);
+      }
+      throw new ApiError(response.status, `Request failed: ${response.statusText}`, response.status);
+    }
+
+    const data = await response.json();
+
+    if (data.Code && data.Code !== 0) {
+      throw new ApiError(data.Code, data.Message || "An error occurred");
+    }
+
+    return data;
+  },
 };

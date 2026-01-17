@@ -12,6 +12,7 @@ import {
   GameCategories,
   GameProviderGrid,
 } from "@/components/home";
+import { Marquee } from "@/components/ui/marquee";
 import { useI18n } from "@/providers/i18n-provider";
 import { useAuth } from "@/providers/auth-provider";
 import { useLoadingOverlay } from "@/providers/loading-overlay-provider";
@@ -77,6 +78,7 @@ export default function HomePage() {
   const { t, locale } = useI18n();
   const { isAuthenticated, user } = useAuth();
   const { showLoading, hideLoading } = useLoadingOverlay();
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
 
   // Fetch discover data from API
   const { data: discoverData, isLoading, error } = useDiscover();
@@ -96,6 +98,21 @@ export default function HomePage() {
       previousCategoryRef.current = activeCategory;
     }
   }, [activeCategory, discoverData?.GameCategories]);
+
+  useEffect(() => {
+    if (typeof navigator === "undefined") return;
+
+    const ua = navigator.userAgent;
+    const isIOS = /iPad|iPhone|iPod/.test(ua);
+    const isSafari = /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
+    const isWKWebView = isIOS && /AppleWebKit/.test(ua) && !/Safari/.test(ua);
+    const isAndroid = /Android/.test(ua);
+    const isGenericMobile = /Mobile|Mobi/.test(ua);
+
+    setIsMobileDevice(
+      isIOS || isWKWebView || (isIOS && isSafari) || isAndroid || isGenericMobile
+    );
+  }, []);
   const launchGameMutation = useLaunchGame();
 
   const handleLaunchGame = async (game: { id: string; name: string }) => {
@@ -169,7 +186,7 @@ export default function HomePage() {
         return msg.Message;
       })
       .filter(Boolean)
-      .join(" | ");
+      .join(" ");
   })();
 
   // Group games by category
@@ -205,10 +222,11 @@ export default function HomePage() {
   const currentProviders = gamesByCategory[activeCategory] || [];
 
   // Build user data from auth context when authenticated
+  // Use Avatar from Discover API response since auth context doesn't populate avatar
   const authenticatedUserData = user
     ? {
-        username: user.name,
-        avatar: user.avatar,
+        username: discoverData?.Name ?? user.name,
+        avatar: discoverData?.Avatar,
         isVerified: true,
         cashBalance: discoverData?.Cash ?? 128000.0,
         chipsBalance: discoverData?.Chip ?? 0.0,
@@ -219,7 +237,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* App Download Banner */}
-      <AppDownloadBanner />
+      {isMobileDevice && <AppDownloadBanner />}
 
       {/* Header */}
       <Header variant="logo" />
@@ -244,11 +262,11 @@ export default function HomePage() {
             unoptimized
             className="h-4 w-auto object-contain"
           />
-          <div className="overflow-hidden flex-1">
-            <p className="text-[11px] font-roboto-medium text-dark whitespace-nowrap animate-marquee">
+          <Marquee speed={0.15} className="flex-1">
+            <span className="text-[11px] font-roboto-medium text-dark whitespace-nowrap px-4">
               {runningMessage}
-            </p>
-          </div>
+            </span>
+          </Marquee>
         </div>
 
         {/* Welcome Card / Guest Login */}

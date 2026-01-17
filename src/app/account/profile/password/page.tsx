@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Header } from "@/components/layout";
 import { FormInput } from "@/components/ui/form-input";
-import { Eye, EyeOff, ChevronDown } from "lucide-react";
+import { Eye, EyeOff, ChevronDown, Loader2 } from "lucide-react";
 import { useI18n } from "@/providers/i18n-provider";
 import { cn } from "@/lib/utils";
+import { useChangePasswordGetTac, useChangePassword } from "@/hooks";
 
 type SendToOption = "sms" | "email";
 
@@ -16,6 +18,10 @@ const sendToOptions: { value: SendToOption; labelKey: string }[] = [
 ];
 
 export default function ChangePasswordPage() {
+  const router = useRouter();
+  const { t } = useI18n();
+
+  // Form state
   const [phoneNumber, setPhoneNumber] = useState("");
   const [sendTo, setSendTo] = useState<SendToOption>("sms");
   const [showSendToDropdown, setShowSendToDropdown] = useState(false);
@@ -26,37 +32,104 @@ export default function ChangePasswordPage() {
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [countdown, setCountdown] = useState(0);
-  const { t } = useI18n();
 
-  const handleRequestOtp = () => {
-    // Mock OTP request
-    setCountdown(60);
-    const interval = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+  // OTP countdown state
+  const [countdown, setCountdown] = useState(0);
+  const [otpSent, setOtpSent] = useState(false);
+
+  // Error state
+  const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  // API hooks
+  const getTacMutation = useChangePasswordGetTac();
+  const changePasswordMutation = useChangePassword();
+
+  // Countdown timer effect
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (countdown > 0) {
+      timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [countdown]);
+
+  const handleRequestOtp = async () => {
+    setError("");
+    setFieldErrors({});
+
+    try {
+      const result = await getTacMutation.mutateAsync();
+      if (result.Code === 0) {
+        setOtpSent(true);
+        setCountdown(result.ExpiresIn || 60);
+      } else {
+        setError(result.Message || t("common.error"));
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("common.error"));
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock submit - in real app would call API
-    console.log("Changing password:", {
-      phoneNumber,
-      sendTo,
-      otpCode,
-      oldPassword,
-      newPassword,
-      confirmPassword,
-    });
+    setError("");
+    setFieldErrors({});
+
+    // Validation
+    const errors: Record<string, string> = {};
+
+    if (!oldPassword.trim()) {
+      errors.oldPassword = t("profile.oldPasswordRequired");
+    }
+
+    if (!newPassword.trim()) {
+      errors.newPassword = t("profile.newPasswordRequired");
+    } else if (newPassword.length < 6) {
+      errors.newPassword = t("auth.passwordMinLength");
+    }
+
+    if (!confirmPassword.trim()) {
+      errors.confirmPassword = t("profile.confirmPasswordRequired");
+    } else if (newPassword !== confirmPassword) {
+      errors.confirmPassword = t("auth.passwordsNoMatch");
+    }
+
+    if (!otpSent) {
+      setError(t("auth.requestOtpFirst"));
+      return;
+    }
+
+    if (!otpCode.trim()) {
+      errors.otpCode = t("auth.otpRequired");
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return;
+    }
+
+    try {
+      const result = await changePasswordMutation.mutateAsync({
+        OldPassword: oldPassword,
+        NewPassword: newPassword,
+        Tac: otpCode,
+      });
+
+      if (result.Code === 0) {
+        // Success - navigate back to profile
+        router.push("/account/profile");
+      } else {
+        setError(result.Message || t("common.error"));
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("common.error"));
+    }
   };
 
   const selectedSendToOption = sendToOptions.find((opt) => opt.value === sendTo);
+  const canRequestOtp = countdown === 0;
+  const isSubmitting = changePasswordMutation.isPending;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -146,6 +219,7 @@ export default function ChangePasswordPage() {
               value={otpCode}
               onChange={(e) => setOtpCode(e.target.value)}
               placeholder={t("profile.otpCode")}
+              maxLength={6}
               prefix={
                 <Image
                   src="/images/icon/otp_icon.png"
@@ -157,16 +231,30 @@ export default function ChangePasswordPage() {
                 />
               }
               wrapperClassName="flex-1"
+              error={fieldErrors.otpCode}
             />
             <button
               type="button"
               onClick={handleRequestOtp}
-              disabled={countdown > 0}
-              className="px-4 py-3.5 bg-primary text-white text-sm font-roboto-bold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+              disabled={!canRequestOtp || getTacMutation.isPending}
+              className="cursor-pointer px-4 py-3.5 bg-primary text-white text-sm font-roboto-bold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap flex items-center justify-center min-w-[100px]"
             >
-              {countdown > 0 ? `${countdown}s` : t("profile.requestOtp")}
+              {getTacMutation.isPending ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : countdown > 0 ? (
+                `${countdown}s`
+              ) : otpSent ? (
+                t("auth.resendOtp")
+              ) : (
+                t("profile.requestOtp")
+              )}
             </button>
           </div>
+          {otpSent && countdown > 0 && (
+            <p className="text-xs text-green-600 ml-1">
+              {t("auth.otpSentSuccess")}
+            </p>
+          )}
 
           {/* Old Password Input */}
           <FormInput
@@ -193,6 +281,7 @@ export default function ChangePasswordPage() {
                 {showOldPassword ? <Eye className="w-auto h-6" /> : <EyeOff className="w-auto h-6" />}
               </button>
             }
+            error={fieldErrors.oldPassword}
           />
 
           {/* New Password Input */}
@@ -220,6 +309,7 @@ export default function ChangePasswordPage() {
                 {showNewPassword ? <Eye className="w-auto h-6" /> : <EyeOff className="w-auto h-6" />}
               </button>
             }
+            error={fieldErrors.newPassword}
           />
 
           {/* Confirm New Password Input */}
@@ -247,14 +337,28 @@ export default function ChangePasswordPage() {
                 {showConfirmPassword ? <Eye className="w-auto h-6" /> : <EyeOff className="w-auto h-6" />}
               </button>
             }
+            error={fieldErrors.confirmPassword}
           />
+
+          {/* Error Message */}
+          {error && (
+            <p className="text-sm text-red-500 text-center">{error}</p>
+          )}
 
           {/* Submit Button */}
           <button
             type="submit"
-            className="uppercase w-full py-3.5 bg-primary text-white font-roboto-bold rounded-lg hover:bg-primary/90 transition-colors"
+            disabled={isSubmitting}
+            className="cursor-pointer uppercase w-full py-3.5 bg-primary text-white font-roboto-bold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            {t("common.confirm")}
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                {t("common.loading")}
+              </>
+            ) : (
+              t("common.confirm")
+            )}
           </button>
         </form>
       </main>
