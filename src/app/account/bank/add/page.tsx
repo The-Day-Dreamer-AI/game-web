@@ -2,45 +2,49 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Header } from "@/components/layout";
 import { Building2, Loader2, ChevronDown, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
 import { useAuth } from "@/providers/auth-provider";
-import { useRequestBankTac, useAddBankAccount } from "@/hooks/use-bank";
-
-// Common Malaysian banks
-const BANK_OPTIONS = [
-  "Maybank",
-  "CIMB Bank",
-  "Public Bank",
-  "RHB Bank",
-  "Hong Leong Bank",
-  "AmBank",
-  "Bank Islam",
-  "Bank Rakyat",
-  "Affin Bank",
-  "BSN",
-  "OCBC Bank",
-  "HSBC Bank",
-  "Standard Chartered",
-  "UOB Bank",
-];
+import { useUserBanks, useRequestBankTac, useAddBankAccount } from "@/hooks/use-bank";
 
 export default function AddBankAccountPage() {
   const router = useRouter();
   const { t } = useI18n();
   const { isAuthenticated } = useAuth();
 
+  // Fetch available banks list - also checks if PIN is set
+  const { data: banksData, isLoading: isLoadingBanks, error: banksError } = useUserBanks({
+    enabled: isAuthenticated,
+  });
+
   const requestTac = useRequestBankTac();
   const addBankAccount = useAddBankAccount();
 
-  const [bankName, setBankName] = useState("");
+  const [selectedBankId, setSelectedBankId] = useState("");
+  const [accountName, setAccountName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [tac, setTac] = useState("");
   const [showBankDropdown, setShowBankDropdown] = useState(false);
   const [tacExpiresIn, setTacExpiresIn] = useState<number | null>(null);
   const [tacRequested, setTacRequested] = useState(false);
+
+  // Check if user needs to set PIN first (Code: 1)
+  useEffect(() => {
+    if (banksData?.Code === 1) {
+      // Redirect to reset PIN page
+      router.replace("/account/reset-pin?from=add-bank");
+    }
+  }, [banksData, router]);
+
+  // Pre-fill account name from API response
+  useEffect(() => {
+    if (banksData?.FullName && !accountName) {
+      setAccountName(banksData.FullName);
+    }
+  }, [banksData, accountName]);
 
   // Countdown timer for TAC
   useEffect(() => {
@@ -58,6 +62,8 @@ export default function AddBankAccountPage() {
     return () => clearInterval(timer);
   }, [tacExpiresIn]);
 
+  const selectedBank = banksData?.Rows?.find(b => b.Id === selectedBankId);
+
   const handleRequestTac = async () => {
     try {
       const response = await requestTac.mutateAsync();
@@ -69,16 +75,17 @@ export default function AddBankAccountPage() {
   };
 
   const handleSubmit = async () => {
-    if (!bankName || !accountNumber || !tac) return;
+    if (!selectedBankId || !accountName || !accountNumber || !tac) return;
 
     try {
       await addBankAccount.mutateAsync({
-        BankName: bankName,
-        AccountNumber: accountNumber,
+        Name: accountName,
+        No: accountNumber,
         Tac: tac,
+        UserBankId: selectedBankId,
       });
-      // On success, redirect back to bank accounts list
-      router.push("/account/bank");
+      // On success, redirect back to bank accounts list then to withdrawal
+      router.push("/withdrawal");
     } catch (error) {
       console.error("Failed to add bank account:", error);
     }
@@ -93,7 +100,7 @@ export default function AddBankAccountPage() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header variant="subpage" title={t("account.addBankAccount")} backHref="/account/bank" />
+        <Header variant="subpage" title={t("account.addBankAccount")} backHref="/withdrawal" />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
             {t("common.loginRequired")}
@@ -103,9 +110,49 @@ export default function AddBankAccountPage() {
     );
   }
 
+  // Show loading while checking if PIN is required
+  if (isLoadingBanks) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header variant="subpage" title={t("account.addBankAccount")} backHref="/withdrawal" />
+        <div className="flex-1 flex items-center justify-center">
+          <Loader2 className="w-8 h-8 text-primary animate-spin" />
+        </div>
+      </div>
+    );
+  }
+
+  // Show error if failed to load banks
+  if (banksError) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header variant="subpage" title={t("account.addBankAccount")} backHref="/withdrawal" />
+        <div className="flex-1 flex items-center justify-center px-4">
+          <p className="text-sm text-red-500 text-center">
+            {t("common.errorLoading")}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render form if redirecting to PIN page
+  if (banksData?.Code === 1) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header variant="subpage" title={t("account.addBankAccount")} backHref="/withdrawal" />
+        <div className="flex-1 flex items-center justify-center">
+          <Loader2 className="w-8 h-8 text-primary animate-spin" />
+        </div>
+      </div>
+    );
+  }
+
+  const bankOptions = banksData?.Rows ?? [];
+
   return (
     <div className="min-h-screen flex flex-col">
-      <Header variant="subpage" title={t("account.addBankAccount")} backHref="/account/bank" />
+      <Header variant="subpage" title={t("account.addBankAccount")} backHref="/withdrawal" />
 
       <main className="flex-1 px-4 py-6">
         {/* Form Card */}
@@ -121,11 +168,23 @@ export default function AddBankAccountPage() {
                 onClick={() => setShowBankDropdown(!showBankDropdown)}
                 className="w-full px-4 py-3 bg-white border border-zinc-200 rounded-lg text-left flex items-center justify-between focus:outline-none focus:border-primary"
               >
-                <span className={cn(
-                  bankName ? "text-zinc-700" : "text-zinc-400"
-                )}>
-                  {bankName || t("bank.selectBank")}
-                </span>
+                <div className="flex items-center gap-3">
+                  {selectedBank?.Image && (
+                    <Image
+                      src={selectedBank.Image}
+                      alt={selectedBank.Name}
+                      width={24}
+                      height={24}
+                      className="w-6 h-6 object-contain"
+                      unoptimized
+                    />
+                  )}
+                  <span className={cn(
+                    selectedBankId ? "text-zinc-700" : "text-zinc-400"
+                  )}>
+                    {selectedBank?.Name || t("bank.selectBank")}
+                  </span>
+                </div>
                 <ChevronDown className={cn(
                   "w-5 h-5 text-zinc-400 transition-transform",
                   showBankDropdown && "rotate-180"
@@ -134,27 +193,58 @@ export default function AddBankAccountPage() {
 
               {showBankDropdown && (
                 <div className="absolute z-10 top-full left-0 right-0 mt-1 bg-white border border-zinc-200 rounded-lg shadow-lg max-h-60 overflow-auto">
-                  {BANK_OPTIONS.map((bank) => (
+                  {bankOptions.map((bank) => (
                     <button
-                      key={bank}
+                      key={bank.Id}
                       type="button"
                       onClick={() => {
-                        setBankName(bank);
+                        setSelectedBankId(bank.Id);
                         setShowBankDropdown(false);
                       }}
                       className={cn(
-                        "w-full px-4 py-3 text-left text-sm hover:bg-zinc-50 flex items-center justify-between",
-                        bankName === bank && "bg-primary/5 text-primary"
+                        "w-full px-4 py-3 text-left text-sm hover:bg-zinc-50 flex items-center justify-between gap-3",
+                        selectedBankId === bank.Id && "bg-primary/5 text-primary"
                       )}
                     >
-                      {bank}
-                      {bankName === bank && (
+                      <div className="flex items-center gap-3">
+                        {bank.Image && (
+                          <Image
+                            src={bank.Image}
+                            alt={bank.Name}
+                            width={24}
+                            height={24}
+                            className="w-6 h-6 object-contain"
+                            unoptimized
+                          />
+                        )}
+                        <span>{bank.Name}</span>
+                      </div>
+                      {selectedBankId === bank.Id && (
                         <Check className="w-4 h-4 text-primary" />
                       )}
                     </button>
                   ))}
                 </div>
               )}
+            </div>
+          </div>
+
+          {/* Account Name */}
+          <div>
+            <label className="text-sm font-roboto-medium text-zinc-700 mb-2 block">
+              {t("bank.accountName")}<span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2">
+                <Building2 className="w-5 h-5 text-zinc-400" />
+              </div>
+              <input
+                type="text"
+                value={accountName}
+                onChange={(e) => setAccountName(e.target.value)}
+                placeholder={t("bank.enterAccountName")}
+                className="w-full pl-12 pr-4 py-3 bg-white border border-zinc-200 rounded-lg text-zinc-700 placeholder:text-zinc-400 focus:outline-none focus:border-primary"
+              />
             </div>
           </div>
 
@@ -231,7 +321,7 @@ export default function AddBankAccountPage() {
       <div className="sticky bottom-0 left-0 right-0 p-4 bg-white border-t border-zinc-200">
         <button
           onClick={handleSubmit}
-          disabled={addBankAccount.isPending || !bankName || !accountNumber || !tac}
+          disabled={addBankAccount.isPending || !selectedBankId || !accountName || !accountNumber || !tac}
           className="w-full py-4 bg-primary text-white font-roboto-semibold rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {addBankAccount.isPending && <Loader2 className="w-5 h-5 animate-spin" />}

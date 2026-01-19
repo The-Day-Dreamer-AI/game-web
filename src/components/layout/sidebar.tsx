@@ -310,31 +310,33 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             </div>
           </div>
 
-          {/* Logout Button */}
-          <div className="px-4 pb-3">
-            <div className="bg-white rounded-lg overflow-hidden shadow-sm px-4">
-              <button
-                onClick={async () => {
-                  onClose();
-                  await logout();
-                  openLoginModal();
-                }}
-                className="w-full flex items-center gap-4 px-4 py-3"
-              >
-                <Image
-                  src="/images/sidebar/sidebar_logout_icon.png"
-                  alt="logout"
-                  width={24}
-                  height={24}
-                  unoptimized
-                  className="w-6 h-6 object-contain"
-                />
-                <span className="text-xs font-roboto-bold text-[#28323C]">
-                  {t("sidebar.logout")}
-                </span>
-              </button>
+          {/* Logout Button - Only show when authenticated */}
+          {isAuthenticated && (
+            <div className="px-4 pb-3">
+              <div className="bg-white rounded-lg overflow-hidden shadow-sm px-4">
+                <button
+                  onClick={async () => {
+                    onClose();
+                    await logout();
+                    openLoginModal();
+                  }}
+                  className="w-full flex items-center gap-4 px-4 py-3"
+                >
+                  <Image
+                    src="/images/sidebar/sidebar_logout_icon.png"
+                    alt="logout"
+                    width={24}
+                    height={24}
+                    unoptimized
+                    className="w-6 h-6 object-contain"
+                  />
+                  <span className="text-xs font-roboto-bold text-[#28323C]">
+                    {t("sidebar.logout")}
+                  </span>
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Spacer to push footer to bottom */}
           <div className="flex-1" />

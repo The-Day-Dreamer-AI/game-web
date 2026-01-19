@@ -315,12 +315,28 @@ export interface LoginErrorResponse {
 export interface WithdrawAccount {
   Id: string;
   BankName: string;
-  AccountNumber: string;
+  BankImage: string;
+  Name: string;
+  No: string;
+  Currency: string;
+  Rate: number;
 }
 
 export interface WithdrawAccountsResponse {
   Code: number;
   Message: string;
+  Cash: number;
+  Currency: string;
+  Rollover: number;
+  TargetRollover: number;
+  DailyWithdrawFreq: number;
+  DailyWithdrawFreqBalance: number;
+  ProcessingFeePercentage: number;
+  DailyWithdrawLimit: number;
+  MinMYR: number;
+  MaxMYR: number;
+  MinUSD: number;
+  MaxUSD: number;
   Rows: WithdrawAccount[];
 }
 
@@ -339,19 +355,74 @@ export interface SubmitWithdrawResponse {
 // Bank Account Types
 // ===========================================
 
+export interface UserBank {
+  Id: string;
+  Name: string;
+  Image: string;
+  Currency: string;
+}
+
+export interface GetUserBanksResponse {
+  Code: number;
+  Message: string;
+  Rows?: UserBank[];
+  FullName?: string;
+}
+
+export interface UserBankAccount {
+  Id: string;
+  BankName: string;
+  BankImage: string;
+  Name: string;
+  No: string;
+}
+
+export interface GetUserBankAccountsResponse {
+  Code: number;
+  Message: string;
+  Rows: UserBankAccount[];
+}
+
 export interface GetTacResponse {
   Code: number;
   Message: string;
+  UserId?: string;
+  Phone?: string;
+  Tac?: string;
   ExpiresIn: number;
 }
 
 export interface AddBankAccountRequest {
-  BankName: string;
-  AccountNumber: string;
+  Name: string;
+  No: string;
   Tac: string;
+  UserBankId: string;
 }
 
 export interface AddBankAccountResponse {
+  Code: number;
+  Message: string;
+}
+
+// ===========================================
+// Reset PIN Types
+// ===========================================
+
+export interface ResetPinGetTacResponse {
+  Code: number;
+  Message: string;
+  UserId: string;
+  Phone: string;
+  Tac: string;
+  ExpiresIn: number;
+}
+
+export interface ResetPinRequest {
+  Pin: string;
+  Tac: string;
+}
+
+export interface ResetPinResponse {
   Code: number;
   Message: string;
 }

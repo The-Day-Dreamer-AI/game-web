@@ -173,6 +173,7 @@
     "minMaxLimit": "Min/Max Limit",
     "dailyLimit": "Daily Limit Balance",
     "dailyCount": "Daily Count Balance",
+    "noBankAccounts": "You have not added any bank accounts yet. Please add a bank account to withdraw.",
     "notice1": "Withdrawal bank name must match to registered full name. Member unable to withdrawal to 3rd party bank account.",
     "notice2": "Please make sure already achieve the 1x turnover of deposit amount before submit the withdrawal transaction.",
     "notice3": "Please make sure the bank account name & bank account number is correct before submitted the withdrawal transaction.",
@@ -297,6 +298,8 @@
   "bank": {
     "bankName": "Bank Name",
     "selectBank": "Select a bank",
+    "accountName": "Account Name",
+    "enterAccountName": "Enter your account name",
     "accountNumber": "Account Number",
     "enterAccountNumber": "Enter your account number",
     "tacCode": "TAC Code",
@@ -306,6 +309,19 @@
     "tacRequestFailed": "Failed to request TAC. Please try again.",
     "addBankNote": "Please ensure your bank account name matches your registered full name. Third-party bank accounts are not accepted.",
     "addFailed": "Failed to add bank account. Please try again."
+  },
+  "pin": {
+    "setFirstMessage": "Please set your PIN number first before adding a bank account.",
+    "phoneNumber": "Phone Number",
+    "enterTac": "Enter TAC Code",
+    "requestTac": "Request TAC",
+    "tacSent": "TAC has been sent to your registered phone number",
+    "tacRequestFailed": "Failed to request TAC. Please try again.",
+    "enterPin": "Enter PIN (6 digits)",
+    "confirmPin": "Confirm PIN",
+    "mismatch": "PIN numbers do not match",
+    "requirements": "PIN must be 6 digits",
+    "resetFailed": "Failed to reset PIN. Please try again."
   },
   "scanner": {
     "title": "Scan QR Code",
