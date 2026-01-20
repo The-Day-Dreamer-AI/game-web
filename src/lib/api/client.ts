@@ -24,7 +24,8 @@ export class ApiError extends Error {
   constructor(
     public code: number,
     message: string,
-    public status?: number
+    public status?: number,
+    public data?: Record<string, unknown>
   ) {
     super(message);
     this.name = "ApiError";
@@ -170,7 +171,7 @@ export const apiClient = {
     const data = await response.json();
 
     if (data.Code && data.Code !== 0) {
-      throw new ApiError(data.Code, data.Message || "An error occurred");
+      throw new ApiError(data.Code, data.Message || "An error occurred", undefined, data);
     }
 
     return data;

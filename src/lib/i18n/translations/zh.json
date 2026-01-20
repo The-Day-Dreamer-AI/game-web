@@ -108,6 +108,7 @@
     "otpSendFailed": "发送验证码失败，请重试。",
     "otpSent": "验证码已发送！请查看您的{{method}}。",
     "otpSentSuccess": "验证码发送成功！",
+    "otpAlreadySent": "验证码已发送！",
     "verifyingReferral": "正在验证推荐码...",
     "resetSuccess": "密码重置成功！请使用新密码登录。",
     "invalidQrCode": "无效的二维码，请上传有效的推荐二维码。",

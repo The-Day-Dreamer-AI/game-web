@@ -98,7 +98,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         Password: credentials.password,
         Phone: credentials.phone,
         Tac: "", // Legacy form doesn't support OTP
-        UplineReferralCode: credentials.referralCode || "196B48",
+        UplineReferralCode: credentials.referralCode || "",
         Username: credentials.username,
       });
 

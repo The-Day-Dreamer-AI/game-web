@@ -10,7 +10,7 @@ import QrScanner from "qr-scanner";
 import { useI18n } from "@/providers/i18n-provider";
 import { LoginModal } from "@/components/auth/login-modal";
 import { useRegister } from "@/hooks/use-register";
-import { authApi } from "@/lib/api";
+import { authApi, ApiError } from "@/lib/api";
 import type { MessageSelectionOption } from "@/lib/api/types";
 import { Header } from "@/components/layout";
 import { FormInput } from "@/components/ui/form-input";
@@ -30,7 +30,7 @@ interface RegisterFormData {
   otpCode: string;
 }
 
-const DEFAULT_REFERRAL_CODE = "196B48";
+const DEFAULT_REFERRAL_CODE = process.env.NEXT_DEFAULT_REFERRAL_CODE;
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -47,6 +47,7 @@ export default function RegisterPage() {
   const [isRequestingOtp, setIsRequestingOtp] = useState(false);
   const [otpCountdown, setOtpCountdown] = useState(0);
   const [otpSent, setOtpSent] = useState(false);
+  const [otpAlreadySent, setOtpAlreadySent] = useState(false);
   const [isSendToDropdownOpen, setIsSendToDropdownOpen] = useState(false);
   const sendToDropdownRef = useRef<HTMLDivElement | null>(null);
   const qrFileInputRef = useRef<HTMLInputElement>(null);
@@ -74,12 +75,18 @@ export default function RegisterPage() {
     },
   });
 
+  // Default send-to options fallback
+  const defaultSendToOptions: SendToOption[] = [
+    { value: "SMS", label: t("auth.sms") },
+    { value: "WhatsApp", label: t("auth.whatsapp") },
+  ];
+
   // Fetch message selection options on mount
   useEffect(() => {
     const fetchMessageOptions = async () => {
       try {
         const response = await authApi.getMessageSelection();
-        if (response.Code === 200 && response.Data) {
+        if (response.Code === 200 && response.Data && response.Data.length > 0) {
           // Filter out "Select" option and map to our format
           const options = response.Data
             .filter((opt: MessageSelectionOption) => opt.Value !== "Select")
@@ -87,22 +94,27 @@ export default function RegisterPage() {
               value: opt.Value,
               label: opt.Text,
             }));
-          setSendToOptions(options);
+          if (options.length > 0) {
+            setSendToOptions(options);
+          } else {
+            setSendToOptions(defaultSendToOptions);
+          }
+        } else {
+          // API returned non-200 or empty data, use defaults
+          setSendToOptions(defaultSendToOptions);
         }
       } catch (error) {
         console.error("Failed to fetch message options:", error);
         // Fallback to default options if API fails
-        setSendToOptions([
-          { value: "SMS", label: t("auth.sms") },
-          { value: "WhatsApp", label: t("auth.whatsapp") },
-        ]);
+        setSendToOptions(defaultSendToOptions);
       } finally {
         setIsLoadingOptions(false);
       }
     };
 
     fetchMessageOptions();
-  }, [t]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Handle referral code from URL params (e.g., from QR scanner or redirect)
   useEffect(() => {
@@ -222,12 +234,28 @@ export default function RegisterPage() {
 
       if (result.Code === 0) {
         setOtpSent(true);
+        setOtpAlreadySent(false);
         setOtpCountdown(result.ExpiresIn || 300);
+      } else if (result.ExpiresIn && result.ExpiresIn > 0) {
+        // TAC already sent, show countdown timer
+        setOtpSent(true);
+        setOtpAlreadySent(true);
+        setOtpCountdown(result.ExpiresIn);
       } else {
         setError("root", { message: result.Message || t("auth.otpSendFailed") });
       }
-    } catch {
-      setError("root", { message: t("auth.otpSendFailed") });
+    } catch (error) {
+      // Check if error contains ExpiresIn (TAC already sent)
+      if (error instanceof ApiError && error.data?.ExpiresIn) {
+        const expiresIn = error.data.ExpiresIn as number;
+        if (expiresIn > 0) {
+          setOtpSent(true);
+          setOtpAlreadySent(true);
+          setOtpCountdown(expiresIn);
+          return;
+        }
+      }
+      setError("root", { message: error instanceof ApiError ? error.message : t("auth.otpSendFailed") });
     } finally {
       setIsRequestingOtp(false);
     }
@@ -286,7 +314,7 @@ export default function RegisterPage() {
         setIsValidatingUpline(false);
       } else {
         // No referral code provided, use default
-        uplineValue = DEFAULT_REFERRAL_CODE;
+        uplineValue = DEFAULT_REFERRAL_CODE || "";
       }
 
       // Proceed with registration using the upline value
@@ -628,7 +656,7 @@ export default function RegisterPage() {
               type="button"
               onClick={handleRequestOTP}
               disabled={!canRequestOtp || isRequestingOtp}
-              className="px-4 py-3.5 bg-primary text-white font-roboto-bold rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-sm"
+              className="cursor-pointer px-4 py-3.5 bg-primary text-white font-roboto-bold rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-sm"
             >
               {isRequestingOtp ? (
                 <Loader2 className="w-6 h-6 animate-spin" />
@@ -642,8 +670,8 @@ export default function RegisterPage() {
             </button>
           </div>
           {otpSent && otpCountdown > 0 && (
-            <p className="text-xs text-green-600 ml-1">
-              {t("auth.otpSentSuccess")}
+            <p className="text-xs text-red-600 ml-1">
+              {otpAlreadySent ? t("auth.otpAlreadySent") : t("auth.otpSentSuccess")}
             </p>
           )}
 

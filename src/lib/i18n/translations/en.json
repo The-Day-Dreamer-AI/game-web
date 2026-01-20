@@ -108,6 +108,7 @@
     "otpSendFailed": "Failed to send OTP. Please try again.",
     "otpSent": "OTP sent! Please check your {{method}}.",
     "otpSentSuccess": "OTP sent successfully!",
+    "otpAlreadySent": "OTP has already been sent!",
     "verifyingReferral": "Verifying referral code...",
     "resetSuccess": "Password reset successfully! Please login with your new password.",
     "invalidQrCode": "Invalid QR code. Please upload a valid referral QR code.",

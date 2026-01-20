@@ -324,7 +324,7 @@ export default function ForgotPasswordPage() {
               type="button"
               onClick={handleRequestOTP}
               disabled={!canRequestOtp || isRequestingOtp}
-              className="px-4 py-3.5 bg-primary text-white font-roboto-bold rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-sm"
+              className="cursor-pointer px-4 py-3.5 bg-primary text-white font-roboto-bold rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-sm"
             >
               {isRequestingOtp ? (
                 <Loader2 className="w-auto h-6 animate-spin" />

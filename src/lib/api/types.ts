@@ -249,6 +249,8 @@ export interface GetUplineRequest {
 export interface GetUplineResponse {
   Code: number;
   Message: string;
+  Id: string;
+  Username: string;
   ReferralCode: string;
 }
 
