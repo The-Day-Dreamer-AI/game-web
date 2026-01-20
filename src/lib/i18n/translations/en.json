@@ -109,7 +109,9 @@
     "otpSent": "OTP sent! Please check your {{method}}.",
     "otpSentSuccess": "OTP sent successfully!",
     "verifyingReferral": "Verifying referral code...",
-    "resetSuccess": "Password reset successfully! Please login with your new password."
+    "resetSuccess": "Password reset successfully! Please login with your new password.",
+    "invalidQrCode": "Invalid QR code. Please upload a valid referral QR code.",
+    "qrScanFailed": "Failed to scan QR code. Please try another image."
   },
   "language": {
     "title": "Language",

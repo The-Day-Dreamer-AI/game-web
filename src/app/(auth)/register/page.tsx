@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff, ChevronDown, Loader2 } from "lucide-react";
+import QrScanner from "qr-scanner";
 import { useI18n } from "@/providers/i18n-provider";
 import { LoginModal } from "@/components/auth/login-modal";
 import { useRegister } from "@/hooks/use-register";
@@ -42,6 +43,7 @@ export default function RegisterPage() {
   const [otpSent, setOtpSent] = useState(false);
   const [isSendToDropdownOpen, setIsSendToDropdownOpen] = useState(false);
   const sendToDropdownRef = useRef<HTMLDivElement | null>(null);
+  const qrFileInputRef = useRef<HTMLInputElement>(null);
 
   // API hooks
   const registerMutation = useRegister();
@@ -66,13 +68,68 @@ export default function RegisterPage() {
     },
   });
 
-  // Handle referral code from URL params (e.g., from QR scanner)
+  // Handle referral code from URL params (e.g., from QR scanner or redirect)
   useEffect(() => {
+    // Check for UplineId first (from /Home/Qr redirect or /Player/Register)
+    const uplineId = searchParams.get("UplineId");
+    if (uplineId) {
+      setValue("referralCode", uplineId);
+      return;
+    }
+    // Fallback to referralCode param
     const referralCodeFromUrl = searchParams.get("referralCode");
     if (referralCodeFromUrl) {
       setValue("referralCode", referralCodeFromUrl);
     }
   }, [searchParams, setValue]);
+
+  // Extract referral code from QR data URL
+  const extractReferralCodeFromQr = useCallback((data: string): string | null => {
+    try {
+      const url = new URL(data);
+      // Check for Id or UplineId parameters
+      const id = url.searchParams.get("Id") || url.searchParams.get("UplineId");
+      if (id) {
+        return id;
+      }
+      return null;
+    } catch {
+      // Not a valid URL
+      return null;
+    }
+  }, []);
+
+  // Handle QR image file upload
+  const handleQrImageUpload = useCallback(
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      try {
+        const result = await QrScanner.scanImage(file, { returnDetailedScanResult: true });
+        const referralCode = extractReferralCodeFromQr(result.data);
+
+        if (referralCode) {
+          clearErrors("referralCode");
+          setValue("referralCode", referralCode);
+        } else {
+          setError("referralCode", {
+            message: t("auth.invalidQrCode"),
+          });
+        }
+      } catch {
+        setError("referralCode", {
+          message: t("auth.qrScanFailed"),
+        });
+      }
+
+      // Reset the input so the same file can be selected again
+      if (qrFileInputRef.current) {
+        qrFileInputRef.current.value = "";
+      }
+    },
+    [setValue, setError, clearErrors, extractReferralCodeFromQr, t]
+  );
 
   const phoneValue = watch("phone");
   const sendToOptions: Array<{ value: SendToOption; label: string }> = [
@@ -241,7 +298,7 @@ export default function RegisterPage() {
           alt="register banner"
           width={32}
           height={32}
-          className="h-auto w-full object-fill"
+          className="w-full object-fill h-auto max-h-40"
           unoptimized
         />
 
@@ -250,7 +307,9 @@ export default function RegisterPage() {
           {/* Referral Code */}
           <div>
             <FormInput
-              {...register("referralCode")}
+              {...register("referralCode", {
+                onChange: () => clearErrors("referralCode"),
+              })}
               type="text"
               placeholder={t("auth.referralCode")}
               prefix={
@@ -265,8 +324,17 @@ export default function RegisterPage() {
               }
               suffix={
                 <div className="flex gap-2 items-center">
+                  {/* Hidden file input for QR image upload */}
+                  <input
+                    ref={qrFileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleQrImageUpload}
+                    className="hidden"
+                  />
                   <button
                     type="button"
+                    onClick={() => qrFileInputRef.current?.click()}
                     className="text-zinc-400 hover:text-zinc-600 cursor-pointer"
                   >
                     <Image
@@ -275,7 +343,7 @@ export default function RegisterPage() {
                       width={24}
                       height={24}
                       unoptimized
-                      className="h-6 w-auto object-contain"
+                      className="h-6 w-auto object-contain cursor-pointer"
                     />
                   </button>
                   <button
@@ -289,7 +357,7 @@ export default function RegisterPage() {
                       width={24}
                       height={24}
                       unoptimized
-                      className="h-6 w-auto object-contain"
+                      className="h-6 w-auto object-contain cursor-pointer"
                     />
                   </button>
                 </div>
@@ -596,7 +664,7 @@ export default function RegisterPage() {
             <button
               type="button"
               onClick={() => setIsLoginModalOpen(true)}
-              className="text-primary hover:underline font-roboto-regular text-sm"
+              className="cursor-pointer text-primary hover:underline font-roboto-regular text-sm"
             >
               {t("auth.loginHere")}
             </button>

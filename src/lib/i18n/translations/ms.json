@@ -109,7 +109,9 @@
     "otpSent": "OTP dihantar! Sila semak {{method}} anda.",
     "otpSentSuccess": "OTP berjaya dihantar!",
     "verifyingReferral": "Mengesahkan kod rujukan...",
-    "resetSuccess": "Kata laluan berjaya ditetapkan semula! Sila log masuk dengan kata laluan baru anda."
+    "resetSuccess": "Kata laluan berjaya ditetapkan semula! Sila log masuk dengan kata laluan baru anda.",
+    "invalidQrCode": "Kod QR tidak sah. Sila muat naik kod QR rujukan yang sah.",
+    "qrScanFailed": "Gagal mengimbas kod QR. Sila cuba imej lain."
   },
   "language": {
     "title": "Bahasa",

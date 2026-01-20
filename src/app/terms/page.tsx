@@ -96,7 +96,7 @@ export default function TermsPage() {
               <button
                 onClick={() => toggleSection(section.id)}
                 className={cn(
-                  "w-full flex items-center justify-between px-4 py-4 transition-colors bg-white",
+                  "cursor-pointer w-full flex items-center justify-between px-4 py-4 transition-colors bg-white",
                   isOpen
                     ? "bg-[#D4F1F0] text-zinc-800 rounded-t-xl"
                     : "text-zinc-700 hover:bg-zinc-50 rounded-xl"
