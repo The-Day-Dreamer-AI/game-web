@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { X, KeyRound, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { FormInput } from "@/components/ui/form-input";
+import { useToast } from "@/providers/toast-provider";
 
 interface KycVerificationModalProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ export function KycVerificationModal({
   isOpen,
   onClose,
 }: KycVerificationModalProps) {
+  const { showError } = useToast();
   const [sendTo, setSendTo] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -151,13 +153,6 @@ export function KycVerificationModal({
               Request OTP
             </button>
           </div>
-
-          {/* Error Message */}
-          {errors.root && (
-            <p className="text-sm text-red-500 text-center">
-              {errors.root.message}
-            </p>
-          )}
 
           {/* Confirm Button */}
           <button

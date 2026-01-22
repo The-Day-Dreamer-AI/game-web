@@ -586,6 +586,15 @@ export interface RejectContactResponse {
   Message: string;
 }
 
+export interface CancelContactRequest {
+  Id: string;
+}
+
+export interface CancelContactResponse {
+  Code: number;
+  Message: string;
+}
+
 // ===========================================
 // Transfer Types
 // ===========================================

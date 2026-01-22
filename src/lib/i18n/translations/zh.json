@@ -130,7 +130,11 @@
     "availableBalance": "可用余额",
     "deposit": "存款",
     "withdraw": "取款",
-    "transfer": "转账"
+    "transfer": "转账",
+    "refreshSuccess": "余额刷新成功",
+    "refreshFailed": "刷新余额失败",
+    "restoreSuccess": "钱包恢复成功",
+    "restoreFailed": "恢复钱包失败"
   },
   "deposit": {
     "title": "存款",

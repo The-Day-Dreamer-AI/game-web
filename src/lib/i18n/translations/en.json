@@ -130,7 +130,11 @@
     "availableBalance": "Available Balance",
     "deposit": "Deposit",
     "withdraw": "Withdraw",
-    "transfer": "Transfer"
+    "transfer": "Transfer",
+    "refreshSuccess": "Balance refreshed successfully",
+    "refreshFailed": "Failed to refresh balance",
+    "restoreSuccess": "Wallet restored successfully",
+    "restoreFailed": "Failed to restore wallet"
   },
   "deposit": {
     "title": "Deposit",

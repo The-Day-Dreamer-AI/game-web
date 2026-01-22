@@ -9,6 +9,7 @@ import Image from "next/image";
 import { loginSchema, type LoginFormData } from "@/schemas/auth";
 import { useAuth } from "@/providers/auth-provider";
 import { useI18n } from "@/providers/i18n-provider";
+import { useToast } from "@/providers/toast-provider";
 import { FormInput } from "@/components/ui/form-input";
 
 interface LoginModalProps {
@@ -19,6 +20,7 @@ interface LoginModalProps {
 export function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const { login } = useAuth();
   const { t } = useI18n();
+  const { showError } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
@@ -46,7 +48,7 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
       reset();
       onClose();
     } else {
-      setError("root", { message: result.error || t("auth.loginFailed") });
+      showError(result.error || t("auth.loginFailed"));
     }
   };
 
@@ -157,13 +159,6 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
               {t("auth.forgotPassword")}
             </Link>
           </div>
-
-          {/* Error Message */}
-          {errors.root && (
-            <p className="text-sm text-red-500 text-center">
-              {errors.root.message}
-            </p>
-          )}
 
           {/* Login Button */}
           <button

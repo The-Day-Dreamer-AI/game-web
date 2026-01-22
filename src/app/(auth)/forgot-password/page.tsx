@@ -14,6 +14,7 @@ import type { MessageSelectionOption } from "@/lib/api/types";
 import { Header } from "@/components/layout";
 import { FormInput } from "@/components/ui/form-input";
 import { useI18n } from "@/providers/i18n-provider";
+import { useToast } from "@/providers/toast-provider";
 import Image from "next/image";
 
 interface SendToOption {
@@ -31,6 +32,7 @@ interface ForgotPasswordFormData {
 export default function ForgotPasswordPage() {
   const router = useRouter();
   const { t } = useI18n();
+  const { showSuccess, showError } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [sendTo, setSendTo] = useState<string>("");
   const [sendToOptions, setSendToOptions] = useState<SendToOption[]>([]);
@@ -141,13 +143,9 @@ export default function ForgotPasswordPage() {
 
     // Validate send to option
     if (!sendTo) {
-      setError("root", {
-        message: t("auth.selectOtpMethod"),
-      });
+      showError(t("auth.selectOtpMethod"));
       return;
     }
-
-    clearErrors("root");
     setIsRequestingOtp(true);
 
     try {
@@ -169,7 +167,7 @@ export default function ForgotPasswordPage() {
         setOtpAlreadySent(true);
         setOtpCountdown(result.ExpiresIn);
       } else {
-        setError("root", { message: result.Message || t("auth.otpSendFailed") });
+        showError(result.Message || t("auth.otpSendFailed"));
       }
     } catch (error) {
       // Check if error contains ExpiresIn (TAC already sent)
@@ -183,7 +181,7 @@ export default function ForgotPasswordPage() {
           return;
         }
       }
-      setError("root", { message: error instanceof ApiError ? error.message : t("auth.otpSendFailed") });
+      showError(error instanceof ApiError ? error.message : t("auth.otpSendFailed"));
     } finally {
       setIsRequestingOtp(false);
     }
@@ -192,7 +190,7 @@ export default function ForgotPasswordPage() {
   const onSubmit = async (data: ForgotPasswordFormData) => {
     // Validate OTP was requested and code is entered
     if (!otpSent) {
-      setError("root", { message: t("auth.requestOtpFirst") });
+      showError(t("auth.requestOtpFirst"));
       return;
     }
 
@@ -213,17 +211,13 @@ export default function ForgotPasswordPage() {
 
       if (result.Code === 0) {
         // Password reset successful - redirect to login
-        alert(t("auth.resetSuccess"));
+        showSuccess(t("auth.resetSuccess"));
         router.push("/login");
       } else {
-        setError("root", {
-          message: result.Message || t("auth.resetFailed"),
-        });
+        showError(result.Message || t("auth.resetFailed"));
       }
     } catch {
-      setError("root", {
-        message: t("auth.resetFailed"),
-      });
+      showError(t("auth.resetFailed"));
     } finally {
       setIsLoading(false);
     }
@@ -436,13 +430,6 @@ export default function ForgotPasswordPage() {
             }
             error={errors.newPassword?.message}
           />
-
-          {/* Error Message */}
-          {errors.root && (
-            <p className="text-sm text-red-500 text-center">
-              {errors.root.message}
-            </p>
-          )}
 
           {/* Confirm Button */}
           <button

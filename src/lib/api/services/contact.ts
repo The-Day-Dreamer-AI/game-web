@@ -12,6 +12,8 @@ import type {
   ApproveContactResponse,
   RejectContactRequest,
   RejectContactResponse,
+  CancelContactRequest,
+  CancelContactResponse,
   GetTransferInfoResponse,
   PostTransferRequest,
   PostTransferResponse,
@@ -94,6 +96,16 @@ export const contactApi = {
    */
   async rejectContact(data: RejectContactRequest): Promise<RejectContactResponse> {
     return apiClient.post<RejectContactResponse>("/api/mapicontact2/rejectcontact", data, {
+      authenticated: true,
+    });
+  },
+
+  /**
+   * Cancel a sent friend request
+   * POST /api/MapiContact2/CancelContact
+   */
+  async cancelContact(data: CancelContactRequest): Promise<CancelContactResponse> {
+    return apiClient.post<CancelContactResponse>("/api/MapiContact2/CancelContact", data, {
       authenticated: true,
     });
   },

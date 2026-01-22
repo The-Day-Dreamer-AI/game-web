@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Eye, EyeOff, ChevronDown, Loader2 } from "lucide-react";
 import QrScanner from "qr-scanner";
 import { useI18n } from "@/providers/i18n-provider";
+import { useToast } from "@/providers/toast-provider";
 import { LoginModal } from "@/components/auth/login-modal";
 import { useRegister } from "@/hooks/use-register";
 import { authApi, ApiError } from "@/lib/api";
@@ -36,6 +37,7 @@ export default function RegisterPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t } = useI18n();
+  const { showError } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
@@ -217,13 +219,9 @@ export default function RegisterPage() {
 
     // Validate send to option
     if (!sendTo) {
-      setError("root", {
-        message: t("auth.selectOtpMethod"),
-      });
+      showError(t("auth.selectOtpMethod"));
       return;
     }
-
-    clearErrors("root");
     setIsRequestingOtp(true);
 
     try {
@@ -244,7 +242,7 @@ export default function RegisterPage() {
         setOtpAlreadySent(true);
         setOtpCountdown(result.ExpiresIn);
       } else {
-        setError("root", { message: result.Message || t("auth.otpSendFailed") });
+        showError(result.Message || t("auth.otpSendFailed"));
       }
     } catch (error) {
       // Check if error contains ExpiresIn (TAC already sent)
@@ -258,7 +256,7 @@ export default function RegisterPage() {
           return;
         }
       }
-      setError("root", { message: error instanceof ApiError ? error.message : t("auth.otpSendFailed") });
+      showError(error instanceof ApiError ? error.message : t("auth.otpSendFailed"));
     } finally {
       setIsRequestingOtp(false);
     }
@@ -266,7 +264,7 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterFormData) => {
     if (!agreeTerms) {
-      setError("root", { message: t("auth.agreeTermsRequired") });
+      showError(t("auth.agreeTermsRequired"));
       return;
     }
 
@@ -277,7 +275,7 @@ export default function RegisterPage() {
 
     // Validate OTP was requested and code is entered
     if (!otpSent) {
-      setError("root", { message: t("auth.requestOtpFirst") });
+      showError(t("auth.requestOtpFirst"));
       return;
     }
 
@@ -334,10 +332,10 @@ export default function RegisterPage() {
         // Registration successful - redirect to login
         router.push("/login");
       } else {
-        setError("root", { message: result.Message || t("auth.registrationFailed") });
+        showError(result.Message || t("auth.registrationFailed"));
       }
     } catch {
-      setError("root", { message: t("auth.registrationFailed") });
+      showError(t("auth.registrationFailed"));
     }
   };
 
@@ -692,13 +690,6 @@ export default function RegisterPage() {
               </Link>
             </span>
           </label>
-
-          {/* Error Message */}
-          {errors.root && (
-            <p className="text-sm text-red-500 text-center">
-              {errors.root.message}
-            </p>
-          )}
 
           {/* Register Button */}
           <button

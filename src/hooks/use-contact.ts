@@ -7,6 +7,7 @@ import type {
   AddContactRequest,
   ApproveContactRequest,
   RejectContactRequest,
+  CancelContactRequest,
   PostTransferRequest,
 } from "@/lib/api/types";
 
@@ -134,6 +135,22 @@ export function useRejectContact() {
   return useMutation({
     mutationFn: async (data: RejectContactRequest) => {
       return contactApi.rejectContact(data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: contactKeys.requests() });
+    },
+  });
+}
+
+/**
+ * Hook to cancel a sent friend request
+ */
+export function useCancelContact() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: CancelContactRequest) => {
+      return contactApi.cancelContact(data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: contactKeys.requests() });

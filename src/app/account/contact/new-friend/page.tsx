@@ -18,6 +18,7 @@ import {
   useAddContact,
   useApproveContact,
   useRejectContact,
+  useCancelContact,
 } from "@/hooks/use-contact";
 
 type RequestTab = "incoming" | "outgoing";
@@ -62,6 +63,7 @@ export default function NewFriendPage() {
   const addContact = useAddContact();
   const approveContact = useApproveContact();
   const rejectContact = useRejectContact();
+  const cancelContact = useCancelContact();
 
   // Get friend requests
   const friendRequests = requestsData?.FrRequests ?? [];
@@ -88,7 +90,11 @@ export default function NewFriendPage() {
 
   const handleConfirmAction = async () => {
     try {
-      await rejectContact.mutateAsync({ Id: confirmModal.requestId });
+      if (confirmModal.type === "cancel") {
+        await cancelContact.mutateAsync({ Id: confirmModal.requestId });
+      } else {
+        await rejectContact.mutateAsync({ Id: confirmModal.requestId });
+      }
       setConfirmModal({ isOpen: false, type: "reject", requestId: "" });
     } catch (error) {
       console.error("Failed to process request:", error);
@@ -295,7 +301,7 @@ export default function NewFriendPage() {
         type={confirmModal.type}
         onConfirm={handleConfirmAction}
         onClose={handleCloseConfirmModal}
-        isLoading={rejectContact.isPending}
+        isLoading={rejectContact.isPending || cancelContact.isPending}
       />
     </div>
   );

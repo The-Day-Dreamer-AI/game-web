@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
@@ -98,6 +99,7 @@ const localeFlagIcons: Record<string, string> = {
 };
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
+  const router = useRouter();
   const [currentTime, setCurrentTime] = useState<string>("");
   const [mounted, setMounted] = useState(false);
   const { t, locale } = useI18n();
@@ -318,7 +320,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   onClick={async () => {
                     onClose();
                     await logout();
-                    openLoginModal();
+                    router.push("/home");
                   }}
                   className="w-full flex items-center gap-4 px-4 py-3"
                 >

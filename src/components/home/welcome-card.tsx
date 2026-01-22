@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
+import { useToast } from "@/providers/toast-provider";
 import { useRestore, useRefreshCash } from "@/hooks";
 
 interface UserData {
@@ -26,22 +27,29 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
   const router = useRouter();
   const [imgError, setImgError] = useState(false);
   const { t } = useI18n();
+  const { showSuccess, showError } = useToast();
   const restoreMutation = useRestore();
   const refreshCashMutation = useRefreshCash();
 
   const handleRefreshCash = async () => {
     try {
       await refreshCashMutation.mutateAsync();
+      showSuccess(t("wallet.refreshSuccess"));
     } catch (error) {
-      console.error("Refresh cash failed:", error);
+      const errorMessage =
+        error instanceof Error ? error.message : t("wallet.refreshFailed");
+      showError(errorMessage);
     }
   };
 
   const handleRestore = async () => {
     try {
       await restoreMutation.mutateAsync();
+      showSuccess(t("wallet.restoreSuccess"));
     } catch (error) {
-      console.error("Restore failed:", error);
+      const errorMessage =
+        error instanceof Error ? error.message : t("wallet.restoreFailed");
+      showError(errorMessage);
     }
   };
 
@@ -215,43 +223,41 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
 
           {/* Action Buttons */}
           <div className="flex gap-0.5">
-          <button
-            type="button"
-            onClick={handleRestore}
-            disabled={restoreMutation.isPending}
-            className="flex flex-col items-center justify-center disabled:opacity-50"
-          >
-            {restoreMutation.isPending ? (
-              <div className="w-[50px] h-[50px] flex items-center justify-center">
-                <Loader2 className="w-6 h-6 animate-spin text-primary" />
-              </div>
-            ) : (
+            <button
+              type="button"
+              onClick={handleRestore}
+              disabled={restoreMutation.isPending}
+              className="flex flex-col items-center justify-center"
+            >
               <Image
                 src="/images/profile/wallet_dark.png"
                 alt="Restore"
                 width={50}
                 height={50}
-                className="object-contain w-full h-full cursor-pointer"
+                className={`object-contain w-full h-full  ${
+                  restoreMutation.isPending
+                    ? "cursor-not-allowed"
+                    : "cursor-pointer"
+                }`}
               />
-            )}
-            <span className="text-xs text-black font-roboto-bold mt-1">
-              {t("common.restore")}
-            </span>
-          </button>
+              <span className="text-xs text-black font-roboto-bold mt-1">
+                {t("common.restore")}
+              </span>
+            </button>
 
-          <div className="flex flex-col items-center justify-center">
-            <Image
-              src="/images/profile/coin_bag_dark.png"
-              alt="Restore"
-              width={50}
-              height={50}
-              className="object-contain w-full h-full cursor-pointer"
-              onClick={() => router.push("/deposit")}
-            />
-            <span className="text-xs text-black font-roboto-bold mt-1">
-              {t("wallet.deposit")}
-            </span>
-          </div>
+            <div className="flex flex-col items-center justify-center">
+              <Image
+                src="/images/profile/coin_bag_dark.png"
+                alt="Restore"
+                width={50}
+                height={50}
+                className="object-contain w-full h-full cursor-pointer"
+                onClick={() => router.push("/deposit")}
+              />
+              <span className="text-xs text-black font-roboto-bold mt-1">
+                {t("wallet.deposit")}
+              </span>
+            </div>
           </div>
         </div>
       </div>

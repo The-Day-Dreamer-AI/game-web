@@ -130,7 +130,11 @@
     "availableBalance": "Baki Tersedia",
     "deposit": "Deposit",
     "withdraw": "Pengeluaran",
-    "transfer": "Pindahan"
+    "transfer": "Pindahan",
+    "refreshSuccess": "Baki berjaya dikemas kini",
+    "refreshFailed": "Gagal mengemas kini baki",
+    "restoreSuccess": "Dompet berjaya dipulihkan",
+    "restoreFailed": "Gagal memulihkan dompet"
   },
   "deposit": {
     "title": "Deposit",
