@@ -9,12 +9,14 @@ import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
 import { useAuth } from "@/providers/auth-provider";
+import { useToast } from "@/providers/toast-provider";
 import { useUserBanks, useAddBankAccount } from "@/hooks/use-bank";
 
 export default function AddBankAccountPage() {
   const router = useRouter();
   const { t } = useI18n();
   const { isAuthenticated } = useAuth();
+  const { showSuccess, showError } = useToast();
 
   // Fetch available banks list - also checks if PIN is set
   const {
@@ -58,10 +60,12 @@ export default function AddBankAccountPage() {
         Tac: "", // TAC not required per user request
         UserBankId: selectedBankId,
       });
-      // On success, redirect back to withdrawal
+      // On success, show toast and redirect back to withdrawal
+      showSuccess(t("bank.addSuccess") || "Bank account added successfully");
       router.push("/withdrawal");
     } catch (error) {
-      console.error("Failed to add bank account:", error);
+      const errorMessage = error instanceof Error ? error.message : t("bank.addFailed");
+      showError(errorMessage);
     }
   };
 
@@ -260,11 +264,6 @@ export default function AddBankAccountPage() {
           )}
           {t("common.submit")}
         </button>
-        {addBankAccount.isError && (
-          <p className="text-red-500 text-sm text-center mt-2">
-            {addBankAccount.error?.message || t("bank.addFailed")}
-          </p>
-        )}
       </div>
     </div>
   );

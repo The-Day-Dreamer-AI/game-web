@@ -6,15 +6,16 @@ import { useRouter } from "next/navigation";
 import { Header } from "@/components/layout";
 import { Check, Loader2 } from "lucide-react";
 import { useI18n } from "@/providers/i18n-provider";
+import { useToast } from "@/providers/toast-provider";
 import { cn } from "@/lib/utils";
 import { useAvatars, useChangeAvatar } from "@/hooks";
 
 export default function ChangeAvatarPage() {
   const router = useRouter();
   const { t } = useI18n();
+  const { showSuccess, showError } = useToast();
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
-  const [error, setError] = useState("");
 
   // Fetch available avatars
   const { data: avatarsData, isLoading: isLoadingAvatars } = useAvatars();
@@ -29,19 +30,20 @@ export default function ChangeAvatarPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
 
     if (!selectedAvatar) {
-      setError(t("profile.selectAvatar"));
+      showError(t("profile.selectAvatar"));
       return;
     }
 
     try {
       await changeAvatarMutation.mutateAsync({ Id: selectedAvatar });
-      // Navigate back on success
+      // Show toast and navigate back on success
+      showSuccess(t("profile.avatarChanged") || "Avatar changed successfully");
       router.push("/account/profile");
     } catch (err) {
-      setError(err instanceof Error ? err.message : t("common.error"));
+      const errorMessage = err instanceof Error ? err.message : t("common.error");
+      showError(errorMessage);
     }
   };
 
@@ -79,11 +81,6 @@ export default function ChangeAvatarPage() {
       {/* Avatar Grid */}
       <main className="flex-1 px-4 py-4">
         <form onSubmit={handleSubmit} className="flex flex-col h-full">
-          {/* Error Message */}
-          {error && (
-            <p className="text-sm text-red-500 text-center mb-4">{error}</p>
-          )}
-
           {/* Avatar Selection Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6 px-2 sm:px-6">
             {avatars.map((avatar, index) => (

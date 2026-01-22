@@ -11,12 +11,14 @@ import { useI18n } from "@/providers/i18n-provider";
 import { FaCheck } from "react-icons/fa";
 import { FormInput } from "@/components/ui/form-input";
 import { useAuth } from "@/providers/auth-provider";
+import { useToast } from "@/providers/toast-provider";
 import { useWithdrawAccounts, useSubmitWithdraw } from "@/hooks/use-withdrawal";
 
 export default function WithdrawalPage() {
   const router = useRouter();
   const { t } = useI18n();
   const { isAuthenticated } = useAuth();
+  const { showSuccess, showError } = useToast();
 
   // Fetch real bank accounts from API
   const { data: accountsData, isLoading: isLoadingAccounts } = useWithdrawAccounts({
@@ -54,10 +56,12 @@ export default function WithdrawalPage() {
         Amount: parseFloat(amount),
         Pin: pin,
       });
-      // On success, redirect to transactions or show success message
+      // On success, show toast and redirect to transactions
+      showSuccess(t("withdrawal.success") || "Withdrawal submitted successfully");
       router.push("/transaction");
     } catch (error) {
-      console.error("Withdrawal failed:", error);
+      const errorMessage = error instanceof Error ? error.message : t("withdrawal.failed") || "Withdrawal failed. Please try again.";
+      showError(errorMessage);
     }
   };
 
@@ -242,11 +246,6 @@ export default function WithdrawalPage() {
             {submitWithdraw.isPending && <Loader2 className="w-5 h-5 animate-spin" />}
             {t("common.submit")}
           </button>
-          {submitWithdraw.isError && (
-            <p className="text-red-500 text-sm text-center mt-2">
-              {submitWithdraw.error?.message || "Withdrawal failed. Please try again."}
-            </p>
-          )}
         </div>
       </div>
     </RequireAuth>

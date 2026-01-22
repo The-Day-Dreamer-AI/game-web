@@ -7,6 +7,7 @@ import { Trash2, Loader2, X } from "lucide-react";
 import { Header } from "@/components/layout";
 import { useI18n } from "@/providers/i18n-provider";
 import { useAuth } from "@/providers/auth-provider";
+import { useToast } from "@/providers/toast-provider";
 import { useUserBankAccounts, useDeleteBankAccount } from "@/hooks/use-bank";
 import type { UserBankAccount } from "@/lib/api/types";
 
@@ -14,6 +15,7 @@ export default function BankAccountsPage() {
   const router = useRouter();
   const { t } = useI18n();
   const { isAuthenticated } = useAuth();
+  const { showSuccess, showError } = useToast();
   const { data, isLoading, error } = useUserBankAccounts({
     enabled: isAuthenticated,
   });
@@ -50,9 +52,12 @@ export default function BankAccountsPage() {
 
     try {
       await deleteBankAccount.mutateAsync({ Id: accountToDelete.Id });
+      showSuccess(t("bank.deleteSuccess") || "Bank account deleted successfully");
       handleCloseModal();
     } catch (error) {
-      console.error("Failed to delete bank account:", error);
+      const errorMessage = error instanceof Error ? error.message : t("bank.deleteFailed");
+      showError(errorMessage);
+      handleCloseModal();
     }
   };
 
@@ -193,13 +198,6 @@ export default function BankAccountsPage() {
               <h3 className="text-base font-roboto-bold text-[#28323C] mb-6">
                 {t("bank.deleteConfirmTitle")}
               </h3>
-
-              {/* Error Message */}
-              {deleteBankAccount.isError && (
-                <p className="text-red-500 text-sm mb-4">
-                  {deleteBankAccount.error?.message || t("bank.deleteFailed")}
-                </p>
-              )}
 
               {/* Action Buttons */}
               <div className="flex gap-3 font-roboto-bold text-[14px]">

@@ -8,6 +8,7 @@ import { Header } from "@/components/layout";
 import { FormInput } from "@/components/ui/form-input";
 import { useAuth } from "@/providers/auth-provider";
 import { useI18n } from "@/providers/i18n-provider";
+import { useToast } from "@/providers/toast-provider";
 import { useContactDetail, useDeleteContact } from "@/hooks/use-contact";
 
 export default function ContactDetailPage() {
@@ -15,6 +16,7 @@ export default function ContactDetailPage() {
   const params = useParams();
   const { isAuthenticated } = useAuth();
   const { t } = useI18n();
+  const { showSuccess, showError } = useToast();
 
   const contactId = params.id as string;
 
@@ -50,9 +52,12 @@ export default function ContactDetailPage() {
   const handleDelete = async () => {
     try {
       await deleteContact.mutateAsync({ Id: contactId });
+      showSuccess(t("contact.deleteSuccess") || "Contact deleted successfully");
       router.push("/account/contact");
     } catch (error) {
-      console.error("Failed to delete contact:", error);
+      const errorMessage = error instanceof Error ? error.message : t("contact.deleteFailed") || "Failed to delete contact";
+      showError(errorMessage);
+      setShowDeleteConfirm(false);
     }
   };
 

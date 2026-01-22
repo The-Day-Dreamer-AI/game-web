@@ -7,6 +7,7 @@ import { Header } from "@/components/layout";
 import { FormInput } from "@/components/ui/form-input";
 import { Eye, EyeOff, ChevronDown, Loader2 } from "lucide-react";
 import { useI18n } from "@/providers/i18n-provider";
+import { useToast } from "@/providers/toast-provider";
 import { cn } from "@/lib/utils";
 import { useChangePasswordGetTac, useChangePassword } from "@/hooks";
 
@@ -20,6 +21,7 @@ const sendToOptions: { value: SendToOption; labelKey: string }[] = [
 export default function ChangePasswordPage() {
   const router = useRouter();
   const { t } = useI18n();
+  const { showSuccess, showError } = useToast();
 
   // Form state
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -38,7 +40,6 @@ export default function ChangePasswordPage() {
   const [otpSent, setOtpSent] = useState(false);
 
   // Error state
-  const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   // API hooks
@@ -55,7 +56,6 @@ export default function ChangePasswordPage() {
   }, [countdown]);
 
   const handleRequestOtp = async () => {
-    setError("");
     setFieldErrors({});
 
     try {
@@ -64,16 +64,16 @@ export default function ChangePasswordPage() {
         setOtpSent(true);
         setCountdown(result.ExpiresIn || 60);
       } else {
-        setError(result.Message || t("common.error"));
+        showError(result.Message || t("common.error"));
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : t("common.error"));
+      const errorMessage = err instanceof Error ? err.message : t("common.error");
+      showError(errorMessage);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
     setFieldErrors({});
 
     // Validation
@@ -96,7 +96,7 @@ export default function ChangePasswordPage() {
     }
 
     if (!otpSent) {
-      setError(t("auth.requestOtpFirst"));
+      showError(t("auth.requestOtpFirst"));
       return;
     }
 
@@ -117,13 +117,15 @@ export default function ChangePasswordPage() {
       });
 
       if (result.Code === 0) {
-        // Success - navigate back to profile
+        // Success - show toast and navigate back to profile
+        showSuccess(t("profile.passwordChanged") || "Password changed successfully");
         router.push("/account/profile");
       } else {
-        setError(result.Message || t("common.error"));
+        showError(result.Message || t("common.error"));
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : t("common.error"));
+      const errorMessage = err instanceof Error ? err.message : t("common.error");
+      showError(errorMessage);
     }
   };
 
@@ -339,11 +341,6 @@ export default function ChangePasswordPage() {
             }
             error={fieldErrors.confirmPassword}
           />
-
-          {/* Error Message */}
-          {error && (
-            <p className="text-sm text-red-500 text-center">{error}</p>
-          )}
 
           {/* Submit Button */}
           <button

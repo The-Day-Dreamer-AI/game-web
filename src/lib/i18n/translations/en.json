@@ -446,5 +446,10 @@
     "cameraError": "Unable to access camera",
     "cameraAccessDenied": "Camera Access Required",
     "cameraAccessInfo": "Please allow camera access in your browser settings to scan QR codes."
+  },
+  "toast": {
+    "success": "Success",
+    "warning": "Warning",
+    "error": "Error"
   }
 }

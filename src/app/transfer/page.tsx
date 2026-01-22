@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
@@ -8,6 +8,7 @@ import { Header } from "@/components/layout";
 import { FormInput } from "@/components/ui/form-input";
 import { useAuth } from "@/providers/auth-provider";
 import { useI18n } from "@/providers/i18n-provider";
+import { useToast } from "@/providers/toast-provider";
 import { useTransferInfo, usePostTransfer } from "@/hooks/use-contact";
 
 export default function TransferPage() {
@@ -15,6 +16,7 @@ export default function TransferPage() {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
   const { t } = useI18n();
+  const { showError } = useToast();
 
   // Get target ID from query param
   const targetId = searchParams.get("id") || "";
@@ -37,6 +39,15 @@ export default function TransferPage() {
   // Transfer mutation
   const postTransfer = usePostTransfer();
 
+  // Handle error - show toast and redirect back
+  useEffect(() => {
+    if (error) {
+      const errorMessage = error instanceof Error ? error.message : t("transfer.loadFailed");
+      showError(errorMessage);
+      router.back();
+    }
+  }, [error, showError, t, router]);
+
   const handleTransfer = () => {
     setShowConfirm(true);
   };
@@ -55,12 +66,13 @@ export default function TransferPage() {
         setShowConfirm(false);
         setShowSuccess(true);
       } else {
-        // Show error message from API
-        alert(response.Message || t("transfer.failed"));
+        // Show error message from API via toast
+        showError(response.Message || t("transfer.failed"));
         setShowConfirm(false);
       }
     } catch (error) {
-      console.error("Transfer failed:", error);
+      const errorMessage = error instanceof Error ? error.message : t("transfer.failed");
+      showError(errorMessage);
       setShowConfirm(false);
     }
   };
@@ -121,6 +133,7 @@ export default function TransferPage() {
     );
   }
 
+  // If error or no transfer info, show loading (will redirect via useEffect)
   if (error || !transferInfo) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -129,10 +142,8 @@ export default function TransferPage() {
           title={t("transfer.title")}
           backHref="/account/contact"
         />
-        <div className="flex-1 flex items-center justify-center px-4">
-          <p className="text-sm text-red-500 text-center">
-            {t("transfer.loadFailed")}
-          </p>
+        <div className="flex-1 flex items-center justify-center">
+          <Loader2 className="w-8 h-8 text-primary animate-spin" />
         </div>
       </div>
     );

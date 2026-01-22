@@ -6,6 +6,7 @@ import { I18nProvider } from "@/providers/i18n-provider";
 import { AuthProvider } from "@/providers/auth-provider";
 import { LoginModalProvider } from "@/providers/login-modal-provider";
 import { LoadingOverlayProvider } from "@/providers/loading-overlay-provider";
+import { ToastProvider } from "@/providers/toast-provider";
 import { MobileContainer } from "@/components/layout";
 
 const geistSans = Geist({
@@ -130,9 +131,11 @@ export default function RootLayout({
           <AuthProvider>
             <I18nProvider>
               <LoadingOverlayProvider>
-                <LoginModalProvider>
-                  <MobileContainer>{children}</MobileContainer>
-                </LoginModalProvider>
+                <ToastProvider>
+                  <LoginModalProvider>
+                    <MobileContainer>{children}</MobileContainer>
+                  </LoginModalProvider>
+                </ToastProvider>
               </LoadingOverlayProvider>
             </I18nProvider>
           </AuthProvider>

@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
+import { useToast } from "@/providers/toast-provider";
 import { useDepositAccounts, useSubmitDeposit } from "@/hooks/use-deposit";
 import type { DepositBankAccount, DepositPromo } from "@/lib/api/types";
 import { FaCheck } from "react-icons/fa";
@@ -22,6 +23,7 @@ const quickAmounts = [50, 100, 500, 1000];
 
 export default function BankTransferPage() {
   const { t } = useI18n();
+  const { showSuccess, showError } = useToast();
   const { data: accountsData, isLoading } = useDepositAccounts();
   const submitDeposit = useSubmitDeposit();
 
@@ -114,13 +116,15 @@ export default function BankTransferPage() {
         setReceipt(null);
         setSelectedPromotion(null);
         setPromoCode("");
-        // Show success message or redirect
-        alert(result.Message || t("common.success"));
+        // Show success toast
+        showSuccess(result.Message || t("common.success"));
       } else {
         setSubmitError(result.Message || t("common.error"));
+        showError(result.Message || t("common.error"));
       }
     } catch {
       setSubmitError(t("common.error"));
+      showError(t("common.error"));
     }
   };
 

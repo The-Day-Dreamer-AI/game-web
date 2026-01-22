@@ -422,5 +422,10 @@
     "deleteButton": "PADAM",
     "deleteTitle": "Padam rakan ini?",
     "deleteMessage": "Tindakan ini tidak boleh dibatalkan."
+  },
+  "toast": {
+    "success": "Berjaya",
+    "warning": "Amaran",
+    "error": "Ralat"
   }
 }

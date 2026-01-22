@@ -422,5 +422,10 @@
     "deleteButton": "删除",
     "deleteTitle": "删除此好友？",
     "deleteMessage": "此操作无法撤销。"
+  },
+  "toast": {
+    "success": "成功",
+    "warning": "警告",
+    "error": "错误"
   }
 }
