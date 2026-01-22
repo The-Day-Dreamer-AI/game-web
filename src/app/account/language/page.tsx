@@ -38,7 +38,6 @@ export default function LanguagePage() {
       <Header
         variant="subpage"
         title={t("language.title")}
-        backHref="/account"
       />
 
       {/* Main Content */}

@@ -123,7 +123,7 @@ export default function RebateListPage() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header variant="subpage" title={t("account.rebateList")} backHref="/account" />
+        <Header variant="subpage" title={t("account.rebateList")} />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
             {t("common.loginRequired")}
@@ -136,7 +136,7 @@ export default function RebateListPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header variant="subpage" title={t("account.rebateList")} backHref="/account" />
+        <Header variant="subpage" title={t("account.rebateList")} />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
         </div>
@@ -159,7 +159,7 @@ export default function RebateListPage() {
 
       {/* Header */}
       <div className="relative z-10">
-        <Header variant="subpage" title={t("account.rebateList")} backHref="/account" />
+        <Header variant="subpage" title={t("account.rebateList")} />
       </div>
 
       {/* Banner */}

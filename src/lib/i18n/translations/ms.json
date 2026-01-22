@@ -385,6 +385,17 @@
     "invalid": "Kod tebusan tidak sah",
     "failed": "Gagal menebus kod. Sila cuba lagi."
   },
+  "redeemGift": {
+    "title": "Tebus Hadiah",
+    "pointBalance": "Baki A-Point:",
+    "redeemHistory": "Sejarah Tebusan",
+    "claim": "Tebus",
+    "noRewards": "Tiada hadiah tersedia",
+    "insufficientTitle": "A-Point Tidak Mencukupi",
+    "insufficientMessage": "A-Point tidak mencukupi untuk menebus hadiah ini.",
+    "claimFailed": "Gagal menebus hadiah",
+    "noHistory": "Tiada sejarah buat masa ini."
+  },
   "scanner": {
     "title": "Imbas Kod QR",
     "scanReferralQr": "Letakkan kod QR dalam bingkai untuk mengimbas kod rujukan anda",

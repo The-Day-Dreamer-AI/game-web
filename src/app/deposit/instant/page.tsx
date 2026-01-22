@@ -113,7 +113,6 @@ export default function InstantDepositPage() {
           <Header
             variant="subpage"
             title={t("deposit.instantDeposit")}
-            backHref="/deposit"
           />
           <div className="flex-1 flex items-center justify-center">
             <Loader2 className="w-8 h-8 text-primary animate-spin" />
@@ -130,7 +129,6 @@ export default function InstantDepositPage() {
         <Header
           variant="subpage"
           title={t("deposit.instantDeposit")}
-          backHref="/deposit"
         />
 
         {/* Main Content */}

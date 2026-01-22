@@ -24,7 +24,7 @@ export default function ReportPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <Header variant="subpage" title="Report" backHref="/account" />
+      <Header variant="subpage" title="Report" />
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto p-4 space-y-3">

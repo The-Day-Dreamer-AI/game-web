@@ -385,6 +385,17 @@
     "invalid": "无效的兑换码",
     "failed": "兑换失败，请重试。"
   },
+  "redeemGift": {
+    "title": "兑换礼品",
+    "pointBalance": "A积分余额：",
+    "redeemHistory": "兑换记录",
+    "claim": "兑换",
+    "noRewards": "暂无可兑换礼品",
+    "insufficientTitle": "A积分不足",
+    "insufficientMessage": "A积分不足以兑换此礼品。",
+    "claimFailed": "兑换失败",
+    "noHistory": "暂无兑换记录。"
+  },
   "scanner": {
     "title": "扫描二维码",
     "scanReferralQr": "将二维码放置在框内以扫描您的推荐码",

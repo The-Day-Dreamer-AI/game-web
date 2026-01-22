@@ -140,7 +140,6 @@ export default function BankTransferPage() {
           <Header
             variant="subpage"
             title={t("deposit.bankTransfer")}
-            backHref="/deposit"
           />
           <div className="flex-1 flex items-center justify-center">
             <Loader2 className="w-8 h-8 text-primary animate-spin" />
@@ -157,7 +156,6 @@ export default function BankTransferPage() {
         <Header
           variant="subpage"
           title={t("deposit.bankTransfer")}
-          backHref="/deposit"
         />
 
         {/* Main Content */}

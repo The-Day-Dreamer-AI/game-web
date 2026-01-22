@@ -441,6 +441,17 @@
     "invalid": "Invalid redeem code",
     "failed": "Failed to redeem code. Please try again."
   },
+  "redeemGift": {
+    "title": "Redeem Gift",
+    "pointBalance": "A-Point Balance:",
+    "redeemHistory": "Redeem History",
+    "claim": "Claim",
+    "noRewards": "No rewards available",
+    "insufficientTitle": "Insufficient A-Point",
+    "insufficientMessage": "A-Point is not sufficient to claim this gift.",
+    "claimFailed": "Failed to claim reward",
+    "noHistory": "There are no history at the moment."
+  },
   "scanner": {
     "title": "Scan QR Code",
     "scanReferralQr": "Position the QR code within the frame to scan your referral code",

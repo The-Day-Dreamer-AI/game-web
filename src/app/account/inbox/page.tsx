@@ -135,7 +135,7 @@ export default function InboxPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <Header variant="subpage" title={t("inbox.title")} backHref="/account" />
+      <Header variant="subpage" title={t("inbox.title")} />
 
       {/* Tabs */}
       <div className="bg-white border-b border-zinc-200">

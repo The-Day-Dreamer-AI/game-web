@@ -83,7 +83,6 @@ export default function ContactPage() {
         <Header
           variant="subpage"
           title={isTransferMode ? t("contact.transfer") : t("contact.myContact")}
-          backHref="/account"
         />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
@@ -100,7 +99,6 @@ export default function ContactPage() {
       <Header
         variant="subpage"
         title={isTransferMode ? t("contact.transfer") : t("contact.myContact")}
-        backHref="/account"
       />
 
       {/* Add New Friend Banner - only when not in transfer mode */}

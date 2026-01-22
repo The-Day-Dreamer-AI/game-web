@@ -51,7 +51,6 @@ export default function ChangeUsernamePage() {
         <Header
           variant="subpage"
           title={t("profile.changeUsername")}
-          backHref="/account/profile"
         />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -66,7 +65,6 @@ export default function ChangeUsernamePage() {
       <Header
         variant="subpage"
         title={t("profile.changeUsername")}
-        backHref="/account/profile"
       />
 
       {/* Form */}

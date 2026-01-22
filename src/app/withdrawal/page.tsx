@@ -73,7 +73,7 @@ export default function WithdrawalPage() {
     <RequireAuth>
       <div className="min-h-screen flex flex-col">
         {/* Header */}
-        <Header variant="subpage" title={t("withdrawal.title")} backHref="/deposit" />
+        <Header variant="subpage" title={t("withdrawal.title")} />
 
         {/* Main Content */}
         <main className="flex-1 overflow-auto px-4 py-4">

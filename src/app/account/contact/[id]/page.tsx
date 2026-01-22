@@ -73,7 +73,6 @@ export default function ContactDetailPage() {
         <Header
           variant="subpage"
           title={t("contact.friendDetail")}
-          backHref="/account/contact"
         />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
@@ -90,7 +89,6 @@ export default function ContactDetailPage() {
         <Header
           variant="subpage"
           title={t("contact.friendDetail")}
-          backHref="/account/contact"
         />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
@@ -105,7 +103,6 @@ export default function ContactDetailPage() {
         <Header
           variant="subpage"
           title={t("contact.friendDetail")}
-          backHref="/account/contact"
         />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-red-500 text-center">
@@ -124,7 +121,6 @@ export default function ContactDetailPage() {
       <Header
         variant="subpage"
         title={t("contact.friendDetail")}
-        backHref="/account/contact"
       />
 
       {/* Main Content */}

@@ -139,7 +139,6 @@ export default function ChangePasswordPage() {
       <Header
         variant="subpage"
         title={t("profile.changePassword")}
-        backHref="/account/profile"
       />
 
       {/* Form */}

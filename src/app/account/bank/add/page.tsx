@@ -75,7 +75,6 @@ export default function AddBankAccountPage() {
         <Header
           variant="subpage"
           title={t("account.addBankAccount")}
-          backHref="/account/bank"
         />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
@@ -93,7 +92,6 @@ export default function AddBankAccountPage() {
         <Header
           variant="subpage"
           title={t("account.addBankAccount")}
-          backHref="/account/bank"
         />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
@@ -109,7 +107,6 @@ export default function AddBankAccountPage() {
         <Header
           variant="subpage"
           title={t("account.addBankAccount")}
-          backHref="/account/bank"
         />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-red-500 text-center">
@@ -127,7 +124,6 @@ export default function AddBankAccountPage() {
         <Header
           variant="subpage"
           title={t("account.addBankAccount")}
-          backHref="/account/bank"
         />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
@@ -143,7 +139,6 @@ export default function AddBankAccountPage() {
       <Header
         variant="subpage"
         title={t("account.addBankAccount")}
-        backHref="/account/bank"
       />
 
       <main className="flex-1 px-4 py-4 overflow-auto">

@@ -67,7 +67,6 @@ export default function BankAccountsPage() {
         <Header
           variant="subpage"
           title={t("account.bankAccount")}
-          backHref="/withdrawal"
         />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
@@ -86,7 +85,6 @@ export default function BankAccountsPage() {
       <Header
         variant="subpage"
         title={t("account.bankAccount")}
-        backHref="/withdrawal"
       />
 
       <main className="flex-1 px-4 py-4">

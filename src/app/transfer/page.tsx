@@ -90,7 +90,6 @@ export default function TransferPage() {
         <Header
           variant="subpage"
           title={t("transfer.title")}
-          backHref="/account/contact"
         />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
@@ -107,7 +106,6 @@ export default function TransferPage() {
         <Header
           variant="subpage"
           title={t("transfer.title")}
-          backHref="/account/contact"
         />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
@@ -124,7 +122,6 @@ export default function TransferPage() {
         <Header
           variant="subpage"
           title={t("transfer.title")}
-          backHref="/account/contact"
         />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
@@ -140,7 +137,6 @@ export default function TransferPage() {
         <Header
           variant="subpage"
           title={t("transfer.title")}
-          backHref="/account/contact"
         />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
@@ -156,7 +152,7 @@ export default function TransferPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <Header variant="subpage" title={t("transfer.title")} backHref="/account/contact" />
+      <Header variant="subpage" title={t("transfer.title")} />
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto p-6">

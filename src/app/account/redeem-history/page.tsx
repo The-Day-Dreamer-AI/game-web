@@ -1,14 +1,16 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import { Loader2, X, ClipboardList } from "lucide-react";
 import Image from "next/image";
 import { Header } from "@/components/layout";
 import { useAuth } from "@/providers/auth-provider";
+import { useI18n } from "@/providers/i18n-provider";
 import { useMyRewards } from "@/hooks";
 import { cn } from "@/lib/utils";
 
 export default function RedeemHistoryPage() {
   const { isAuthenticated } = useAuth();
+  const { t } = useI18n();
 
   // Fetch my rewards history
   const { data: myRewardsData, isLoading } = useMyRewards({
@@ -70,10 +72,13 @@ export default function RedeemHistoryPage() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header variant="subpage" title="Redeem History" backHref="/account/redeem-gift" />
+        <Header
+          variant="subpage"
+          title={t("redeemGift.redeemHistory")}
+        />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
-            Please login to access this page
+            {t("common.loginRequired")}
           </p>
         </div>
       </div>
@@ -83,7 +88,10 @@ export default function RedeemHistoryPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header variant="subpage" title="Redeem History" backHref="/account/redeem-gift" />
+        <Header
+          variant="subpage"
+          title={t("redeemGift.redeemHistory")}
+        />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
         </div>
@@ -94,7 +102,10 @@ export default function RedeemHistoryPage() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       {/* Header */}
-      <Header variant="subpage" title="Redeem History" backHref="/account/redeem-gift" />
+      <Header
+        variant="subpage"
+        title={t("redeemGift.redeemHistory")}
+      />
 
       {/* Rewards History List */}
       <main className="flex-1 overflow-auto">
@@ -142,8 +153,19 @@ export default function RedeemHistoryPage() {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-12 text-zinc-500">
-            <p>No redemption history</p>
+          <div className="flex-1 flex flex-col items-center justify-center py-12">
+            {/* Empty State Icon - Clipboard with X */}
+            <div className="flex flex-col justify-center items-center py-26 text-[#A9ADB1] text-xs font-roboto-medium gap-9">
+              <Image
+                src="/images/icon/no_report_icon.png"
+                alt="AON1E"
+                width={200}
+                height={200}
+                unoptimized
+                className="h-36 w-auto object-contain"
+              />
+              {t("redeemGift.noHistory")}
+            </div>
           </div>
         )}
       </main>

@@ -58,7 +58,6 @@ export default function ChangeAvatarPage() {
         <Header
           variant="subpage"
           title={t("profile.changeAvatar")}
-          backHref="/account/profile"
         />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -75,7 +74,6 @@ export default function ChangeAvatarPage() {
       <Header
         variant="subpage"
         title={t("profile.changeAvatar")}
-        backHref="/account/profile"
       />
 
       {/* Avatar Grid */}

@@ -36,7 +36,6 @@ export default function ProfilePage() {
       <Header
         variant="subpage"
         title={t("account.profile")}
-        backHref="/account"
       />
 
       {/* Menu Items */}

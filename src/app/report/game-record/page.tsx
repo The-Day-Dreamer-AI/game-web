@@ -133,7 +133,6 @@ export default function GameRecordPage() {
         <Header
           variant="subpage"
           title={t("report.gameRecord")}
-          backHref="/report"
         />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
@@ -150,7 +149,6 @@ export default function GameRecordPage() {
       <Header
         variant="subpage"
         title={t("report.gameRecord")}
-        backHref="/report"
       />
 
       {/* Main Content */}

@@ -13,7 +13,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <Header variant="subpage" title={t("about.title")} backHref="/account" />
+      <Header variant="subpage" title={t("about.title")} />
 
       {/* Hero Banner */}
       <div className="relative h-[280px] bg-dark">

@@ -59,7 +59,6 @@ export default function RedeemCodePage() {
         <Header
           variant="subpage"
           title={t("account.redeemCode")}
-          backHref="/account"
         />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
@@ -76,7 +75,6 @@ export default function RedeemCodePage() {
       <Header
         variant="subpage"
         title={t("account.redeemCode")}
-        backHref="/account"
       />
 
       {/* Main Content */}

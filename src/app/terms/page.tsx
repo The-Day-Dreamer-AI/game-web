@@ -62,7 +62,7 @@ export default function TermsPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <Header variant="subpage" title={t("terms.title")} backHref="/account" />
+      <Header variant="subpage" title={t("terms.title")} />
 
       {/* Logo Section */}
       <div className="bg-white py-16 flex justify-center">
