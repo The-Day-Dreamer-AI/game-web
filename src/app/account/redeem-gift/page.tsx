@@ -83,7 +83,7 @@ export default function RedeemGiftPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-zinc-100">
+    <div className="min-h-screen flex flex-col">
       {/* Header */}
       <Header variant="subpage" title={t("redeemGift.title")} />
 
@@ -133,7 +133,7 @@ export default function RedeemGiftPage() {
         <div className="grid grid-cols-2 gap-5">
           {rewards.map((reward) => (
             <div key={reward.Id} className="flex flex-col">
-              <div className="bg-white rounded-t-xl overflow-hidden shadow-md flex-1 pb-1">
+              <div className="bg-white rounded-t-xl overflow-hidden shadow-2xl flex-1 pb-1">
                 {/* Reward Image */}
                 <div className="relative aspect-square">
                   <Image

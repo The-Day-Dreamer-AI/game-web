@@ -70,7 +70,7 @@ export default function RedeemCodePage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col">
       {/* Header */}
       <Header
         variant="subpage"

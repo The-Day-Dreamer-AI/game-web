@@ -182,14 +182,6 @@ export interface BankAccount {
 }
 
 // ===========================================
-// About Us Types
-// ===========================================
-
-export interface AboutUsResponse {
-  Content: string;
-}
-
-// ===========================================
 // Game Records Types
 // ===========================================
 

@@ -210,7 +210,7 @@ export default function NewFriendPage() {
           )}
 
           {/* Request Section with Border */}
-          <div className="shadow-xl rounded-4xl overflow-hidden">
+          <div className="shadow-xl rounded-4xl overflow-hidden bg-white">
             {/* Request Tabs */}
             <div className="flex bg-white">
               <button

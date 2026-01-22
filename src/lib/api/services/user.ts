@@ -2,7 +2,6 @@ import { apiClient } from "../client";
 import type {
   QrCodeResponse,
   HaveBankAccountResponse,
-  AboutUsResponse,
   UserProfileResponse,
   GetNameResponse,
   ChangeNameRequest,
@@ -40,15 +39,6 @@ export const userApi = {
   async getHaveBankAccount(): Promise<HaveBankAccountResponse> {
     return apiClient.get<HaveBankAccountResponse>("/api/mapibank/GetHaveBankAccount", {
       authenticated: true,
-    });
-  },
-
-  /**
-   * Get about us content
-   */
-  async getAboutUs(): Promise<AboutUsResponse> {
-    return apiClient.get<AboutUsResponse>("/api/MapiDiscover/AboutUs", {
-      authenticated: false,
     });
   },
 

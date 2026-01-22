@@ -322,7 +322,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     await logout();
                     router.push("/home");
                   }}
-                  className="w-full flex items-center gap-4 px-4 py-3"
+                  className="w-full flex items-center gap-4 px-4 py-3 cursor-pointer"
                 >
                   <Image
                     src="/images/sidebar/sidebar_logout_icon.png"

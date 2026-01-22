@@ -9,7 +9,6 @@ export const userKeys = {
   all: ["user"] as const,
   profile: () => [...userKeys.all, "profile"] as const,
   qrCode: () => [...userKeys.all, "qrCode"] as const,
-  aboutUs: () => [...userKeys.all, "aboutUs"] as const,
   haveBankAccount: () => [...userKeys.all, "haveBankAccount"] as const,
   name: () => [...userKeys.all, "name"] as const,
   avatars: () => [...userKeys.all, "avatars"] as const,
@@ -41,20 +40,6 @@ export function useQrCode() {
       return response;
     },
     staleTime: 10 * 60 * 1000, // 10 minutes - QR code doesn't change often
-  });
-}
-
-/**
- * Hook to fetch about us content
- */
-export function useAboutUs() {
-  return useQuery({
-    queryKey: userKeys.aboutUs(),
-    queryFn: async () => {
-      const response = await userApi.getAboutUs();
-      return response;
-    },
-    staleTime: 30 * 60 * 1000, // 30 minutes - static content
   });
 }
 

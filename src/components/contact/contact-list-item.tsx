@@ -23,7 +23,7 @@ export function ContactListItem({
     <button
       onClick={onClick}
       className={cn(
-        "w-full flex items-center gap-5 py-3 px-4 hover:bg-zinc-50 transition-colors cursor-pointer",
+        "w-full flex items-center gap-5 py-3 px-4 bg-white cursor-pointer",
         className
       )}
     >
