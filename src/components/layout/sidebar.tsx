@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
 import { useAuth } from "@/providers/auth-provider";
 import { useLoginModal } from "@/providers/login-modal-provider";
+import { SpinWheelAnimation } from "../animation/spin-wheel-animation";
+import { CheckInAnimation } from "../animation/check-in-animation";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -214,18 +216,24 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               <Link
                 href="/check-in"
                 onClick={onClose}
-                className="h-16 flex-1 gap-2 px-3 pt-1 bg-white rounded-lg hover:bg-zinc-50 transition-colors shadow-sm"
+                className="h-16 flex-1 gap-2 px-3 pt-1 bg-white rounded-lg hover:bg-zinc-50 transition-colors shadow-sm relative overflow-hidden"
               >
-                <span className="text-xs font-roboto-bold text-[#28323C]">
+                <div className="absolute left-15 bottom-0.5 translate-x-0 w-full h-auto">
+                  <CheckInAnimation />
+                </div>
+                <span className="text-xs font-roboto-bold text-[#28323C] z-10">
                   {t("sidebar.checkIn")}
                 </span>
               </Link>
               <Link
                 href="/spin-wheel"
                 onClick={onClose}
-                className="flex-1 gap-2 px-3 pt-1 bg-white rounded-lg hover:bg-zinc-50 transition-colors shadow-sm"
+                className="flex-1 gap-2 px-3 pt-1 bg-white rounded-lg hover:bg-zinc-50 transition-colors shadow-sm relative overflow-hidden"
               >
-                <span className="text-xs font-roboto-bold text-[#28323C]">
+                <div className="absolute left-16 bottom-2.5 translate-x-0 w-full h-auto">
+                  <SpinWheelAnimation />
+                </div>
+                <span className="text-xs font-roboto-bold text-[#28323C] z-10">
                   {t("sidebar.spinWheel")}
                 </span>
               </Link>
@@ -280,9 +288,10 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             <div className="bg-white rounded-lg overflow-hidden shadow-sm px-3">
               {secondaryMenuItems.map((item, index) => {
                 // Use dynamic flag icon for language item based on current locale
-                const iconSrc = item.id === "language"
-                  ? (localeFlagIcons[locale] || localeFlagIcons.en)
-                  : item.icon;
+                const iconSrc =
+                  item.id === "language"
+                    ? localeFlagIcons[locale] || localeFlagIcons.en
+                    : item.icon;
 
                 return (
                   <div key={item.id}>
@@ -346,9 +355,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           {/* Footer - Dark background */}
           <div className="px-6 py-4 text-center text-[#5F7182] font-roboto-regular text-xs">
             <p>{t("sidebar.copyright")}</p>
-            <p>
-              {t("sidebar.allRightsReserved")}
-            </p>
+            <p>{t("sidebar.allRightsReserved")}</p>
           </div>
         </div>
       </div>

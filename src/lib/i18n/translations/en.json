@@ -31,7 +31,9 @@
     "copied": "Copied!",
     "copyLink": "Copy Link",
     "search": "Search",
-    "fillAllFields": "Please fill in all required fields"
+    "fillAllFields": "Please fill in all required fields",
+    "notFound": "404 Page not found",
+    "backToHome": "Back to Home"
   },
   "referral": {
     "title": "Referral",

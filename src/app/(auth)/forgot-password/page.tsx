@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { authApi, ApiError } from "@/lib/api";
 import type { MessageSelectionOption } from "@/lib/api/types";
-import { Header } from "@/components/layout";
 import { FormInput } from "@/components/ui/form-input";
 import { useI18n } from "@/providers/i18n-provider";
 import { useToast } from "@/providers/toast-provider";

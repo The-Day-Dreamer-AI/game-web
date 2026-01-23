@@ -31,7 +31,9 @@
     "copied": "Disalin!",
     "copyLink": "Salin Pautan",
     "search": "Cari",
-    "fillAllFields": "Sila isi semua ruangan yang diperlukan"
+    "fillAllFields": "Sila isi semua ruangan yang diperlukan",
+    "notFound": "404 Halaman tidak dijumpai",
+    "backToHome": "Kembali ke Laman Utama"
   },
   "referral": {
     "title": "Rujukan",
