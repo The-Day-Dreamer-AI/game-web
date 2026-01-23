@@ -9,8 +9,6 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <Header variant="subpage" title={t("about.title")} />
 
       {/* Hero Banner */}
       <div className="relative w-full aspect-4/3 bg-dark overflow-hidden">

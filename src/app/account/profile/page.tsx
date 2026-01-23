@@ -32,12 +32,6 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <Header
-        variant="subpage"
-        title={t("account.profile")}
-      />
-
       {/* Menu Items */}
       <main className="flex-1 px-4 py-4">
         <div className="space-y-3">

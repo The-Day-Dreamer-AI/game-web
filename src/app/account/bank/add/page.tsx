@@ -72,10 +72,6 @@ export default function AddBankAccountPage() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header
-          variant="subpage"
-          title={t("account.addBankAccount")}
-        />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
             {t("common.loginRequired")}
@@ -89,10 +85,6 @@ export default function AddBankAccountPage() {
   if (isLoadingBanks) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header
-          variant="subpage"
-          title={t("account.addBankAccount")}
-        />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
         </div>
@@ -104,10 +96,6 @@ export default function AddBankAccountPage() {
   if (banksError) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header
-          variant="subpage"
-          title={t("account.addBankAccount")}
-        />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-red-500 text-center">
             {t("common.errorLoading")}
@@ -121,10 +109,6 @@ export default function AddBankAccountPage() {
   if (banksData?.Code === 1) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header
-          variant="subpage"
-          title={t("account.addBankAccount")}
-        />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
         </div>
@@ -136,11 +120,6 @@ export default function AddBankAccountPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header
-        variant="subpage"
-        title={t("account.addBankAccount")}
-      />
-
       <main className="flex-1 px-4 py-4 overflow-auto">
         {/* Bank Account Selection - Grid of banks */}
         <div className="mb-6">

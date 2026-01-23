@@ -48,10 +48,6 @@ export default function ChangeUsernamePage() {
   if (isLoadingName) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header
-          variant="subpage"
-          title={t("profile.changeUsername")}
-        />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
         </div>
@@ -61,12 +57,6 @@ export default function ChangeUsernamePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <Header
-        variant="subpage"
-        title={t("profile.changeUsername")}
-      />
-
       {/* Form */}
       <main className="flex-1 px-4 py-4">
         <form onSubmit={handleSubmit} className="space-y-5">

@@ -69,8 +69,6 @@ export default function DepositPage() {
   return (
     <RequireAuth>
       <div className="min-h-screen flex flex-col">
-        {/* Header */}
-        <Header variant="subpage" title={t("wallet.title")} />
 
         {/* Wallet Balance Section */}
         <div className="flex flex-col items-center gap-7 px-5 pb-5 pt-4 relative h-40 w-full">
@@ -274,8 +272,6 @@ export default function DepositPage() {
           )}
         </main>
 
-        {/* Bottom Navigation */}
-        <BottomNav />
       </div>
     </RequireAuth>
   );

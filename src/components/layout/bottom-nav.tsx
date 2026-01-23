@@ -71,7 +71,7 @@ export function BottomNav() {
   };
 
   return (
-    <nav className="bg-dark px-4 py-[11px] sticky bottom-0 left-0 right-0 overflow-visible">
+    <nav className="bg-dark px-4 py-[11px] sticky bottom-0 z-50 overflow-visible">
       <div className="grid grid-cols-[1fr_1fr_1.2fr_1fr_1fr] items-end overflow-visible">
         {/* Left items */}
         {navItems.slice(0, 2).map(renderNavItem)}

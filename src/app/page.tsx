@@ -245,9 +245,6 @@ export default function HomePage() {
       {/* App Download Banner */}
       {isMobileDevice && <AppDownloadBanner />}
 
-      {/* Header */}
-      <Header variant="logo" />
-
       {/* Main Content */}
       <main className="flex-1 overflow-auto pb-7">
         {/* Banner Slider - Full width, no padding, no dots, no border radius */}
@@ -352,9 +349,6 @@ export default function HomePage() {
           )}
         </div>
       </main>
-
-      {/* Bottom Navigation */}
-      <BottomNav />
     </div>
   );
 }

@@ -232,8 +232,6 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <Header variant="subpage" title={t("auth.forgotPassword")} />
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto">

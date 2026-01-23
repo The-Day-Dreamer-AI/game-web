@@ -55,10 +55,6 @@ export default function ChangeAvatarPage() {
   if (isLoadingAvatars) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header
-          variant="subpage"
-          title={t("profile.changeAvatar")}
-        />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
         </div>
@@ -70,12 +66,6 @@ export default function ChangeAvatarPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <Header
-        variant="subpage"
-        title={t("profile.changeAvatar")}
-      />
-
       {/* Avatar Grid */}
       <main className="flex-1 px-4 py-4">
         <form onSubmit={handleSubmit} className="flex flex-col h-full">

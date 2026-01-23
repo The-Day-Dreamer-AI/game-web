@@ -87,10 +87,6 @@ export default function TransferPage() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header
-          variant="subpage"
-          title={t("transfer.title")}
-        />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
             {t("transfer.loginRequired")}
@@ -103,10 +99,6 @@ export default function TransferPage() {
   if (!targetId) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header
-          variant="subpage"
-          title={t("transfer.title")}
-        />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
             {t("transfer.noRecipient")}
@@ -119,10 +111,6 @@ export default function TransferPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header
-          variant="subpage"
-          title={t("transfer.title")}
-        />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
         </div>
@@ -134,10 +122,6 @@ export default function TransferPage() {
   if (error || !transferInfo) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header
-          variant="subpage"
-          title={t("transfer.title")}
-        />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
         </div>
@@ -151,8 +135,6 @@ export default function TransferPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <Header variant="subpage" title={t("transfer.title")} />
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto p-6">

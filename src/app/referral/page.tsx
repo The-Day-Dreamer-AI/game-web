@@ -72,8 +72,6 @@ export default function ReferralPage() {
   return (
     <RequireAuth>
       <div className="min-h-screen flex flex-col">
-        {/* Header */}
-        <Header variant="logo" />
 
         {/* QR Code Section with Background */}
         <div className="relative overflow-hidden">
@@ -215,8 +213,6 @@ export default function ReferralPage() {
           </div>
         </div>
 
-        {/* Bottom Navigation */}
-        <BottomNav />
       </div>
     </RequireAuth>
   );

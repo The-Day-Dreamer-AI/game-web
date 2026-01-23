@@ -34,12 +34,6 @@ export default function LanguagePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <Header
-        variant="subpage"
-        title={t("language.title")}
-      />
-
       {/* Main Content */}
       <main className="flex-1 px-4 py-6">
         <h2 className="text-center text-[#28323C] font-roboto-bold mb-6 text-sm">

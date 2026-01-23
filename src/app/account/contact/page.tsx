@@ -80,10 +80,6 @@ export default function ContactPage() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header
-          variant="subpage"
-          title={isTransferMode ? t("contact.transfer") : t("contact.myContact")}
-        />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
             {t("common.loginRequired")}
@@ -95,12 +91,6 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <Header
-        variant="subpage"
-        title={isTransferMode ? t("contact.transfer") : t("contact.myContact")}
-      />
-
       {/* Add New Friend Banner - only when not in transfer mode */}
       {!isTransferMode && (
         <AddFriendBanner

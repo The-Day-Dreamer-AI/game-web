@@ -121,10 +121,6 @@ export default function NewFriendPage() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header
-          variant="subpage"
-          title={t("contact.addNewFriend")}
-        />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
             {t("common.loginRequired")}
@@ -136,11 +132,6 @@ export default function NewFriendPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <Header
-        variant="subpage"
-        title={t("contact.addNewFriend")}
-      />
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto">

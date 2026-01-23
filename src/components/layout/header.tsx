@@ -2,32 +2,49 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ChevronLeft } from "lucide-react";
 import { Sidebar } from "./sidebar";
+import { getRouteConfig } from "@/lib/route-config";
+import { useI18n } from "@/providers/i18n-provider";
 
 interface HeaderProps {
+  /** Override the auto-detected variant */
   variant?: "logo" | "subpage";
+  /** Override the auto-detected title (useful for dynamic titles like game names) */
   title?: string;
+  /** Custom back navigation href */
   backHref?: string;
+  /** Custom back navigation handler */
   onBack?: () => void;
+  /** Custom support click handler */
   onSupportClick?: () => void;
+  /** Additional CSS classes */
   className?: string;
 }
 
 export function Header({
-  variant = "logo",
-  title,
+  variant: variantProp,
+  title: titleProp,
   backHref,
   onBack,
   onSupportClick,
   className,
 }: HeaderProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const { t } = useI18n();
   const [imgError, setImgError] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Get route config for auto-detection
+  const routeConfig = getRouteConfig(pathname);
+
+  // Use props if provided, otherwise use auto-detected values
+  const variant = variantProp ?? routeConfig.variant;
+  const title = titleProp ?? (routeConfig.titleKey ? t(routeConfig.titleKey) : undefined);
 
   const handleBack = () => {
     if (onBack) {
@@ -43,7 +60,7 @@ export function Header({
     <>
       <header
         className={cn(
-          "bg-dark px-5 py-3 flex items-center justify-between relative",
+          "bg-dark px-5 py-3 flex items-center justify-between sticky top-0 z-50",
           className
         )}
       >

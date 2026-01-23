@@ -347,8 +347,6 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex flex-col relative">
-      {/* Header */}
-      <Header variant="subpage" title={t("auth.register")} />
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto">

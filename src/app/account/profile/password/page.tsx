@@ -136,12 +136,6 @@ export default function ChangePasswordPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <Header
-        variant="subpage"
-        title={t("profile.changePassword")}
-      />
-
       {/* Form */}
       <main className="flex-1 px-4 py-4">
         <form onSubmit={handleSubmit} className="space-y-4">

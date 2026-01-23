@@ -121,8 +121,6 @@ export default function ScanQrPage() {
 
   return (
     <div className="min-h-screen flex flex-col relative bg-black">
-      {/* Header */}
-      <Header variant="subpage" title={t("scanner.title")} onBack={handleClose} />
 
       {/* Main Content */}
       <main className="flex-1 relative flex flex-col items-center justify-center overflow-hidden">

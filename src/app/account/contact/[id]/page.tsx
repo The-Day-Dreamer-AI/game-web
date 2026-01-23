@@ -70,10 +70,6 @@ export default function ContactDetailPage() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header
-          variant="subpage"
-          title={t("contact.friendDetail")}
-        />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
             {t("contact.loginRequired")}
@@ -86,10 +82,6 @@ export default function ContactDetailPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header
-          variant="subpage"
-          title={t("contact.friendDetail")}
-        />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
         </div>
@@ -100,10 +92,6 @@ export default function ContactDetailPage() {
   if (error || !contact) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header
-          variant="subpage"
-          title={t("contact.friendDetail")}
-        />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-red-500 text-center">
             {t("contact.loadFailed")}
@@ -117,11 +105,6 @@ export default function ContactDetailPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <Header
-        variant="subpage"
-        title={t("contact.friendDetail")}
-      />
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto px-6 pt-12">

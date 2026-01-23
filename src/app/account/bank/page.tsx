@@ -64,10 +64,6 @@ export default function BankAccountsPage() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header
-          variant="subpage"
-          title={t("account.bankAccount")}
-        />
         <div className="flex-1 flex items-center justify-center px-4">
           <p className="text-sm text-zinc-500 text-center">
             {t("common.loginRequired")}
@@ -82,10 +78,6 @@ export default function BankAccountsPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header
-        variant="subpage"
-        title={t("account.bankAccount")}
-      />
 
       <main className="flex-1 px-4 py-4">
         {isLoading ? (

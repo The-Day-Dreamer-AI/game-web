@@ -125,8 +125,6 @@ export default function EventPage() {
   return (
     <RequireAuth>
       <div className="relative min-h-screen flex flex-col">
-        {/* Header */}
-        <Header variant="logo" />
 
         {/* Horizontally Scrollable Categories */}
         <div
@@ -241,9 +239,6 @@ export default function EventPage() {
             ))
           )}
         </div>
-
-        {/* Bottom Navigation */}
-        <BottomNav />
 
         {/* Event Details Modal */}
         <EventDetailsModal

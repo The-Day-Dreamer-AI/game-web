@@ -134,11 +134,9 @@ export default function AccountPage() {
     return (
       <RequireAuth>
         <div className="min-h-screen flex flex-col">
-          <Header variant="logo" />
           <div className="flex-1 flex items-center justify-center">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
-          <BottomNav />
         </div>
       </RequireAuth>
     );
@@ -149,7 +147,6 @@ export default function AccountPage() {
     return (
       <RequireAuth>
         <div className="min-h-screen flex flex-col">
-          <Header variant="logo" />
           <div className="flex-1 flex items-center justify-center px-4">
             <div className="text-center">
               <p className="text-zinc-600 mb-4">{t("common.error")}</p>
@@ -161,7 +158,6 @@ export default function AccountPage() {
               </button>
             </div>
           </div>
-          <BottomNav />
         </div>
       </RequireAuth>
     );
@@ -170,8 +166,6 @@ export default function AccountPage() {
   return (
     <RequireAuth>
       <div className="min-h-screen flex flex-col">
-        {/* Header */}
-        <Header variant="logo" />
 
         {/* Profile Section */}
         <div className="flex items-center gap-4 pt-5 pb-10 px-9 relative h-40">
@@ -467,9 +461,6 @@ export default function AccountPage() {
             <ChevronRight className="w-5 h-5 text-zinc-400" />
           </button>
         </div>
-
-        {/* Bottom Navigation */}
-        <BottomNav />
 
         {/* KYC Verification Modal */}
         <KycVerificationModal

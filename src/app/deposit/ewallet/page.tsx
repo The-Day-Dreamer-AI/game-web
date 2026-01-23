@@ -109,7 +109,6 @@ export default function EWalletPage() {
     return (
       <RequireAuth>
         <div className="min-h-screen flex flex-col">
-          <Header variant="subpage" title={t("deposit.eWallet")} />
           <div className="flex-1 flex items-center justify-center">
             <Loader2 className="w-8 h-8 text-primary animate-spin" />
           </div>
@@ -121,8 +120,6 @@ export default function EWalletPage() {
   return (
     <RequireAuth>
       <div className="min-h-screen flex flex-col">
-        {/* Header */}
-        <Header variant="subpage" title={t("deposit.eWallet")} />
 
         {/* Main Content */}
         <main className="flex-1 overflow-auto px-4 py-4">

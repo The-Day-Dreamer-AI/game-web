@@ -105,7 +105,7 @@ export default function GamePage() {
   return (
     <RequireAuth>
       <div className="h-screen flex flex-col bg-black">
-        {/* Header */}
+        {/* Header with custom back handler */}
         <Header
           variant="subpage"
           title={gameName}
