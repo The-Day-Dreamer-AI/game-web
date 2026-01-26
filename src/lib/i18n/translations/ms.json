@@ -298,7 +298,10 @@
     "announcement": "Selamat datang ke AONE GLOBAL GAMING. Platform dalam talian Malaysia yang stabil dan dipercayai"
   },
   "event": {
-    "noEvents": "Tiada acara pada masa ini."
+    "noEvents": "Tiada acara pada masa ini.",
+    "apply": "MOHON",
+    "confirmTitle": "Sahkan Permohonan",
+    "confirmMessage": "Adakah anda pasti mahu memohon?"
   },
   "games": {
     "slots": "SLOT",

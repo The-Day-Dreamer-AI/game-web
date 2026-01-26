@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { RequireAuth } from "@/components/auth";
 import { Button } from "@/components/ui/button";
@@ -93,10 +94,16 @@ function transformPromo(promo: Promo, lang: string): TransformedEvent {
 }
 
 export default function EventPage() {
+  const router = useRouter();
   const [activeCategory, setActiveCategory] = useState("all");
   const [selectedEvent, setSelectedEvent] = useState<TransformedEvent | null>(
     null
   );
+  const [confirmModal, setConfirmModal] = useState<{
+    isOpen: boolean;
+    eventId: string;
+    eventName: string;
+  }>({ isOpen: false, eventId: "", eventName: "" });
   const scrollRef = useRef<HTMLDivElement>(null);
   const { t, locale } = useI18n();
 
@@ -112,10 +119,24 @@ export default function EventPage() {
     event.category.includes(activeCategory)
   );
 
-  const handleClaimPromo = async (eventId: string) => {
+  const handleApply = (event: TransformedEvent) => {
+    if (event.mode === "Direct Claim" && event.id) {
+      // Show confirmation modal for Direct Claim
+      setConfirmModal({
+        isOpen: true,
+        eventId: event.id,
+        eventName: event.title,
+      });
+    } else {
+      // Navigate to instant deposit page with query params
+      router.push(`/deposit/instant?fromEvent=true&promoName=${encodeURIComponent(event.title)}`);
+    }
+  };
+
+  const handleConfirmClaim = async () => {
     try {
-      await claimPromoMutation.mutateAsync(eventId);
-      // Show success message or update UI
+      await claimPromoMutation.mutateAsync(confirmModal.eventId);
+      setConfirmModal({ isOpen: false, eventId: "", eventName: "" });
     } catch {
       // Error is handled by the mutation
     }
@@ -227,10 +248,10 @@ export default function EventPage() {
                     </Button>
                     <Button
                       className="flex-1 bg-primary hover:bg-primary text-white rounded-lg font-roboto-bold text-sm py-6"
-                      onClick={() => handleClaimPromo(event.id)}
+                      onClick={() => handleApply(event)}
                       disabled={claimPromoMutation.isPending}
                     >
-                      {claimPromoMutation.isPending ? "..." : "APPLY"}
+                      {claimPromoMutation.isPending ? "..." : t("event.apply")}
                     </Button>
                   </div>
                 </div>
@@ -245,6 +266,39 @@ export default function EventPage() {
           onClose={() => setSelectedEvent(null)}
           event={selectedEvent}
         />
+
+        {/* Confirmation Modal for Direct Claim */}
+        {confirmModal.isOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div
+              className="absolute inset-0 bg-black/50"
+              onClick={() => setConfirmModal({ isOpen: false, eventId: "", eventName: "" })}
+            />
+            <div className="relative bg-white rounded-xl p-6 w-full max-w-sm text-center">
+              <h3 className="text-lg font-roboto-semibold text-zinc-800 mb-2">
+                {t("event.confirmTitle")}
+              </h3>
+              <p className="text-zinc-600 mb-6">
+                {t("event.confirmMessage")}
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setConfirmModal({ isOpen: false, eventId: "", eventName: "" })}
+                  className="cursor-pointer flex-1 py-3 bg-zinc-200 text-zinc-700 font-roboto-medium rounded-lg hover:bg-zinc-300 transition-colors"
+                >
+                  {t("common.cancel")}
+                </button>
+                <button
+                  onClick={handleConfirmClaim}
+                  disabled={claimPromoMutation.isPending}
+                  className="cursor-pointer flex-1 py-3 bg-primary text-white font-roboto-medium rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+                >
+                  {claimPromoMutation.isPending ? "..." : t("common.confirm")}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </RequireAuth>
   );
