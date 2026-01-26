@@ -82,7 +82,7 @@ export default function WithdrawalPage() {
                 <Loader2 className="w-6 h-6 text-primary animate-spin" />
               </div>
             ) : (
-              <div className="grid grid-cols-5 gap-3 items-start">
+              <div className="grid grid-cols-5 max-[380px]:grid-cols-4 gap-3 items-start">
                 {/* Existing bank accounts */}
                 {accountsData?.Rows?.map((bank) => (
                   <button

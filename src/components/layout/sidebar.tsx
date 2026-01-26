@@ -153,17 +153,14 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
   // Only render after time is set (ensures we're on client)
   if (!currentTime) return null;
 
-  const container = document.getElementById("mobile-container");
-  if (!container) return null;
-
   return createPortal(
     <div
       className={cn(
-        "absolute inset-0 z-50 overflow-hidden",
+        "fixed inset-0 z-50",
         !isOpen && "pointer-events-none"
       )}
     >
-      {/* Backdrop */}
+      {/* Backdrop - covers full screen */}
       <div
         className={cn(
           "absolute inset-0 bg-black/50 transition-opacity duration-300",
@@ -172,13 +169,16 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         onClick={onClose}
       />
 
-      {/* Sidebar Panel */}
-      <div
-        className={cn(
-          "absolute top-0 right-0 h-dvh w-[80%] max-w-[360px] bg-[#F5F5F5] transform transition-transform duration-300 ease-out flex flex-col",
-          isOpen ? "translate-x-0" : "translate-x-full"
-        )}
-      >
+      {/* Centered Container - matches mobile container max-width */}
+      <div className="absolute inset-0 flex justify-center overflow-hidden pointer-events-none">
+        <div className="relative w-full max-w-[430px] h-full overflow-hidden">
+          {/* Sidebar Panel - slides from right edge of the 430px container */}
+          <div
+            className={cn(
+              "absolute top-0 right-0 h-full w-[80%] max-w-[360px] bg-[#F5F5F5] transform transition-transform duration-300 ease-out flex flex-col pointer-events-auto",
+              isOpen ? "translate-x-0" : "translate-x-full"
+            )}
+          >
         {/* Scrollable Content */}
         <div className="flex-1 min-h-0 overflow-y-auto flex flex-col">
           {/* Header Section - Dark gradient background */}
@@ -208,13 +208,13 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
 
           {/* Feature Buttons - Check In & Spin Wheel (placeholder for now) */}
           <div className="px-4 pb-4">
-            <div className="flex gap-2">
+            <div className="max-[380px]:grid max-[380px]:grid-cols-1 flex gap-2">
               <Link
                 href="/check-in"
                 onClick={onClose}
-                className="h-16 flex-1 gap-2 px-3 pt-1 bg-white rounded-lg hover:bg-zinc-50 transition-colors shadow-sm relative overflow-hidden"
+                className="max-[380px]:h-20 h-16 flex-1 gap-2 px-3 pt-1 bg-white rounded-lg hover:bg-zinc-50 transition-colors shadow-sm relative overflow-hidden"
               >
-                <div className="absolute left-15 bottom-0.5 translate-x-0 w-full h-auto">
+                <div className="absolute max-[380px]:left-24 left-15 bottom-0.5 translate-x-0 w-full h-auto">
                   <CheckInAnimation />
                 </div>
                 <span className="text-xs font-roboto-bold text-[#28323C] z-10">
@@ -224,9 +224,9 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               <Link
                 href="/spin-wheel"
                 onClick={onClose}
-                className="flex-1 gap-2 px-3 pt-1 bg-white rounded-lg hover:bg-zinc-50 transition-colors shadow-sm relative overflow-hidden"
+                className="max-[380px]:h-20 h-16 flex-1 gap-2 px-3 pt-1 bg-white rounded-lg hover:bg-zinc-50 transition-colors shadow-sm relative overflow-hidden"
               >
-                <div className="absolute left-16 bottom-2.5 translate-x-0 w-full h-auto">
+                <div className="absolute max-[380px]:left-24 left-16 bottom-2.5 translate-x-0 w-full h-auto">
                   <SpinWheelAnimation />
                 </div>
                 <span className="text-xs font-roboto-bold text-[#28323C] z-10">
@@ -252,7 +252,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                         onClose();
                       }
                     }}
-                    className={cn("flex items-center gap-5 px-4 py-3")}
+                    className={cn("flex items-center gap-5 max-[380px]:px-0 px-4 py-3")}
                   >
                     <Image
                       src={item.icon}
@@ -272,7 +272,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     )}
                   </Link>
                   {index !== mainMenuItems.length - 1 && (
-                    <div className="bg-[#d4f1f0] h-px mx-3"></div>
+                    <div className="bg-[#d4f1f0] h-px mx-3 max-[380px]:mx-0"></div>
                   )}
                 </div>
               ))}
@@ -281,7 +281,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
 
           {/* Secondary Menu */}
           <div className="px-4 pb-3">
-            <div className="bg-white rounded-lg overflow-hidden shadow-sm px-3">
+            <div className="bg-white rounded-lg overflow-hidden shadow-sm px-3 max-[380px]:px-0">
               {secondaryMenuItems.map((item, index) => {
                 // Use dynamic flag icon for language item based on current locale
                 const iconSrc =
@@ -309,7 +309,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                       </span>
                     </Link>
                     {index !== secondaryMenuItems.length - 1 && (
-                      <div className="bg-[#d4f1f0] h-px mx-3"></div>
+                      <div className="bg-[#d4f1f0] h-px mx-3 max-[380px]:mx-0"></div>
                     )}
                   </div>
                 );
@@ -320,7 +320,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           {/* Logout Button - Only show when authenticated */}
           {isAuthenticated && (
             <div className="px-4 pb-3">
-              <div className="bg-white rounded-lg overflow-hidden shadow-sm px-4">
+              <div className="bg-white rounded-lg overflow-hidden shadow-sm px-4 max-[380px]:px-0">
                 <button
                   onClick={async () => {
                     onClose();
@@ -354,8 +354,10 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             <p>{t("sidebar.allRightsReserved")}</p>
           </div>
         </div>
+          </div>
+        </div>
       </div>
     </div>,
-    container
+    document.body
   );
 }

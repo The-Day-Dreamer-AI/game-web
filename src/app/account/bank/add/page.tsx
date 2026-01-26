@@ -120,7 +120,7 @@ export default function AddBankAccountPage() {
             <span className="text-primary">*</span>
           </label>
 
-          <div className="grid grid-cols-5 gap-3">
+          <div className="grid grid-cols-5 max-[380px]:grid-cols-4 gap-3">
             {bankOptions.map((bank) => (
               <button
                 key={bank.Id}

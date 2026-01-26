@@ -349,7 +349,7 @@ export default function AccountPage() {
           </div>
 
           {/* Content */}
-          <div className="relative z-10 p-4">
+          <div className="relative z-10 p-4 max-[380px]:p-1">
             <div className="flex items-center gap-1 mb-3">
               <span className="text-sm font-roboto-bold text-[#28323C]">
                 {t("account.overview")}
@@ -389,7 +389,7 @@ export default function AccountPage() {
 
         {/* Menu Items */}
         <div className="mx-4 mt-4 flex-1 bg-white p-4 rounded-2xl shadow-lg px-2.5 flex flex-col gap-4">
-          <div className="grid grid-cols-4 gap-5 px-3 pt-2">
+          <div className="grid grid-cols-4 gap-5 max-[380px]:gap-3 px-3 pt-2 max-[380px]:px-1.5">
             {quickActions.map((action) => (
               <Link
                 key={action.id}
@@ -403,7 +403,7 @@ export default function AccountPage() {
                     alt={t(action.labelKey)}
                     width={32}
                     height={32}
-                    className="object-contain w-full h-full p-3.5"
+                    className="object-contain w-full h-full max-[380px]:p-1 p-3.5"
                     unoptimized
                   />
                 </div>
@@ -441,7 +441,7 @@ export default function AccountPage() {
               );
 
               const className = cn(
-                "flex items-center justify-between px-4 py-3.5 w-full cursor-pointer"
+                "flex items-center justify-between px-4 max-[380px]:px-2 py-3.5 w-full cursor-pointer"
               );
 
               return item.isLink ? (
@@ -470,7 +470,7 @@ export default function AccountPage() {
         <div className="bg-white rounded-2xl overflow-hidden mt-4 mb-8 mx-4 shadow-lg">
           <button
             onClick={handleLogout}
-            className="flex items-center justify-between pl-3 pr-6 py-3.5 w-full cursor-pointer"
+            className="flex items-center justify-between max-[380px]:pl-1 max-[380px]:pr-5 pl-3 pr-6 py-3.5 w-full cursor-pointer"
           >
             <div className="flex items-center gap-3 px-4">
               <Image

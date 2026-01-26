@@ -127,7 +127,7 @@ export default function InstantDepositPage() {
               {t("deposit.method")}
               <span className="text-primary">*</span>
             </label>
-            <div className="grid grid-cols-5 gap-3 items-start overflow-x-auto scrollbar-hide pb-1">
+            <div className="grid grid-cols-5 max-[380px]:grid-cols-4 gap-3 items-start overflow-x-auto scrollbar-hide pb-1">
               {paymentMethods.map((method) => (
                 <button
                   key={method.Id}
@@ -184,7 +184,7 @@ export default function InstantDepositPage() {
                 {t("deposit.paymentType")}
                 <span className="text-primary">*</span>
               </label>
-              <div className="grid grid-cols-5 gap-3 items-start">
+              <div className="grid grid-cols-5 max-[380px]:grid-cols-4 gap-3 items-start">
                 {networks.map((bank) => (
                   <button
                     key={bank.Id}
