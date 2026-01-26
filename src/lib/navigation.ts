@@ -135,6 +135,15 @@ export function getBackDestination(
   if (pathname === "/account/redeem-gift") {
     return { href: "/account" };
   }
+  if (pathname === "/account/redeem-gift/shipping") {
+    return { href: "/account/redeem-gift" };
+  }
+  if (pathname === "/account/redeem-gift/confirm") {
+    // Get rewardId from searchParams to preserve it when going back
+    // Add from=confirm so shipping page knows to autofill
+    const rewardId = searchParams?.get("rewardId");
+    return { href: rewardId ? `/account/redeem-gift/shipping?rewardId=${rewardId}&from=confirm` : "/account/redeem-gift/shipping?from=confirm" };
+  }
   if (pathname === "/account/redeem-history") {
     return { href: "/account/redeem-gift" };
   }

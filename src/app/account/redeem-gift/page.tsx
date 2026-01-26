@@ -6,25 +6,19 @@ import Image from "next/image";
 import { ChevronRight, Loader2 } from "lucide-react";
 import { useAuth } from "@/providers/auth-provider";
 import { useI18n } from "@/providers/i18n-provider";
-import { useToast } from "@/providers/toast-provider";
-import { useRewards, useClaimReward } from "@/hooks";
+import { useRewards } from "@/hooks";
 
 export default function RedeemGiftPage() {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
   const { t } = useI18n();
-  const { showError } = useToast();
 
   const [showInsufficientModal, setShowInsufficientModal] = useState(false);
-  const [claimingId, setClaimingId] = useState<string | null>(null);
 
   // Fetch rewards
   const { data: rewardsData, isLoading } = useRewards({
     enabled: isAuthenticated,
   });
-
-  // Claim mutation
-  const claimReward = useClaimReward();
 
   const userPoints = rewardsData?.Point ?? 0;
   const rewards = rewardsData?.Rewards ?? [];
@@ -33,27 +27,14 @@ export default function RedeemGiftPage() {
     return points.toLocaleString("en-US");
   };
 
-  const handleClaim = async (rewardId: string, price: number) => {
+  const handleClaim = (rewardId: string, price: number) => {
     if (userPoints < price) {
       setShowInsufficientModal(true);
       return;
     }
 
-    setClaimingId(rewardId);
-    try {
-      const response = await claimReward.mutateAsync({ Id: rewardId });
-      if (response.Code === 0) {
-        // Success - could show success modal or navigate to history
-        router.push("/account/redeem-history");
-      } else {
-        showError(response.Message || t("redeemGift.claimFailed"));
-      }
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : t("redeemGift.claimFailed");
-      showError(errorMessage);
-    } finally {
-      setClaimingId(null);
-    }
+    // Navigate to shipping info page instead of calling API directly
+    router.push(`/account/redeem-gift/shipping?rewardId=${rewardId}`);
   };
 
   if (!isAuthenticated) {
@@ -164,14 +145,9 @@ export default function RedeemGiftPage() {
               {/* Claim Button */}
               <button
                 onClick={() => handleClaim(reward.Id, reward.Price)}
-                disabled={claimingId === reward.Id}
                 className="cursor-pointer w-full py-2 bg-[#0DC3B1] text-white text-sm font-roboto-bold rounded-b-lg flex items-center justify-center gap-2"
               >
-                {claimingId === reward.Id ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  t("redeemGift.claim")
-                )}
+                {t("redeemGift.claim")}
               </button>
             </div>
           ))}

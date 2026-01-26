@@ -44,6 +44,8 @@ const routeTitleMap: Record<string, string> = {
   "/account/rebate": "account.rebateList",
   "/account/redeem-code": "account.redeemCode",
   "/account/redeem-gift": "redeemGift.title",
+  "/account/redeem-gift/shipping": "redeemGift.title",
+  "/account/redeem-gift/confirm": "redeemGift.title",
   "/account/redeem-history": "redeemGift.redeemHistory",
   "/account/reset-pin": "account.resetPin",
 
