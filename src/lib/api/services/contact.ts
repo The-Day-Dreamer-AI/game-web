@@ -17,6 +17,8 @@ import type {
   GetTransferInfoResponse,
   PostTransferRequest,
   PostTransferResponse,
+  UpdateContactAliasRequest,
+  UpdateContactAliasResponse,
 } from "../types";
 
 export const contactApi = {
@@ -126,6 +128,16 @@ export const contactApi = {
    */
   async postTransfer(data: PostTransferRequest): Promise<PostTransferResponse> {
     return apiClient.post<PostTransferResponse>("/api/mapicontact2/posttransfer", data, {
+      authenticated: true,
+    });
+  },
+
+  /**
+   * Update contact alias
+   * POST /api/mapicontact2/updatecontactalias
+   */
+  async updateContactAlias(data: UpdateContactAliasRequest): Promise<UpdateContactAliasResponse> {
+    return apiClient.post<UpdateContactAliasResponse>("/api/mapicontact2/updatecontactalias", data, {
       authenticated: true,
     });
   },

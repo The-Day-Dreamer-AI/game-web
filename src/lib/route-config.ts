@@ -39,6 +39,7 @@ const routeTitleMap: Record<string, string> = {
   "/account/bank/add": "account.addBankAccount",
   "/account/contact": "contact.myContact",
   "/account/contact/new-friend": "contact.addNewFriend",
+  "/account/contact/new-friend/scan-qr": "scanner.title",
   "/account/inbox": "inbox.title",
   "/account/language": "language.title",
   "/account/rebate": "account.rebateList",
@@ -89,7 +90,11 @@ export function getRouteConfig(pathname: string): RouteConfig {
     if (pathname.startsWith(route + "/")) {
       // For dynamic child routes, use parent's title or a generic one
       // e.g., /account/contact/123 -> use "contact.friendDetail"
+      // e.g., /account/contact/123/alias -> use "contact.changeAlias"
       if (route === "/account/contact") {
+        if (pathname.endsWith("/alias")) {
+          return { titleKey: "contact.changeAlias", variant };
+        }
         return { titleKey: "contact.friendDetail", variant };
       }
       return {

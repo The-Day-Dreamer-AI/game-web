@@ -428,8 +428,11 @@
   "scanner": {
     "title": "Imbas Kod QR",
     "scanReferralQr": "Letakkan kod QR dalam bingkai untuk mengimbas kod rujukan anda",
+    "scanUidQr": "Letakkan kod QR dalam bingkai untuk mengimbas ID pengguna",
     "invalidQr": "Kod QR Tidak Sah",
     "invalidQrMessage": "Kod QR yang diimbas tidak mengandungi kod rujukan yang sah. Sila cuba lagi dengan kod QR rujukan yang sah.",
+    "invalidUidQrMessage": "Kod QR yang diimbas tidak mengandungi ID pengguna yang sah. Sila cuba lagi dengan kod QR yang sah.",
+    "qrScanFailed": "Gagal mengimbas kod QR. Sila cuba lagi.",
     "tryAgain": "Cuba Lagi",
     "cameraError": "Tidak dapat mengakses kamera",
     "cameraAccessDenied": "Akses Kamera Diperlukan",
@@ -465,7 +468,13 @@
     "transferButton": "PINDAHAN",
     "deleteButton": "PADAM",
     "deleteTitle": "Padam rakan ini?",
-    "deleteMessage": "Tindakan ini tidak boleh dibatalkan."
+    "deleteMessage": "Tindakan ini tidak boleh dibatalkan.",
+    "loadRequestsFailed": "Gagal memuatkan permintaan kenalan",
+    "alias": "Alias",
+    "changeAlias": "Tukar Alias",
+    "aliasRequired": "Alias diperlukan",
+    "aliasUpdated": "Alias berjaya dikemas kini",
+    "aliasUpdateFailed": "Gagal mengemas kini alias"
   },
   "toast": {
     "success": "Berjaya",

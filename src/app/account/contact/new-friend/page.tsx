@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { Search, FolderOpen, Camera, Loader2 } from "lucide-react";
+import { useState, useRef, useCallback, useEffect, ChangeEvent } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
+import { Search, Loader2 } from "lucide-react";
+import QrScanner from "qr-scanner";
 import { FormInput } from "@/components/ui/form-input";
 import {
   FriendRequestItem,
@@ -11,6 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/providers/auth-provider";
 import { useI18n } from "@/providers/i18n-provider";
+import { useToast } from "@/providers/toast-provider";
 import {
   useContactRequests,
   useSearchContact,
@@ -23,12 +27,21 @@ import {
 type RequestTab = "incoming" | "outgoing";
 
 export default function NewFriendPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { isAuthenticated } = useAuth();
   const { t } = useI18n();
+  const { showError } = useToast();
 
-  const [searchInput, setSearchInput] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  // Get initial UID from URL params (from QR scanner)
+  const initialUid = searchParams.get("uid") ?? "";
+
+  const [searchInput, setSearchInput] = useState(initialUid);
+  const [searchQuery, setSearchQuery] = useState(initialUid);
   const [requestTab, setRequestTab] = useState<RequestTab>("incoming");
+
+  // QR file input ref
+  const qrFileInputRef = useRef<HTMLInputElement>(null);
 
   // Confirmation modal state
   const [confirmModal, setConfirmModal] = useState<{
@@ -37,11 +50,90 @@ export default function NewFriendPage() {
     requestId: string;
   }>({ isOpen: false, type: "reject", requestId: "" });
 
+  // Extract UID from QR data URL
+  const extractUidFromQr = useCallback((data: string): string | null => {
+    try {
+      const url = new URL(data);
+      // Check for UID parameters
+      const uid =
+        url.searchParams.get("uid") ||
+        url.searchParams.get("Id") ||
+        url.searchParams.get("id") ||
+        url.searchParams.get("UserId") ||
+        url.searchParams.get("userId");
+      if (uid) {
+        return uid;
+      }
+      // Check if the path contains a UID pattern (e.g., /profile/ABC123)
+      const pathParts = url.pathname.split("/").filter(Boolean);
+      const lastPart = pathParts[pathParts.length - 1];
+      if (lastPart && /^[A-Za-z0-9_-]{3,32}$/.test(lastPart)) {
+        return lastPart;
+      }
+      return null;
+    } catch {
+      // If not a valid URL, check if it's a plain UID
+      const trimmed = data.trim();
+      if (/^[A-Za-z0-9_-]{3,32}$/.test(trimmed)) {
+        return trimmed;
+      }
+      return null;
+    }
+  }, []);
+
+  // Handle QR image file upload
+  const handleQrImageUpload = useCallback(
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      try {
+        const result = await QrScanner.scanImage(file, {
+          returnDetailedScanResult: true,
+        });
+        const uid = extractUidFromQr(result.data);
+
+        if (uid) {
+          setSearchInput(uid);
+          setSearchQuery(uid);
+        } else {
+          showError(t("scanner.invalidQr"));
+        }
+      } catch {
+        showError(t("scanner.qrScanFailed"));
+      }
+
+      // Reset the input so the same file can be selected again
+      if (qrFileInputRef.current) {
+        qrFileInputRef.current.value = "";
+      }
+    },
+    [extractUidFromQr, showError, t]
+  );
+
+  // Handle camera button click - navigate to scan-qr page
+  const handleCameraClick = useCallback(() => {
+    router.push(
+      "/account/contact/new-friend/scan-qr?returnTo=/account/contact/new-friend"
+    );
+  }, [router]);
+
   // Fetch contact requests
-  const { data: requestsData, isLoading: isLoadingRequests } =
-    useContactRequests({
-      enabled: isAuthenticated,
-    });
+  const {
+    data: requestsData,
+    isLoading: isLoadingRequests,
+    isError: isContactRequestsError,
+  } = useContactRequests({
+    enabled: isAuthenticated,
+  });
+
+  // Handle contact requests API error - redirect to home
+  useEffect(() => {
+    if (isContactRequestsError) {
+      showError(t("contact.loadRequestsFailed"));
+      router.push("/home");
+    }
+  }, [isContactRequestsError, showError, t, router]);
 
   // Search for contacts - only when searchQuery is set (on Enter press)
   const { data: searchData, isLoading: isSearching } = useSearchContact(
@@ -136,6 +228,14 @@ export default function NewFriendPage() {
       <main className="flex-1 overflow-auto">
         {/* Search Bar */}
         <div className="p-4">
+          {/* Hidden file input for QR image upload */}
+          <input
+            ref={qrFileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleQrImageUpload}
+            className="hidden"
+          />
           <FormInput
             type="text"
             placeholder={t("contact.searchUidEnter")}
@@ -147,15 +247,31 @@ export default function NewFriendPage() {
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  className="text-zinc-400 hover:text-zinc-600"
+                  onClick={() => qrFileInputRef.current?.click()}
+                  className="text-zinc-400 hover:text-zinc-600 cursor-pointer"
                 >
-                  <FolderOpen className="w-5 h-5 cursor-pointer" />
+                  <Image
+                    src="/images/icon/folder_icon.png"
+                    alt="Upload QR"
+                    width={20}
+                    height={20}
+                    unoptimized
+                    className="h-5 w-auto object-contain"
+                  />
                 </button>
                 <button
                   type="button"
-                  className="text-zinc-400 hover:text-zinc-600"
+                  onClick={handleCameraClick}
+                  className="text-zinc-400 hover:text-zinc-600 cursor-pointer"
                 >
-                  <Camera className="w-5 h-5 cursor-pointer" />
+                  <Image
+                    src="/images/icon/camera_icon.png"
+                    alt="Scan QR"
+                    width={20}
+                    height={20}
+                    unoptimized
+                    className="h-5 w-auto object-contain"
+                  />
                 </button>
               </div>
             }

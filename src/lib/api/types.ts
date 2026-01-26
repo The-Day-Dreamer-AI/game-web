@@ -537,6 +537,16 @@ export interface DeleteContactResponse {
   Message: string;
 }
 
+export interface UpdateContactAliasRequest {
+  Id: string;
+  Alias: string;
+}
+
+export interface UpdateContactAliasResponse {
+  Code: number;
+  Message: string;
+}
+
 export interface SearchContactResult {
   Id: string;
   Name: string;

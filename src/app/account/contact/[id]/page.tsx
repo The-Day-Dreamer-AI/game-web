@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
-import { FormInput } from "@/components/ui/form-input";
 import { useAuth } from "@/providers/auth-provider";
 import { useI18n } from "@/providers/i18n-provider";
 import { useToast } from "@/providers/toast-provider";
@@ -20,15 +19,13 @@ export default function ContactDetailPage() {
   const contactId = params.id as string;
 
   const [imgError, setImgError] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [alias, setAlias] = useState("");
 
   // Fetch contact detail
   const {
     data: contact,
     isLoading,
-    error,
+    isError,
   } = useContactDetail(contactId, {
     enabled: isAuthenticated && !!contactId,
   });
@@ -36,10 +33,13 @@ export default function ContactDetailPage() {
   // Delete mutation
   const deleteContact = useDeleteContact();
 
-  // Update alias when contact loads
-  if (contact?.Alias && !alias && !isEditing) {
-    setAlias(contact.Alias);
-  }
+  // Handle contact detail API error - redirect to account page
+  useEffect(() => {
+    if (isError) {
+      showError(t("contact.loadFailed"));
+      router.push("/account");
+    }
+  }, [isError, showError, t, router]);
 
   const handleTransfer = () => {
     if (contact?.TargetId) {
@@ -60,10 +60,8 @@ export default function ContactDetailPage() {
     }
   };
 
-  const handleSaveAlias = () => {
-    // TODO: API call to update alias (if API supports it)
-    console.log("Saving alias:", alias);
-    setIsEditing(false);
+  const handleEditAlias = () => {
+    router.push(`/account/contact/${contactId}/alias`);
   };
 
   if (!isAuthenticated) {
@@ -88,19 +86,18 @@ export default function ContactDetailPage() {
     );
   }
 
-  if (error || !contact) {
+  // Show loading while redirecting on error, or if contact data not loaded yet
+  if (isError || !contact) {
     return (
       <div className="min-h-screen flex flex-col">
-        <div className="flex-1 flex items-center justify-center px-4">
-          <p className="text-sm text-red-500 text-center">
-            {t("contact.loadFailed")}
-          </p>
+        <div className="flex-1 flex items-center justify-center">
+          <Loader2 className="w-8 h-8 text-primary animate-spin" />
         </div>
       </div>
     );
   }
 
-  const displayAlias = alias || contact.Alias || contact.Name;
+  const displayAlias = contact.Alias || contact.Name;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -129,37 +126,22 @@ export default function ContactDetailPage() {
 
           {/* Alias with Edit */}
           <div className="flex items-center gap-2 mb-1">
-            {isEditing ? (
-              <FormInput
-                type="text"
-                value={alias}
-                onChange={(e) => setAlias(e.target.value)}
-                onBlur={handleSaveAlias}
-                onKeyDown={(e) => e.key === "Enter" && handleSaveAlias()}
-                autoFocus
-                className="text-center"
-                wrapperClassName="max-w-[200px]"
+            <span className="text-xl font-roboto-bold text-[#28323C]">
+              {displayAlias}
+            </span>
+            <button
+              onClick={handleEditAlias}
+              className="text-zinc-400 hover:text-zinc-600 cursor-pointer"
+            >
+              <Image
+                src="/images/icon/username_icon.png"
+                alt="Edit alias"
+                width={24}
+                height={24}
+                unoptimized
+                className="h-6 w-auto object-contain"
               />
-            ) : (
-              <>
-                <span className="text-xl font-roboto-bold text-[#28323C]">
-                  {displayAlias}
-                </span>
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="text-zinc-400 hover:text-zinc-600 cursor-pointer"
-                >
-                  <Image
-                    src="/images/icon/username_icon.png"
-                    alt="AON1E edit"
-                    width={24}
-                    height={24}
-                    unoptimized
-                    className="h-6 w-auto object-contain"
-                  />
-                </button>
-              </>
-            )}
+            </button>
           </div>
 
           {/* UID */}

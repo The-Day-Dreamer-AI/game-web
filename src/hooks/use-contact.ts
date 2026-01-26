@@ -9,6 +9,7 @@ import type {
   RejectContactRequest,
   CancelContactRequest,
   PostTransferRequest,
+  UpdateContactAliasRequest,
 } from "@/lib/api/types";
 
 // Query keys
@@ -179,6 +180,23 @@ export function usePostTransfer() {
   return useMutation({
     mutationFn: async (data: PostTransferRequest) => {
       return contactApi.postTransfer(data);
+    },
+  });
+}
+
+/**
+ * Hook to update contact alias
+ */
+export function useUpdateContactAlias() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: UpdateContactAliasRequest) => {
+      return contactApi.updateContactAlias(data);
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: contactKeys.detail(variables.Id) });
+      queryClient.invalidateQueries({ queryKey: contactKeys.contacts() });
     },
   });
 }

@@ -428,8 +428,11 @@
   "scanner": {
     "title": "扫描二维码",
     "scanReferralQr": "将二维码放置在框内以扫描您的推荐码",
+    "scanUidQr": "将二维码放置在框内以扫描用户ID",
     "invalidQr": "无效的二维码",
     "invalidQrMessage": "扫描的二维码不包含有效的推荐码。请使用有效的推荐二维码重试。",
+    "invalidUidQrMessage": "扫描的二维码不包含有效的用户ID。请使用有效的二维码重试。",
+    "qrScanFailed": "扫描二维码失败。请重试。",
     "tryAgain": "重试",
     "cameraError": "无法访问相机",
     "cameraAccessDenied": "需要相机权限",
@@ -465,7 +468,13 @@
     "transferButton": "转账",
     "deleteButton": "删除",
     "deleteTitle": "删除此好友？",
-    "deleteMessage": "此操作无法撤销。"
+    "deleteMessage": "此操作无法撤销。",
+    "loadRequestsFailed": "加载联系人请求失败",
+    "alias": "备注名",
+    "changeAlias": "修改备注名",
+    "aliasRequired": "备注名不能为空",
+    "aliasUpdated": "备注名更新成功",
+    "aliasUpdateFailed": "更新备注名失败"
   },
   "toast": {
     "success": "成功",

@@ -126,6 +126,14 @@ export function getBackDestination(
   if (pathname === "/account/contact/new-friend") {
     return { href: "/account/contact" };
   }
+  if (pathname === "/account/contact/new-friend/scan-qr") {
+    return { href: "/account/contact/new-friend" };
+  }
+  // Contact alias page: /account/contact/[id]/alias -> /account/contact/[id]
+  if (pathname.endsWith("/alias") && pathname.startsWith("/account/contact/")) {
+    const contactId = pathname.split("/")[3];
+    return { href: `/account/contact/${contactId}` };
+  }
   // Dynamic contact detail page: /account/contact/[id]
   if (pathname.startsWith("/account/contact/") && pathname !== "/account/contact/new-friend") {
     return { href: "/account/contact" };

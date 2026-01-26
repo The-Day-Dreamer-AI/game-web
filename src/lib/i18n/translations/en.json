@@ -366,7 +366,13 @@
     "transferButton": "TRANSFER",
     "deleteButton": "DELETE",
     "deleteTitle": "Delete this friend?",
-    "deleteMessage": "This action cannot be undone."
+    "deleteMessage": "This action cannot be undone.",
+    "loadRequestsFailed": "Failed to load contact requests",
+    "alias": "Alias",
+    "changeAlias": "Change Alias",
+    "aliasRequired": "Alias is required",
+    "aliasUpdated": "Alias updated successfully",
+    "aliasUpdateFailed": "Failed to update alias"
   },
   "profile": {
     "changeUsername": "Change Username",
@@ -484,8 +490,11 @@
   "scanner": {
     "title": "Scan QR Code",
     "scanReferralQr": "Position the QR code within the frame to scan your referral code",
+    "scanUidQr": "Position the QR code within the frame to scan user ID",
     "invalidQr": "Invalid QR Code",
     "invalidQrMessage": "The scanned QR code does not contain a valid referral code. Please try again with a valid referral QR code.",
+    "invalidUidQrMessage": "The scanned QR code does not contain a valid user ID. Please try again with a valid QR code.",
+    "qrScanFailed": "Failed to scan QR code. Please try again.",
     "tryAgain": "Try Again",
     "cameraError": "Unable to access camera",
     "cameraAccessDenied": "Camera Access Required",
