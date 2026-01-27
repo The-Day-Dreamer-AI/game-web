@@ -480,5 +480,11 @@
     "success": "Berjaya",
     "warning": "Amaran",
     "error": "Ralat"
+  },
+  "appBanner": {
+    "title": "AONE APP",
+    "subtitle": "Muat Turun Aplikasi Sekarang",
+    "downloadButton": "MUAT TURUN SEKARANG",
+    "closeAria": "Tutup sepanduk muat turun"
   }
 }

@@ -504,5 +504,11 @@
     "success": "Success",
     "warning": "Warning",
     "error": "Error"
+  },
+  "appBanner": {
+    "title": "AONE APP",
+    "subtitle": "Download App Now",
+    "downloadButton": "DOWNLOAD NOW",
+    "closeAria": "Close download banner"
   }
 }

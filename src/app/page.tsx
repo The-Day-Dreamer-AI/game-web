@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { AppDownloadBanner } from "@/components/layout";
 import {
   BannerSlider,
   WelcomeCard,
@@ -80,7 +79,6 @@ export default function HomePage() {
   const { isAuthenticated, user } = useAuth();
   const { showLoading, hideLoading } = useLoadingOverlay();
   const { openLoginModal } = useLoginModal();
-  const [isMobileDevice, setIsMobileDevice] = useState(false);
 
   // Fetch discover data from API
   const { data: discoverData, isLoading, error } = useDiscover();
@@ -101,20 +99,6 @@ export default function HomePage() {
     }
   }, [activeCategory, discoverData?.GameCategories]);
 
-  useEffect(() => {
-    if (typeof navigator === "undefined") return;
-
-    const ua = navigator.userAgent;
-    const isIOS = /iPad|iPhone|iPod/.test(ua);
-    const isSafari = /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
-    const isWKWebView = isIOS && /AppleWebKit/.test(ua) && !/Safari/.test(ua);
-    const isAndroid = /Android/.test(ua);
-    const isGenericMobile = /Mobile|Mobi/.test(ua);
-
-    setIsMobileDevice(
-      isIOS || isWKWebView || (isIOS && isSafari) || isAndroid || isGenericMobile
-    );
-  }, []);
   const launchGameMutation = useLaunchGame();
 
   const handleLaunchGame = async (game: { id: string; name: string }) => {
@@ -242,9 +226,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* App Download Banner */}
-      {isMobileDevice && <AppDownloadBanner />}
-
       {/* Main Content */}
       <main className="flex-1 overflow-auto pb-7">
         {/* Banner Slider - Full width, no padding, no dots, no border radius */}

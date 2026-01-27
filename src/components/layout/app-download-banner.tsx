@@ -1,19 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/providers/i18n-provider";
 
 interface AppDownloadBannerProps {
   className?: string;
 }
 
 export function AppDownloadBanner({ className }: AppDownloadBannerProps) {
+  const { t } = useI18n();
   const [isVisible, setIsVisible] = useState(true);
   const [imgError, setImgError] = useState(false);
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
 
-  if (!isVisible) return null;
+  // Detect mobile device on client side
+  useEffect(() => {
+    const checkMobile = () => {
+      const userAgent = navigator.userAgent || navigator.vendor;
+      const isMobile = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
+        userAgent.toLowerCase()
+      );
+      setIsMobileDevice(isMobile);
+    };
+    checkMobile();
+  }, []);
+
+  // Don't render if not mobile or dismissed
+  if (!isMobileDevice || !isVisible) return null;
 
   return (
     <div
@@ -44,11 +60,11 @@ export function AppDownloadBanner({ className }: AppDownloadBannerProps) {
           )}
         </div>
         <div className="flex flex-col min-w-0">
-          <span className="text-white truncate font-roboto-bold text-base" style={{ lineHeight: '0.85' }} >
-            AONE APP
+          <span className="text-white truncate font-roboto-bold text-base" style={{ lineHeight: '0.95' }} >
+            {t("appBanner.title")}
           </span>
-          <span className="text-white truncate font-roboto-regular text-sm" style={{ lineHeight: '0.85' }}>
-            Download App Now
+          <span className="text-white truncate font-roboto-regular text-sm" style={{ lineHeight: '1' }}>
+            {t("appBanner.subtitle")}
           </span>
         </div>
       </div>
@@ -62,13 +78,13 @@ export function AppDownloadBanner({ className }: AppDownloadBannerProps) {
           }}
           className="bg-white py-1.5 px-2.5 rounded-md font-roboto-bold text-xs text-primary shadow-xl cursor-pointer"
         >
-          DOWNLOAD NOW
+          {t("appBanner.downloadButton")}
         </button>
 
         <button
           onClick={() => setIsVisible(false)}
           className="text-white shrink-0 cursor-pointer"
-          aria-label="Close download banner"
+          aria-label={t("appBanner.closeAria")}
         >
           <IoIosCloseCircleOutline size={32.5} />
         </button>

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Header } from "./header";
 import { BottomNav } from "./bottom-nav";
+import { AppDownloadBanner } from "./app-download-banner";
 import { shouldShowHeader, shouldShowBottomNav } from "@/lib/route-config";
 
 interface MobileContainerProps {
@@ -33,8 +34,11 @@ export function MobileContainer({ children, className }: MobileContainerProps) {
           backgroundAttachment: "fixed inset-0",
         }}
       >
-        {/* Header - fixed at top */}
-        {showHeader && <Header />}
+        {/* Sticky top section: App Download Banner + Header */}
+        <div className="sticky top-0 z-50">
+          <AppDownloadBanner />
+          {showHeader && <Header className="static!" />}
+        </div>
 
         {/* Main content area */}
         <main className="flex-1">

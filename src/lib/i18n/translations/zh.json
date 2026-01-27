@@ -480,5 +480,11 @@
     "success": "成功",
     "warning": "警告",
     "error": "错误"
+  },
+  "appBanner": {
+    "title": "AONE 应用",
+    "subtitle": "立即下载应用",
+    "downloadButton": "立即下载",
+    "closeAria": "关闭下载横幅"
   }
 }
