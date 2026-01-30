@@ -26,14 +26,17 @@ export function MobileContainer({ children, className }: MobileContainerProps) {
           "w-full max-w-[430px] min-h-screen shadow-xl relative flex flex-col",
           className
         )}
-        style={{
-          backgroundImage: "url('/images/background/background_light.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundAttachment: "fixed inset-0",
-        }}
       >
+        {/* Fixed background layer */}
+        <div
+          className="fixed top-0 bottom-0 w-full max-w-[430px] left-1/2 -translate-x-1/2 z-0 pointer-events-none"
+          style={{
+            backgroundImage: "url('/images/background/background_light.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
         {/* Sticky top section: App Download Banner + Header */}
         <div className="sticky top-0 z-50">
           <AppDownloadBanner />
@@ -41,7 +44,7 @@ export function MobileContainer({ children, className }: MobileContainerProps) {
         </div>
 
         {/* Main content area */}
-        <main className="flex-1">
+        <main className="flex-1 relative z-10">
           {children}
         </main>
 

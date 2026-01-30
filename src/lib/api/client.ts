@@ -134,7 +134,8 @@ export const apiClient = {
     const data = await response.json();
 
     // Check for API-level errors
-    if (data.Code && data.Code !== 0) {
+    // Some APIs return Code: 0 for success, others return Code: 200
+    if (data.Code && data.Code !== 0 && data.Code !== 200) {
       throw new ApiError(data.Code, data.Message || "An error occurred");
     }
 

@@ -15,7 +15,7 @@ import { useProfile } from "@/hooks";
 export default function AccountPage() {
   const [imgError, setImgError] = useState(false);
   const [isKycModalOpen, setIsKycModalOpen] = useState(false);
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const { logout } = useAuth();
   const { showSuccess, showError } = useToast();
 
@@ -136,7 +136,12 @@ export default function AccountPage() {
 
   const formatOverviewDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
+    const localeMap: Record<string, string> = {
+      en: "en-US",
+      zh: "zh-CN",
+      ms: "ms-MY",
+    };
+    return date.toLocaleDateString(localeMap[locale] || "en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",
