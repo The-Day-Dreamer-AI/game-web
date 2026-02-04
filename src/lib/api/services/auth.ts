@@ -64,10 +64,10 @@ export const authApi = {
 
   /**
    * Register a new user
-   * POST /api/mapiuser/Register
+   * POST /api/MapiUser/RegisterAccount
    */
   async register(data: RegisterRequest): Promise<RegisterResponse> {
-    return apiClient.post<RegisterResponse>("/api/mapiuser/Register", data, {
+    return apiClient.post<RegisterResponse>("/api/MapiUser/RegisterAccount", data, {
       authenticated: false,
     });
   },

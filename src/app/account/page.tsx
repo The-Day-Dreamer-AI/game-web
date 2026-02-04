@@ -93,19 +93,19 @@ export default function AccountPage() {
       href: "/account/contact",
       isLink: true,
     },
-    {
-      icon: "/images/icon/inbox_icon.png",
-      labelKey: "account.inbox",
-      href: "/account/inbox",
-      badge: profile?.InboxCount,
-      isLink: true,
-    },
-    {
-      icon: "/images/icon/check_icon.png",
-      labelKey: "account.checkIn",
-      href: "/account/check-in",
-      isLink: true,
-    },
+    // {
+    //   icon: "/images/icon/inbox_icon.png",
+    //   labelKey: "account.inbox",
+    //   href: "/account/inbox",
+    //   badge: profile?.InboxCount,
+    //   isLink: true,
+    // },
+    // {
+    //   icon: "/images/icon/check_icon.png",
+    //   labelKey: "account.checkIn",
+    //   href: "/account/check-in",
+    //   isLink: true,
+    // },
     {
       icon: "/images/icon/redeem_gift_icon.png",
       labelKey: "account.redeemGift",
@@ -232,28 +232,32 @@ export default function AccountPage() {
                   unoptimized
                 />
               </button>
-              <div className="whitespace-nowrap px-2 py-1 rounded-full text-xs font-roboto-medium bg-[#71B6FB1A] text-[#71B6FB] border border-[#71B6FB] flex gap-1">
-                <Image
-                  src="/images/icon/verified_icon.png"
-                  alt="verified"
-                  width={12}
-                  height={12}
-                  className="object-contain w-4 h-4"
-                  unoptimized
-                />
-                {t("common.verified")}
-              </div>
-              <div className="whitespace-nowrap px-2 py-1 rounded-full text-xs font-roboto-medium bg-[#FFC0361A] border border-[#FFC036] text-[#FFC036] flex gap-1">
-                <Image
-                  src="/images/icon/pending_icon.png"
-                  alt="pending"
-                  width={12}
-                  height={12}
-                  className="object-contain w-4 h-4"
-                  unoptimized
-                />
-                {t("common.pending")}
-              </div>
+              {
+              profile.KycStatus === "Pending" ? 
+                <div className="whitespace-nowrap px-2 py-1 rounded-full text-xs font-roboto-medium bg-[#FFC0361A] border border-[#FFC036] text-[#FFC036] flex gap-1">
+                  <Image
+                    src="/images/icon/pending_icon.png"
+                    alt="pending"
+                    width={12}
+                    height={12}
+                    className="object-contain w-4 h-4"
+                    unoptimized
+                  />
+                  {t("common.pending")}
+                </div>
+              :
+                <div className="whitespace-nowrap px-2 py-1 rounded-full text-xs font-roboto-medium bg-[#71B6FB1A] text-[#71B6FB] border border-[#71B6FB] flex gap-1">
+                  <Image
+                    src="/images/icon/verified_icon.png"
+                    alt="verified"
+                    width={12}
+                    height={12}
+                    className="object-contain w-4 h-4"
+                    unoptimized
+                  />
+                  {t("common.verified")}
+                </div>
+              }
             </div>
             <p className="text-white text-xs">UID: {profile.Id}</p>
           </div>
@@ -500,6 +504,7 @@ export default function AccountPage() {
         <KycVerificationModal
           isOpen={isKycModalOpen}
           onClose={() => setIsKycModalOpen(false)}
+          userId={profile?.Id || ""}
         />
       </div>
     </RequireAuth>

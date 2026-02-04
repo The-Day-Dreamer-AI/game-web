@@ -312,14 +312,13 @@ export default function RegisterPage() {
         uplineValue = DEFAULT_REFERRAL_CODE || "";
       }
 
-      // Proceed with registration using the upline value
+      // Proceed with registration using the new API
       const result = await registerMutation.mutateAsync({
-        Name: data.fullName,
-        Password: data.password,
-        Phone: data.phone,
-        Tac: data.otpCode,
         UplineReferralCode: uplineValue,
         Username: data.username,
+        Password: data.password,
+        ConfirmPassword: data.confirmPassword,
+        Name: data.fullName,
       });
 
       if (result.Code === 0) {
