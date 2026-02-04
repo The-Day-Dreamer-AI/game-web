@@ -348,3 +348,14 @@
   -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
   box-shadow: 0 0 0 1000px transparent inset !important;
 }
+
+/* Hide native calendar/clock icons on date picker inputs */
+.date-picker-no-suffix::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+.date-picker-no-suffix::-webkit-inner-spin-button,
+.date-picker-no-suffix::-webkit-clear-button {
+  display: none;
+  -webkit-appearance: none;
+}

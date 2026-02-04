@@ -206,9 +206,13 @@ export const apiClient = {
       body: formBody.toString(),
     });
 
-    const data = await response.json();
-
     if (!response.ok) {
+      if (response.status === 401) {
+        handleUnauthorized();
+        throw new ApiError(401, "Authentication required.", response.status);
+      }
+
+      const data = await response.json();
       // Login errors have different format
       if (data.error) {
         throw new ApiError(response.status, data.error_description || data.error, response.status);
@@ -216,6 +220,7 @@ export const apiClient = {
       throw new ApiError(response.status, `Request failed: ${response.statusText}`, response.status);
     }
 
+    const data = await response.json();
     return data;
   },
 

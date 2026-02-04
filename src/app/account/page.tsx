@@ -441,7 +441,7 @@ export default function AccountPage() {
                     <span className="text-sm text-zinc-700 font-roboto-medium">
                       {t(item.labelKey)}
                     </span>
-                    {item.badge !== undefined && item.badge > 0 && (
+                    {"badge" in item && typeof item.badge === "number" && item.badge > 0 && (
                       <span className="px-2 py-0.5 text-xs bg-red-500 text-white rounded-full">
                         {item.badge}
                       </span>
