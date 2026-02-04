@@ -62,7 +62,7 @@ export default function ChangeAvatarPage() {
       <main className="flex-1 px-4 py-4">
         <form onSubmit={handleSubmit} className="flex flex-col h-full">
           {/* Avatar Selection Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6 px-2 sm:px-6">
+          <div className="grid max-[380px]:grid-cols-2 grid-cols-3 gap-4 mb-6 px-2 sm:px-6">
             {avatars.map((avatar, index) => (
               <button
                 key={avatar.Id}

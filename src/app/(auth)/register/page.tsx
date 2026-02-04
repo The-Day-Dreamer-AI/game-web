@@ -75,11 +75,7 @@ export default function RegisterPage() {
     },
   });
 
-  // Default send-to options fallback
-  const defaultSendToOptions: SendToOption[] = [
-    { value: "SMS", label: t("auth.sms") },
-    { value: "WhatsApp", label: t("auth.whatsapp") },
-  ];
+  const defaultSendToOptions: SendToOption[] = [];
 
   // Fetch message selection options on mount
   useEffect(() => {
