@@ -247,7 +247,8 @@
     "noBankAccounts": "Anda belum menambah sebarang akaun bank.",
     "addBankAccount": "Tambah Akaun Bank",
     "primaryAccount": "Akaun Utama",
-    "noBankData": "Butiran akaun bank belum tersedia."
+    "noBankData": "Butiran akaun bank belum tersedia.",
+    "kycAlreadyVerified": "Akaun anda telah disahkan."
   },
   "inbox": {
     "title": "Peti Masuk",

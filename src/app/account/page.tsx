@@ -10,11 +10,13 @@ import { useI18n } from "@/providers/i18n-provider";
 import { useAuth } from "@/providers/auth-provider";
 import { useToast } from "@/providers/toast-provider";
 import { KycVerificationModal } from "@/components/account/kyc-verification-modal";
+import { KycAlreadyVerifiedModal } from "@/components/account/kyc-already-verified-modal";
 import { useProfile } from "@/hooks";
 
 export default function AccountPage() {
   const [imgError, setImgError] = useState(false);
   const [isKycModalOpen, setIsKycModalOpen] = useState(false);
+  const [isKycVerifiedModalOpen, setIsKycVerifiedModalOpen] = useState(false);
   const { t, locale } = useI18n();
   const { logout } = useAuth();
   const { showSuccess, showError } = useToast();
@@ -78,7 +80,13 @@ export default function AccountPage() {
     {
       icon: "/images/icon/kyc_icon.png",
       labelKey: "account.kyc",
-      onClick: () => setIsKycModalOpen(true),
+      onClick: () => {
+        if (profile?.KycStatus === "Pending") {
+          setIsKycModalOpen(true);
+        } else {
+          setIsKycVerifiedModalOpen(true);
+        }
+      },
       isLink: false,
     },
     {
@@ -505,6 +513,12 @@ export default function AccountPage() {
           isOpen={isKycModalOpen}
           onClose={() => setIsKycModalOpen(false)}
           userId={profile?.Id || ""}
+        />
+
+        {/* KYC Already Verified Modal */}
+        <KycAlreadyVerifiedModal
+          isOpen={isKycVerifiedModalOpen}
+          onClose={() => setIsKycVerifiedModalOpen(false)}
         />
       </div>
     </RequireAuth>

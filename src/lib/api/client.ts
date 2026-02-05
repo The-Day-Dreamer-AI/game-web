@@ -166,6 +166,16 @@ export const apiClient = {
         handleUnauthorized();
         throw new ApiError(401, "Authentication required.", response.status);
       }
+      // Try to parse error response body for API error message
+      try {
+        const errorData = await response.json();
+        if (errorData.Message) {
+          throw new ApiError(errorData.Code || response.status, errorData.Message, response.status, errorData);
+        }
+      } catch (parseError) {
+        // If parsing fails, fall back to status text
+        if (parseError instanceof ApiError) throw parseError;
+      }
       throw new ApiError(response.status, `Request failed: ${response.statusText}`, response.status);
     }
 
