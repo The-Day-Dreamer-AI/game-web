@@ -90,16 +90,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setIsLoading(true);
 
     try {
-      // Use the real /api/mapiuser/Register API endpoint
-      // Note: This legacy register flow doesn't support OTP - use the register page for full registration
-      // If no referral code, use default "196B48"
       await authApi.register({
-        Name: credentials.fullName || credentials.username,
-        Password: credentials.password,
-        Phone: credentials.phone,
-        Tac: "", // Legacy form doesn't support OTP
         UplineReferralCode: credentials.referralCode || "",
         Username: credentials.username,
+        Password: credentials.password,
+        ConfirmPassword: credentials.confirmPassword,
+        Name: credentials.fullName || credentials.username,
       });
 
       // After successful registration, log the user in

@@ -260,12 +260,11 @@ export interface RegisterGetTacResponse {
 }
 
 export interface RegisterRequest {
-  Name: string;
-  Password: string;
-  Phone: string;
-  Tac: string;
   UplineReferralCode: string;
   Username: string;
+  Password: string;
+  ConfirmPassword: string;
+  Name: string;
 }
 
 export interface RegisterResponse {
@@ -732,6 +731,7 @@ export interface UserProfileResponse {
   ActiveDownline: number;
   Turnover: number;
   Pin: string | null;
+  KycStatus: string;
 }
 
 // ===========================================
@@ -900,6 +900,28 @@ export interface SubmitDepositRequest {
 export interface SubmitDepositResponse {
   Code: number;
   Message: string;
+}
+
+// ===========================================
+// KYC Types
+// ===========================================
+
+export interface KycSubmitRequest {
+  UserId: string;
+  Phone: string;
+  Option: string;
+}
+
+export interface KycVerifyRequest {
+  UserId: string;
+  Phone: string;
+  Tac: string;
+}
+
+export interface KycResponse {
+  Code: number;
+  Message: string;
+  ExpiresIn?: number;
 }
 
 // ===========================================

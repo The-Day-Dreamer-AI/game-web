@@ -1,5 +1,5 @@
-import { apiClient, getAuthToken } from "../client";
-import { API_CONFIG } from "../config";
+import { apiClient, getAuthToken, ApiError } from "../client";
+import { API_CONFIG, AUTH_STORAGE_KEY } from "../config";
 import type {
   GetTacResponse,
   AddBankAccountRequest,
@@ -36,6 +36,15 @@ export const bankApi = {
         ...(token ? { Authorization: `bearer ${token}` } : {}),
       },
     });
+
+    if (response.status === 401) {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("token");
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+        window.location.href = "/";
+      }
+      throw new ApiError(401, "Authentication required.", 401);
+    }
 
     const data = await response.json();
 

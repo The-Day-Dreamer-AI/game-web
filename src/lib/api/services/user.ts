@@ -12,6 +12,9 @@ import type {
   ChangePasswordGetTacResponse,
   ChangePasswordRequest,
   ChangePasswordResponse,
+  KycSubmitRequest,
+  KycVerifyRequest,
+  KycResponse,
 } from "../types";
 
 export const userApi = {
@@ -92,6 +95,26 @@ export const userApi = {
    */
   async changePassword(data: ChangePasswordRequest): Promise<ChangePasswordResponse> {
     return apiClient.post<ChangePasswordResponse>("/api/mapiuser/changepassword", data, {
+      authenticated: true,
+    });
+  },
+
+  /**
+   * Submit KYC verification (request OTP)
+   * POST /api/MapiUser/KYC
+   */
+  async kycSubmit(data: KycSubmitRequest): Promise<KycResponse> {
+    return apiClient.post<KycResponse>("/api/MapiUser/KYC", data, {
+      authenticated: true,
+    });
+  },
+
+  /**
+   * Verify KYC OTP
+   * POST /api/MapiUser/KYC
+   */
+  async kycVerify(data: KycVerifyRequest): Promise<KycResponse> {
+    return apiClient.post<KycResponse>("/api/MapiUser/KYC", data, {
       authenticated: true,
     });
   },

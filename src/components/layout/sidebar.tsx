@@ -62,14 +62,14 @@ const mainMenuItems: MenuItem[] = [
     icon: "/images/sidebar/sidebar_transaction_icon.png",
     requiresAuth: true,
   },
-  {
-    id: "inbox",
-    labelKey: "sidebar.inbox",
-    href: "/account/inbox",
-    icon: "/images/sidebar/sidebar_inbox_icon.png",
-    badge: 1,
-    requiresAuth: true,
-  },
+  // {
+  //   id: "inbox",
+  //   labelKey: "sidebar.inbox",
+  //   href: "/account/inbox",
+  //   icon: "/images/sidebar/sidebar_inbox_icon.png",
+  //   badge: 1,
+  //   requiresAuth: true,
+  // },
 ];
 
 const secondaryMenuItems: MenuItem[] = [
@@ -207,7 +207,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           </div>
 
           {/* Feature Buttons - Check In & Spin Wheel (placeholder for now) */}
-          <div className="px-4 pb-4">
+          {/* <div className="px-4 pb-4">
             <div className="max-[380px]:grid max-[380px]:grid-cols-1 flex gap-2">
               <Link
                 href="/check-in"
@@ -234,7 +234,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 </span>
               </Link>
             </div>
-          </div>
+          </div> */}
 
           {/* Main Menu */}
           <div className="px-4 pb-3">
