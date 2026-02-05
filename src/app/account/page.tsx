@@ -10,11 +10,13 @@ import { useI18n } from "@/providers/i18n-provider";
 import { useAuth } from "@/providers/auth-provider";
 import { useToast } from "@/providers/toast-provider";
 import { KycVerificationModal } from "@/components/account/kyc-verification-modal";
+import { KycAlreadyVerifiedModal } from "@/components/account/kyc-already-verified-modal";
 import { useProfile } from "@/hooks";
 
 export default function AccountPage() {
   const [imgError, setImgError] = useState(false);
   const [isKycModalOpen, setIsKycModalOpen] = useState(false);
+  const [isKycVerifiedModalOpen, setIsKycVerifiedModalOpen] = useState(false);
   const { t, locale } = useI18n();
   const { logout } = useAuth();
   const { showSuccess, showError } = useToast();
@@ -78,7 +80,13 @@ export default function AccountPage() {
     {
       icon: "/images/icon/kyc_icon.png",
       labelKey: "account.kyc",
-      onClick: () => setIsKycModalOpen(true),
+      onClick: () => {
+        if (profile?.KycStatus === "Pending") {
+          setIsKycModalOpen(true);
+        } else {
+          setIsKycVerifiedModalOpen(true);
+        }
+      },
       isLink: false,
     },
     {
@@ -93,19 +101,19 @@ export default function AccountPage() {
       href: "/account/contact",
       isLink: true,
     },
-    {
-      icon: "/images/icon/inbox_icon.png",
-      labelKey: "account.inbox",
-      href: "/account/inbox",
-      badge: profile?.InboxCount,
-      isLink: true,
-    },
-    {
-      icon: "/images/icon/check_icon.png",
-      labelKey: "account.checkIn",
-      href: "/account/check-in",
-      isLink: true,
-    },
+    // {
+    //   icon: "/images/icon/inbox_icon.png",
+    //   labelKey: "account.inbox",
+    //   href: "/account/inbox",
+    //   badge: profile?.InboxCount,
+    //   isLink: true,
+    // },
+    // {
+    //   icon: "/images/icon/check_icon.png",
+    //   labelKey: "account.checkIn",
+    //   href: "/account/check-in",
+    //   isLink: true,
+    // },
     {
       icon: "/images/icon/redeem_gift_icon.png",
       labelKey: "account.redeemGift",
@@ -232,28 +240,32 @@ export default function AccountPage() {
                   unoptimized
                 />
               </button>
-              <div className="whitespace-nowrap px-2 py-1 rounded-full text-xs font-roboto-medium bg-[#71B6FB1A] text-[#71B6FB] border border-[#71B6FB] flex gap-1">
-                <Image
-                  src="/images/icon/verified_icon.png"
-                  alt="verified"
-                  width={12}
-                  height={12}
-                  className="object-contain w-4 h-4"
-                  unoptimized
-                />
-                {t("common.verified")}
-              </div>
-              <div className="whitespace-nowrap px-2 py-1 rounded-full text-xs font-roboto-medium bg-[#FFC0361A] border border-[#FFC036] text-[#FFC036] flex gap-1">
-                <Image
-                  src="/images/icon/pending_icon.png"
-                  alt="pending"
-                  width={12}
-                  height={12}
-                  className="object-contain w-4 h-4"
-                  unoptimized
-                />
-                {t("common.pending")}
-              </div>
+              {
+              profile.KycStatus === "Pending" ? 
+                <div className="whitespace-nowrap px-2 py-1 rounded-full text-xs font-roboto-medium bg-[#FFC0361A] border border-[#FFC036] text-[#FFC036] flex gap-1">
+                  <Image
+                    src="/images/icon/pending_icon.png"
+                    alt="pending"
+                    width={12}
+                    height={12}
+                    className="object-contain w-4 h-4"
+                    unoptimized
+                  />
+                  {t("common.pending")}
+                </div>
+              :
+                <div className="whitespace-nowrap px-2 py-1 rounded-full text-xs font-roboto-medium bg-[#71B6FB1A] text-[#71B6FB] border border-[#71B6FB] flex gap-1">
+                  <Image
+                    src="/images/icon/verified_icon.png"
+                    alt="verified"
+                    width={12}
+                    height={12}
+                    className="object-contain w-4 h-4"
+                    unoptimized
+                  />
+                  {t("common.verified")}
+                </div>
+              }
             </div>
             <p className="text-white text-xs">UID: {profile.Id}</p>
           </div>
@@ -437,7 +449,7 @@ export default function AccountPage() {
                     <span className="text-sm text-zinc-700 font-roboto-medium">
                       {t(item.labelKey)}
                     </span>
-                    {item.badge !== undefined && item.badge > 0 && (
+                    {"badge" in item && typeof item.badge === "number" && item.badge > 0 && (
                       <span className="px-2 py-0.5 text-xs bg-red-500 text-white rounded-full">
                         {item.badge}
                       </span>
@@ -500,6 +512,13 @@ export default function AccountPage() {
         <KycVerificationModal
           isOpen={isKycModalOpen}
           onClose={() => setIsKycModalOpen(false)}
+          userId={profile?.Id || ""}
+        />
+
+        {/* KYC Already Verified Modal */}
+        <KycAlreadyVerifiedModal
+          isOpen={isKycVerifiedModalOpen}
+          onClose={() => setIsKycVerifiedModalOpen(false)}
         />
       </div>
     </RequireAuth>

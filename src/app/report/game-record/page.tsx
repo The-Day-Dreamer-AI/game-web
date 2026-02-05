@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
 import { useAuth } from "@/providers/auth-provider";
 import { useGameRecordSelections, useGameRecords } from "@/hooks/use-report";
+import { DatePickerInput } from "@/components/ui/date-picker-input";
 
 // Helper function to format date for API (YYYY-MM-DD HH:mm)
 function formatDateForApi(date: Date): string {
@@ -146,42 +147,38 @@ export default function GameRecordPage() {
         {/* Filters */}
         <div className="p-4 space-y-3">
           {/* Start Date */}
-          <div className="flex items-center gap-3 px-4 py-3 border border-zinc-200 rounded-lg bg-white">
-            <Image
-              src="/images/icon/calender_start_icon.png"
-              alt="calendar"
-              width={20}
-              height={20}
-              className="w-5 h-5 object-contain"
-              unoptimized
-            />
-            <input
-              type="text"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              placeholder="Start date"
-              className="flex-1 focus:outline-none text-zinc-800 text-sm"
-            />
-          </div>
+          <DatePickerInput
+            value={startDate}
+            onChange={setStartDate}
+            placeholder="Start date"
+            prefix={
+              <Image
+                src="/images/icon/calender_start_icon.png"
+                alt="calendar"
+                width={20}
+                height={20}
+                className="w-5 h-5 object-contain"
+                unoptimized
+              />
+            }
+          />
 
           {/* End Date */}
-          <div className="flex items-center gap-3 px-4 py-3 border border-zinc-200 rounded-lg bg-white">
-            <Image
-              src="/images/icon/calender_end_icon.png"
-              alt="calendar"
-              width={20}
-              height={20}
-              className="w-5 h-5 object-contain"
-              unoptimized
-            />
-            <input
-              type="text"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              placeholder="End date"
-              className="flex-1 focus:outline-none text-zinc-800 text-sm"
-            />
-          </div>
+          <DatePickerInput
+            value={endDate}
+            onChange={setEndDate}
+            placeholder="End date"
+            prefix={
+              <Image
+                src="/images/icon/calender_end_icon.png"
+                alt="calendar"
+                width={20}
+                height={20}
+                className="w-5 h-5 object-contain"
+                unoptimized
+              />
+            }
+          />
 
           {/* Game Dropdown and Search */}
           <div className="flex items-center gap-3">
@@ -190,48 +187,60 @@ export default function GameRecordPage() {
               <button
                 onClick={() => setShowGameDropdown(!showGameDropdown)}
                 disabled={isLoadingSelections}
-                className="w-full flex items-center justify-between gap-3 px-4 py-3 border border-zinc-200 rounded-lg bg-white disabled:opacity-50"
+                className={cn(
+                  "cursor-pointer form-input-wrapper w-full flex items-center justify-between rounded-lg border px-4 py-3 transition-all duration-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed",
+                  showGameDropdown
+                    ? "border-[#0DC3B1] bg-[rgba(0,214,198,0.1)] shadow-[0_0_20px_rgba(20,187,176,0.2)]"
+                    : "border-[#959595] bg-white"
+                )}
               >
-                <div className="flex items-center gap-3">
+                <span className="flex items-center gap-3">
                   <Image
                     src="/images/icon/game_record_options_icon.png"
-                    alt="calendar"
+                    alt="game"
                     width={20}
                     height={20}
                     className="w-5 h-5 object-contain"
                     unoptimized
                   />
-                  <span className="text-zinc-800 text-sm">
+                  <span className="text-sm font-roboto-regular text-zinc-900">
                     {isLoadingSelections ? "..." : selectedGameDisplay}
                   </span>
-                </div>
+                </span>
                 <ChevronDown
                   className={cn(
-                    "w-5 h-5 text-zinc-400 transition-transform",
+                    "w-5 h-6 text-zinc-400 transition-transform",
                     showGameDropdown && "rotate-180"
                   )}
                 />
               </button>
 
               {showGameDropdown && gameOptions.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-zinc-200 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
-                  {gameOptions.map((game) => (
-                    <button
-                      key={game.Game}
-                      onClick={() => {
-                        setSelectedGame(game.Game);
-                        setShowGameDropdown(false);
-                      }}
-                      className={cn(
-                        "w-full px-4 py-2.5 text-left text-sm hover:bg-zinc-50 transition-colors",
-                        currentGame === game.Game
-                          ? "text-primary font-roboto-medium"
-                          : "text-zinc-700"
-                      )}
-                    >
-                      {game.Text}
-                    </button>
-                  ))}
+                <div className="absolute top-full left-0 right-0 mt-1 rounded-lg border border-[#959595] bg-white shadow-lg z-20 py-2 flex flex-col gap-2 max-h-60 overflow-y-auto">
+                  {gameOptions.map((game) => {
+                    const isSelected = currentGame === game.Game;
+                    return (
+                      <button
+                        key={game.Game}
+                        onClick={() => {
+                          setSelectedGame(game.Game);
+                          setShowGameDropdown(false);
+                        }}
+                        className="w-full px-2 text-left group cursor-pointer"
+                      >
+                        <span
+                          className={cn(
+                            "block rounded-lg px-3 py-2 text-sm font-roboto-regular transition-colors",
+                            isSelected
+                              ? "border border-[#1ECAD3] bg-[#DDF7F7] text-[#008D92]"
+                              : "text-zinc-900 group-hover:bg-zinc-100"
+                          )}
+                        >
+                          {game.Text}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               )}
             </div>

@@ -149,7 +149,7 @@ export default function EventPage() {
         {/* Horizontally Scrollable Categories */}
         <div
           ref={scrollRef}
-          className="flex gap-1 px-4 py-3 overflow-x-auto scrollbar-hide"
+          className="flex gap-1  max-[450px]:px-2 px-4 py-3 mx-auto"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {categories.map((category) => (
@@ -157,7 +157,7 @@ export default function EventPage() {
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
               className={cn(
-                "shrink-0 px-3 py-2 rounded-lg text-[10px] font-roboto-bold whitespace-nowrap shadow-md cursor-pointer",
+                "shrink-0 px-3 py-2 rounded-lg max-[390px]:text-[6px] max-[450px]:text-[7px] text-[8px] font-roboto-bold whitespace-nowrap shadow-md cursor-pointer",
                 activeCategory === category.id
                   ? "bg-primary text-white"
                   : "bg-linear-to-b from-white to-[#F2F4F9] text-[#28323C] border border-white"

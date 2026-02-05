@@ -248,7 +248,8 @@
     "noBankAccounts": "You have not added any bank accounts yet.",
     "addBankAccount": "Add Bank Account",
     "primaryAccount": "Primary Account",
-    "noBankData": "Bank account details are not available yet."
+    "noBankData": "Bank account details are not available yet.",
+    "kycAlreadyVerified": "Your account has already been verified."
   },
   "inbox": {
     "title": "Inbox",
