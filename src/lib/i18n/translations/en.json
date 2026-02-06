@@ -318,8 +318,16 @@
   "event": {
     "noEvents": "There are no events at the moment.",
     "apply": "APPLY",
+    "info": "INFO",
     "confirmTitle": "Confirm Application",
-    "confirmMessage": "Are you sure that you want to apply?"
+    "confirmMessage": "Are you sure that you want to apply?",
+    "mode": "Mode",
+    "type": "Type",
+    "frequency": "Frequency",
+    "rate": "Rate",
+    "amount": "Amount",
+    "termsConditions": "Terms & Conditions",
+    "category": "Category"
   },
   "games": {
     "slots": "SLOTS",
