@@ -24,14 +24,17 @@ const categories = [
 // Transform API promo to component format
 interface TransformedEvent {
   id: string;
-  image: string;
+  image: string | null;
   title: string;
   description: string;
   category: string[];
-  htmlContent: string;
-  mode?: string;
-  type?: string;
-  freq?: string;
+  mode: string | null;
+  type: string | null;
+  freq: string | null;
+  rate: number;
+  amount: number;
+  categoryId: string | null;
+  rawPromo: Promo;
 }
 
 function transformPromo(promo: Promo, lang: string): TransformedEvent {
@@ -39,14 +42,14 @@ function transformPromo(promo: Promo, lang: string): TransformedEvent {
   const getName = () => {
     if (lang === "zh" && promo.NameCn) return promo.NameCn;
     if (lang === "ms" && promo.NameMy) return promo.NameMy;
-    return promo.Name;
+    return promo.Name || "-";
   };
 
   // Get localized terms & conditions based on language
   const getTnc = () => {
     if (lang === "zh" && promo.TncCn) return promo.TncCn;
     if (lang === "ms" && promo.TncMy) return promo.TncMy;
-    return promo.Tnc;
+    return promo.Tnc || "-";
   };
 
   // Get localized image based on language
@@ -56,14 +59,11 @@ function transformPromo(promo: Promo, lang: string): TransformedEvent {
     return promo.Image;
   };
 
-  const name = getName();
-  const tnc = getTnc();
-
   return {
     id: promo.Id,
     image: getImage(),
-    title: name,
-    description: tnc,
+    title: getName(),
+    description: getTnc(),
     // Map Type to categories - show in all for now since API doesn't provide exact category mapping
     category: [
       "all",
@@ -74,22 +74,13 @@ function transformPromo(promo: Promo, lang: string): TransformedEvent {
       "lottery",
       "fishing",
     ],
-    htmlContent: `
-      <h2>${name}</h2>
-      <p>${tnc}</p>
-      ${promo.Mode ? `<p><strong>Mode:</strong> ${promo.Mode}</p>` : ""}
-      ${promo.Type ? `<p><strong>Type:</strong> ${promo.Type}</p>` : ""}
-      ${promo.Freq ? `<p><strong>Frequency:</strong> ${promo.Freq}</p>` : ""}
-      ${promo.Rate > 0 ? `<p><strong>Rate:</strong> ${promo.Rate}%</p>` : ""}
-      ${
-        promo.Amount > 0
-          ? `<p><strong>Amount:</strong> ${promo.Amount}</p>`
-          : ""
-      }
-    `,
     mode: promo.Mode,
     type: promo.Type,
     freq: promo.Freq,
+    rate: promo.Rate,
+    amount: promo.Amount,
+    categoryId: promo.CategoryId,
+    rawPromo: promo,
   };
 }
 
@@ -211,43 +202,43 @@ export default function EventPage() {
                 className="bg-white rounded-xl border border-zinc-100 overflow-hidden shadow-sm"
               >
                 {/* Event Image */}
-                <div className="relative h-36 bg-primary">
-                  <Image
-                    src={event.image}
-                    alt={event.title}
-                    unoptimized
-                    fill
-                    className="object-cover"
-                    onError={(e) => {
-                      // Hide broken image, show gradient background
-                      e.currentTarget.style.display = "none";
-                    }}
-                  />
+                <div className="relative h-36 bg-linear-to-r from-zinc-700 to-zinc-500 shrink-0">
+                  {event.image && (
+                    <Image
+                      src={event.image}
+                      alt={event.title}
+                      unoptimized
+                      fill
+                      className="object-cover"
+                      onError={(e) => {
+                        // Hide broken image, show gradient background
+                        e.currentTarget.style.display = "none";
+                      }}
+                    />
+                  )}
                 </div>
 
                 {/* Event Content */}
                 <div className="p-3 flex flex-col gap-1">
-                  <div className="text-base font-roboto-bold text-[#28323C]">
+                  <div className="text-base font-roboto-bold text-[#28323C] capitalize">
                     {event.title}
                   </div>
-                  <p className="text-xs text-zinc-500 line-clamp-2 mb-1">
-                    {event.description}
+                  <p className="text-xs text-[#5F7182] line-clamp-2 mb-1">
+                    {event.description || "-"}
                   </p>
-                  {event.freq && (
-                    <p className="text-xs text-primary mb-1">{event.freq}</p>
-                  )}
+                  <p className="text-xs text-primary mb-1">{event.freq || "-"}</p>
 
                   {/* Action Buttons */}
                   <div className="flex gap-2">
                     <Button
                       variant="secondary"
-                      className="flex-1 bg-dark hover:bg-dark text-white rounded-lg font-roboto-bold text-sm py-6"
+                      className="cursor-pointer flex-1 bg-dark hover:bg-dark text-white rounded-lg font-roboto-bold text-sm py-6"
                       onClick={() => setSelectedEvent(event)}
                     >
-                      INFO
+                      {t("event.info")}
                     </Button>
                     <Button
-                      className="flex-1 bg-primary hover:bg-primary text-white rounded-lg font-roboto-bold text-sm py-6"
+                      className="cursor-pointer flex-1 bg-primary hover:bg-primary text-white rounded-lg font-roboto-bold text-sm py-6"
                       onClick={() => handleApply(event)}
                       disabled={claimPromoMutation.isPending}
                     >

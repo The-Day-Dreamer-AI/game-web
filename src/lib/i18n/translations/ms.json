@@ -301,8 +301,16 @@
   "event": {
     "noEvents": "Tiada acara pada masa ini.",
     "apply": "MOHON",
+    "info": "INFO",
     "confirmTitle": "Sahkan Permohonan",
-    "confirmMessage": "Adakah anda pasti mahu memohon?"
+    "confirmMessage": "Adakah anda pasti mahu memohon?",
+    "mode": "Mod",
+    "type": "Jenis",
+    "frequency": "Kekerapan",
+    "rate": "Kadar",
+    "amount": "Jumlah",
+    "termsConditions": "Terma & Syarat",
+    "category": "Kategori"
   },
   "games": {
     "slots": "SLOT",

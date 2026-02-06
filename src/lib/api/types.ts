@@ -105,17 +105,18 @@ export interface Promo {
   Name: string;
   NameCn: string | null;
   NameMy: string | null;
-  Tnc: string;
+  Tnc: string | null;
   TncCn: string | null;
   TncMy: string | null;
-  Image: string;
+  Image: string | null;
   ImageCn: string | null;
   ImageMy: string | null;
-  Mode: string;
-  Type: string;
+  Mode: string | null;
+  Type: string | null;
   Rate: number;
   Amount: number;
-  Freq: string;
+  Freq: string | null;
+  CategoryId: string | null;
 }
 
 export interface EventsResponse {
