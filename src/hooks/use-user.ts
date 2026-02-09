@@ -3,6 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { userApi } from "@/lib/api";
 import type { ChangeNameRequest, ChangeAvatarRequest, ChangePasswordRequest } from "@/lib/api/types";
+import { setKycStatus } from "@/lib/kyc-storage";
 
 // Query keys
 export const userKeys = {
@@ -22,6 +23,10 @@ export function useProfile(options?: { enabled?: boolean }) {
     queryKey: userKeys.profile(),
     queryFn: async () => {
       const response = await userApi.getProfile();
+      // Sync KYC status to localStorage whenever profile is fetched
+      if (response.KycStatus) {
+        setKycStatus(response.KycStatus);
+      }
       return response;
     },
     staleTime: 2 * 60 * 1000, // 2 minutes - profile can change

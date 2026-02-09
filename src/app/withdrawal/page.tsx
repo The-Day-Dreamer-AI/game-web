@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { RequireAuth } from "@/components/auth";
+import { RequireAuth, RequireKyc } from "@/components/auth";
 import { Plus, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
@@ -66,6 +66,7 @@ export default function WithdrawalPage() {
 
   return (
     <RequireAuth>
+      <RequireKyc>
       <div className="min-h-screen flex flex-col">
 
         {/* Main Content */}
@@ -241,6 +242,7 @@ export default function WithdrawalPage() {
           </button>
         </div>
       </div>
+      </RequireKyc>
     </RequireAuth>
   );
 }

@@ -10,8 +10,9 @@ import {
 } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import type { User, LoginCredentials, RegisterCredentials, AuthState } from "@/types/auth";
-import { authApi } from "@/lib/api";
+import { authApi, userApi } from "@/lib/api";
 import { discoverKeys } from "@/hooks/use-discover";
+import { setKycStatus, clearKycStatus } from "@/lib/kyc-storage";
 
 const AUTH_STORAGE_KEY = "aone-auth";
 
@@ -78,6 +79,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
       // Refetch discover query with authenticated endpoint
       await queryClient.refetchQueries({ queryKey: discoverKeys.all });
 
+      // Fetch profile to get KYC status (non-blocking)
+      userApi.getProfile().then((profile) => {
+        if (profile.KycStatus) {
+          setKycStatus(profile.KycStatus);
+        }
+      }).catch(() => {
+        // Silently ignore - KYC status will be fetched later
+      });
+
       return { success: true };
     } catch (error) {
       return { success: false, error: (error as Error).message };
@@ -120,6 +130,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
       // Refetch discover query with authenticated endpoint
       await queryClient.refetchQueries({ queryKey: discoverKeys.all });
 
+      // Fetch profile to get KYC status (non-blocking)
+      userApi.getProfile().then((profile) => {
+        if (profile.KycStatus) {
+          setKycStatus(profile.KycStatus);
+        }
+      }).catch(() => {
+        // Silently ignore - KYC status will be fetched later
+      });
+
       return { success: true };
     } catch (error) {
       return { success: false, error: (error as Error).message };
@@ -140,6 +159,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       // Remove token from both locations
       localStorage.removeItem("token");
       localStorage.removeItem(AUTH_STORAGE_KEY);
+      // Clear KYC status
+      clearKycStatus();
       // Refetch discover query with unauthenticated endpoint
       await queryClient.refetchQueries({ queryKey: discoverKeys.all });
       setIsLoading(false);

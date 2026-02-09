@@ -10,6 +10,7 @@ import { useI18n } from "@/providers/i18n-provider";
 import { useAuth } from "@/providers/auth-provider";
 import { useToast } from "@/providers/toast-provider";
 import { useUserBanks, useAddBankAccount } from "@/hooks/use-bank";
+import { RequireKyc } from "@/components/auth";
 
 export default function AddBankAccountPage() {
   const router = useRouter();
@@ -111,6 +112,7 @@ export default function AddBankAccountPage() {
   const bankOptions = banksData?.Rows ?? [];
 
   return (
+    <RequireKyc>
     <div className="min-h-screen flex flex-col">
       <main className="flex-1 px-4 py-4 overflow-auto">
         {/* Bank Account Selection - Grid of banks */}
@@ -232,5 +234,6 @@ export default function AddBankAccountPage() {
         </button>
       </div>
     </div>
+    </RequireKyc>
   );
 }

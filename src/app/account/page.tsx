@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
 import { useAuth } from "@/providers/auth-provider";
 import { useToast } from "@/providers/toast-provider";
+import { useKyc } from "@/providers/kyc-provider";
 import { KycVerificationModal } from "@/components/account/kyc-verification-modal";
 import { KycAlreadyVerifiedModal } from "@/components/account/kyc-already-verified-modal";
 import { useProfile } from "@/hooks";
@@ -20,6 +21,7 @@ export default function AccountPage() {
   const { t, locale } = useI18n();
   const { logout } = useAuth();
   const { showSuccess, showError } = useToast();
+  const { navigateWithKycCheck } = useKyc();
 
   // Fetch user profile data
   const { data: profile, isLoading, isError, refetch, isFetching } = useProfile();
@@ -43,18 +45,21 @@ export default function AccountPage() {
       labelKey: "wallet.deposit",
       icon: "/images/icon/deposit_icon.png",
       href: "/deposit",
+      requiresKyc: true,
     },
     {
       id: "withdrawal",
       labelKey: "withdrawal.title",
       icon: "/images/icon/withdrawal_icon.png",
       href: "/withdrawal",
+      requiresKyc: true,
     },
     {
       id: "transfer",
       labelKey: "wallet.transfer",
       icon: "/images/icon/transfer_icon.png",
       href: "/account/contact?mode=transfer",
+      requiresKyc: true,
     },
     {
       id: "report",
@@ -414,6 +419,12 @@ export default function AccountPage() {
                 key={action.id}
                 href={action.href}
                 prefetch={false}
+                onClick={(e) => {
+                  if (action.requiresKyc) {
+                    e.preventDefault();
+                    navigateWithKycCheck(action.href);
+                  }
+                }}
                 className="flex flex-col items-center gap-2 group"
               >
                 <div className="w-full aspect-square rounded-xl bg-[#E8F8F6] flex items-center justify-center group-hover:bg-primary/20 transition-colors">

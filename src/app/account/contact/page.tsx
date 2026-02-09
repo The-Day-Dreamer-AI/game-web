@@ -8,6 +8,7 @@ import { ContactListItem, AddFriendBanner } from "@/components/contact";
 import { useAuth } from "@/providers/auth-provider";
 import { useI18n } from "@/providers/i18n-provider";
 import { useToast } from "@/providers/toast-provider";
+import { useKyc } from "@/providers/kyc-provider";
 import { useContacts, useContactRequests } from "@/hooks/use-contact";
 import { contactApi } from "@/lib/api";
 
@@ -18,7 +19,7 @@ export default function ContactPage() {
   const searchParams = useSearchParams();
   const { isAuthenticated } = useAuth();
   const { t } = useI18n();
-
+  const { navigateWithKycCheck } = useKyc();
   const { showError } = useToast();
 
   // Determine page mode from query param
@@ -91,7 +92,7 @@ export default function ContactPage() {
   };
 
   const handleAddNewFriend = () => {
-    router.push("/account/contact/new-friend");
+    navigateWithKycCheck("/account/contact/new-friend");
   };
 
   if (!isAuthenticated) {

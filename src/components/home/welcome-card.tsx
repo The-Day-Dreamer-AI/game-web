@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
 import { useToast } from "@/providers/toast-provider";
+import { useKyc } from "@/providers/kyc-provider";
 import { useRestore, useRefreshCash } from "@/hooks";
 
 interface UserData {
@@ -24,10 +24,10 @@ interface WelcomeCardProps {
 }
 
 export function WelcomeCard({ user, className }: WelcomeCardProps) {
-  const router = useRouter();
   const [imgError, setImgError] = useState(false);
   const { t } = useI18n();
   const { showSuccess, showError } = useToast();
+  const { navigateWithKycCheck } = useKyc();
   const restoreMutation = useRestore();
   const refreshCashMutation = useRefreshCash();
 
@@ -257,7 +257,7 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
                 width={25}
                 height={25}
                 className="object-contain w-16 h-full cursor-pointer"
-                onClick={() => router.push("/deposit")}
+                onClick={() => navigateWithKycCheck("/deposit")}
                 unoptimized
               />
               <span className="text-xs text-black font-roboto-bold mt-1">

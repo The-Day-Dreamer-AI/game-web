@@ -12,6 +12,7 @@ import {
   FriendRequestConfirmModal,
 } from "@/components/contact";
 import { cn } from "@/lib/utils";
+import { RequireKyc } from "@/components/auth";
 import { useAuth } from "@/providers/auth-provider";
 import { useI18n } from "@/providers/i18n-provider";
 import { useToast } from "@/providers/toast-provider";
@@ -222,6 +223,7 @@ export default function NewFriendPage() {
   }
 
   return (
+    <RequireKyc>
     <div className="min-h-screen flex flex-col">
 
       {/* Main Content */}
@@ -408,5 +410,6 @@ export default function NewFriendPage() {
         isLoading={rejectContact.isPending || cancelContact.isPending}
       />
     </div>
+    </RequireKyc>
   );
 }
