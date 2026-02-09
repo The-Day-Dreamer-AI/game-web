@@ -9,7 +9,6 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import QrScanner from "qr-scanner";
 import { useI18n } from "@/providers/i18n-provider";
 import { useToast } from "@/providers/toast-provider";
-import { LoginModal } from "@/components/auth/login-modal";
 import { useRegister } from "@/hooks/use-register";
 import { authApi, ApiError } from "@/lib/api";
 import { FormInput } from "@/components/ui/form-input";
@@ -22,7 +21,7 @@ interface RegisterFormData {
   fullName: string;
 }
 
-const DEFAULT_REFERRAL_CODE = process.env.NEXT_DEFAULT_REFERRAL_CODE;
+const DEFAULT_REFERRAL_CODE = process.env.NEXT_PUBLIC_DEFAULT_REFERRAL_CODE;
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -32,7 +31,6 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isValidatingUpline, setIsValidatingUpline] = useState(false);
   const qrFileInputRef = useRef<HTMLInputElement>(null);
 
@@ -161,7 +159,7 @@ export default function RegisterPage() {
         setIsValidatingUpline(false);
       } else {
         // No referral code provided, use default
-        uplineValue = DEFAULT_REFERRAL_CODE || "";
+        uplineValue = DEFAULT_REFERRAL_CODE || "this";
       }
 
       // Proceed with registration using the new API
@@ -170,7 +168,7 @@ export default function RegisterPage() {
         Username: data.username,
         Password: data.password,
         ConfirmPassword: data.confirmPassword,
-        Name: data.fullName,
+        FullName: data.fullName,
       });
 
       if (result.Code === 0) {
@@ -419,7 +417,7 @@ export default function RegisterPage() {
             {t("auth.haveAccount")}{" "}
             <button
               type="button"
-              onClick={() => setIsLoginModalOpen(true)}
+              onClick={() => router.push("/?login=true")}
               className="cursor-pointer text-primary hover:underline font-roboto-regular text-sm"
             >
               {t("auth.loginHere")}
@@ -427,12 +425,6 @@ export default function RegisterPage() {
           </p>
         </form>
       </main>
-
-      {/* Login Modal */}
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
-      />
     </div>
   );
 }

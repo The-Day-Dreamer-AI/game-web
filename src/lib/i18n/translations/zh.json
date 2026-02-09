@@ -301,8 +301,16 @@
   "event": {
     "noEvents": "目前没有活动。",
     "apply": "申请",
+    "info": "详情",
     "confirmTitle": "确认申请",
-    "confirmMessage": "您确定要申请吗？"
+    "confirmMessage": "您确定要申请吗？",
+    "mode": "模式",
+    "type": "类型",
+    "frequency": "频率",
+    "rate": "比率",
+    "amount": "金额",
+    "termsConditions": "条款与条件",
+    "category": "类别"
   },
   "games": {
     "slots": "老虎机",
