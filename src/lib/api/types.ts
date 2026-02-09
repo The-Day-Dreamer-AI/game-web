@@ -265,7 +265,7 @@ export interface RegisterRequest {
   Username: string;
   Password: string;
   ConfirmPassword: string;
-  Name: string;
+  FullName: string;
 }
 
 export interface RegisterResponse {

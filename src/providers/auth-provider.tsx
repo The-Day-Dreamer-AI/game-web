@@ -95,7 +95,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         Username: credentials.username,
         Password: credentials.password,
         ConfirmPassword: credentials.confirmPassword,
-        Name: credentials.fullName || credentials.username,
+        FullName: credentials.fullName || credentials.username,
       });
 
       // After successful registration, log the user in
