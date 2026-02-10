@@ -249,7 +249,8 @@
     "addBankAccount": "Add Bank Account",
     "primaryAccount": "Primary Account",
     "noBankData": "Bank account details are not available yet.",
-    "kycAlreadyVerified": "Your account has already been verified."
+    "kycAlreadyVerified": "Your account has already been verified.",
+    "kycRequiredMessage": "Please complete KYC verification!"
   },
   "inbox": {
     "title": "Inbox",

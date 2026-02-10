@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { RequireAuth } from "@/components/auth";
+import { RequireAuth, RequireKyc } from "@/components/auth";
 import { ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
@@ -67,6 +67,7 @@ export default function DepositPage() {
 
   return (
     <RequireAuth>
+      <RequireKyc>
       <div className="min-h-screen flex flex-col">
 
         {/* Wallet Balance Section */}
@@ -276,6 +277,7 @@ export default function DepositPage() {
         </main>
 
       </div>
+      </RequireKyc>
     </RequireAuth>
   );
 }

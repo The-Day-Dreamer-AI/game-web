@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
 import { useAuth } from "@/providers/auth-provider";
 import { useLoginModal } from "@/providers/login-modal-provider";
+import { useKyc } from "@/providers/kyc-provider";
 import { SpinWheelAnimation } from "../animation/spin-wheel-animation";
 import { CheckInAnimation } from "../animation/check-in-animation";
 
@@ -23,6 +24,7 @@ interface MenuItem {
   href: string;
   icon: string;
   requiresAuth?: boolean;
+  requiresKyc?: boolean;
   badge?: number;
 }
 
@@ -40,6 +42,7 @@ const mainMenuItems: MenuItem[] = [
     href: "/deposit",
     icon: "/images/sidebar/sidebar_deposit_icon.png",
     requiresAuth: true,
+    requiresKyc: true,
   },
   {
     id: "withdrawal",
@@ -47,6 +50,7 @@ const mainMenuItems: MenuItem[] = [
     href: "/withdrawal",
     icon: "/images/sidebar/sidebar_withdrawal_icon.png",
     requiresAuth: true,
+    requiresKyc: true,
   },
   {
     id: "events",
@@ -106,11 +110,17 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const { t, locale } = useI18n();
   const { logout, isAuthenticated } = useAuth();
   const { openLoginModal } = useLoginModal();
+  const { openKycModal, isKycVerified } = useKyc();
 
-  const handleProtectedNavigation = (href: string, requiresAuth?: boolean) => {
-    if (requiresAuth && !isAuthenticated) {
+  const handleProtectedNavigation = (item: MenuItem) => {
+    if (item.requiresAuth && !isAuthenticated) {
       onClose();
       openLoginModal();
+      return false;
+    }
+    if (item.requiresKyc && !isKycVerified) {
+      onClose();
+      openKycModal();
       return false;
     }
     return true;
@@ -244,9 +254,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   <Link
                     href={item.href}
                     onClick={(e) => {
-                      if (
-                        !handleProtectedNavigation(item.href, item.requiresAuth)
-                      ) {
+                      if (!handleProtectedNavigation(item)) {
                         e.preventDefault();
                       } else {
                         onClose();

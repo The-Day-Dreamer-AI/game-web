@@ -248,7 +248,8 @@
     "addBankAccount": "添加银行账户",
     "primaryAccount": "主要账户",
     "noBankData": "银行账户详情暂不可用。",
-    "kycAlreadyVerified": "您的账户已经过验证。"
+    "kycAlreadyVerified": "您的账户已经过验证。",
+    "kycRequiredMessage": "请完成KYC验证！"
   },
   "inbox": {
     "title": "收件箱",

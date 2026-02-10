@@ -248,7 +248,8 @@
     "addBankAccount": "Tambah Akaun Bank",
     "primaryAccount": "Akaun Utama",
     "noBankData": "Butiran akaun bank belum tersedia.",
-    "kycAlreadyVerified": "Akaun anda telah disahkan."
+    "kycAlreadyVerified": "Akaun anda telah disahkan.",
+    "kycRequiredMessage": "Sila lengkapkan pengesahan KYC!"
   },
   "inbox": {
     "title": "Peti Masuk",

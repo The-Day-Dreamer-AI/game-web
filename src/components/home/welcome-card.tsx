@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
 import { useToast } from "@/providers/toast-provider";
+import { useKyc } from "@/providers/kyc-provider";
 import { useRestore, useRefreshCash } from "@/hooks";
 
 interface UserData {
@@ -24,10 +24,10 @@ interface WelcomeCardProps {
 }
 
 export function WelcomeCard({ user, className }: WelcomeCardProps) {
-  const router = useRouter();
   const [imgError, setImgError] = useState(false);
   const { t } = useI18n();
   const { showSuccess, showError } = useToast();
+  const { navigateWithKycCheck } = useKyc();
   const restoreMutation = useRestore();
   const refreshCashMutation = useRefreshCash();
 
@@ -64,7 +64,7 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
   return (
     <div
       className={cn(
-        "relative rounded-2xl p-4 overflow-hidden border shadow-lg",
+        "relative rounded-2xl px-4 py-3 overflow-hidden border shadow-lg",
         className
       )}
     >
@@ -83,7 +83,7 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
       {/* Content */}
       <div className="relative z-10">
         {/* Welcome Title */}
-        <h2 className="text-[#28323C] font-roboto-regular text-sm mb-3 flex items-baseline gap-1 max-[380px]:justify-center">
+        <h2 className="text-[#28323C] font-roboto-regular mb-1 text-sm flex items-baseline gap-1 max-[380px]:justify-center">
           {t("common.welcome")},
           <span className="text-base font-roboto-bold"> {user.username}</span>
           <button
@@ -245,7 +245,7 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
                 }`}
                 unoptimized
               />
-              <span className="text-xs text-black font-roboto-bold mt-1">
+              <span className="text-[0.7rem] text-black font-roboto-bold mt-1">
                 {t("common.restore")}
               </span>
             </button>
@@ -257,10 +257,10 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
                 width={25}
                 height={25}
                 className="object-contain w-16 h-full cursor-pointer"
-                onClick={() => router.push("/deposit")}
+                onClick={() => navigateWithKycCheck("/deposit")}
                 unoptimized
               />
-              <span className="text-xs text-black font-roboto-bold mt-1">
+              <span className="text-[0.7rem] text-black font-roboto-bold mt-1">
                 {t("wallet.deposit")}
               </span>
             </div>
