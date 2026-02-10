@@ -6,6 +6,7 @@ import { Dropdown } from "@/components/ui/dropdown";
 import { Copy, Check } from "lucide-react";
 import { useI18n } from "@/providers/i18n-provider";
 import { useTransactions } from "@/hooks/use-transactions";
+import Image from "next/image";
 
 type TransactionStatus = "progress" | "failed" | "success";
 
@@ -136,19 +137,41 @@ export default function TransactionPage() {
       </div>
 
       {/* Month Banner */}
-      <div className="mx-4 h-20 rounded-lg bg-gradient-to-r from-zinc-700 to-zinc-600 flex items-end p-4 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <span className="text-[80px] font-roboto-bold text-white/20 absolute -right-4 -top-4">AON1E</span>
+      <div className="h-26 bg-primary flex items-center p-4 relative overflow-hidden">
+        <div className="absolute inset-0">
+            <Image
+              src="/images/icon/A1_logo_white.png"
+              alt="AON1E"
+              width={200}
+              height={200}
+              unoptimized
+              className="h-24 w-auto object-contain absolute right-0 top-2"
+            />
         </div>
         <p className="text-white text-xl italic font-roboto-semibold">
           {selectedMonthData?.month} <span className="text-sm font-roboto-regular not-italic">{selectedMonthData?.year}</span>
         </p>
       </div>
 
-      {/* Transaction Table */}
-      <div className="flex-1 mt-4 overflow-auto">
+      {!isLoading && (error || transactions.length === 0) ? (
+            <div className="flex-1 flex flex-col py-12">
+            {/* Empty State Icon - Clipboard with X */}
+            <div className="flex flex-col justify-center items-center py-12 text-[#A9ADB1] text-xs font-roboto-medium gap-9">
+              <Image
+                src="/images/icon/no_report_icon.png"
+                alt="AON1E"
+                width={200}
+                height={200}
+                unoptimized
+                className="h-36 w-auto object-contain"
+              />
+              {t("redeemGift.noHistory")}
+            </div>
+          </div>
+          ) :
+      <div className="flex-1 overflow-auto">
         {/* Table Header */}
-        <div className="sticky top-0 bg-zinc-700 px-4 py-3 grid grid-cols-[80px_1fr_90px_80px] gap-2 text-xs text-white font-roboto-medium">
+        <div className="sticky top-0 bg-zinc-700 px-4 py-3 grid grid-cols-[80px_1fr_90px_80px] gap-2 text-sm text-white font-roboto-bold text-center items-center">
           <span>{t("common.date")}</span>
           <span>{t("common.transId")}</span>
           <span className="text-center">{t("common.amount")}<br />(MYR)</span>
@@ -173,14 +196,6 @@ export default function TransactionPage() {
                 <div className="h-6 bg-zinc-200 rounded-full animate-pulse w-16 mx-auto" />
               </div>
             ))
-          ) : error ? (
-            <div className="text-center py-8 text-zinc-500 text-sm">
-              {t("common.errorLoading")}
-            </div>
-          ) : transactions.length === 0 ? (
-            <div className="text-center py-8 text-zinc-500 text-sm">
-              {t("common.noData")}
-            </div>
           ) : (
             transactions.map((tx) => (
               <div
@@ -198,7 +213,7 @@ export default function TransactionPage() {
                   <span className="text-zinc-700 text-xs font-mono truncate">{tx.transId}</span>
                   <button
                     onClick={() => handleCopy(tx.transId)}
-                    className="text-zinc-400 hover:text-zinc-600 transition-colors flex-shrink-0"
+                    className="text-zinc-400 hover:text-zinc-600 transition-colors shrink-0"
                   >
                     {copiedId === tx.transId ? (
                       <Check className="w-4 h-4 text-primary" />
@@ -226,6 +241,7 @@ export default function TransactionPage() {
           )}
         </div>
       </div>
+      }
 
     </div>
     </RequireAuth>

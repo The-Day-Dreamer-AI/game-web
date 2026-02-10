@@ -64,7 +64,7 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
   return (
     <div
       className={cn(
-        "relative rounded-2xl p-4 overflow-hidden border shadow-lg",
+        "relative rounded-2xl px-4 py-3 overflow-hidden border shadow-lg",
         className
       )}
     >
@@ -83,7 +83,7 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
       {/* Content */}
       <div className="relative z-10">
         {/* Welcome Title */}
-        <h2 className="text-[#28323C] font-roboto-regular text-sm mb-3 flex items-baseline gap-1 max-[380px]:justify-center">
+        <h2 className="text-[#28323C] font-roboto-regular mb-1 text-sm flex items-baseline gap-1 max-[380px]:justify-center">
           {t("common.welcome")},
           <span className="text-base font-roboto-bold"> {user.username}</span>
           <button
@@ -245,7 +245,7 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
                 }`}
                 unoptimized
               />
-              <span className="text-xs text-black font-roboto-bold mt-1">
+              <span className="text-[0.7rem] text-black font-roboto-bold mt-1">
                 {t("common.restore")}
               </span>
             </button>
@@ -260,7 +260,7 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
                 onClick={() => navigateWithKycCheck("/deposit")}
                 unoptimized
               />
-              <span className="text-xs text-black font-roboto-bold mt-1">
+              <span className="text-[0.7rem] text-black font-roboto-bold mt-1">
                 {t("wallet.deposit")}
               </span>
             </div>

@@ -33,6 +33,8 @@ export default function WithdrawalPage() {
   // Derive selected bank ID: user selection takes priority, otherwise use first from API
   const selectedBankId = selectedBankIdState || accountsData?.Rows?.[0]?.Id || "";
 
+  const selectedBank = accountsData?.Rows?.find((bank) => bank.Id === selectedBankId) ?? null;
+
   const cashBalance = accountsData?.Cash ?? 0;
   const currency = accountsData?.Currency ?? "MYR";
   const rollover = accountsData?.Rollover ?? 0;
@@ -144,6 +146,30 @@ export default function WithdrawalPage() {
             )}
           </div>
 
+          {/* Account Details Card */}
+          {selectedBank && (
+            <div className="bg-white rounded-2xl border border-[#959595] px-4 py-5 mb-4 mt-2">
+              <div className="grid grid-cols-[auto_1fr] gap-x-2 gap-y-4">
+                {/* Name Row */}
+                <span className="text-sm text-[#5F7182] whitespace-nowrap">
+                  {t("deposit.accountName")}
+                </span>
+                <span className="text-sm text-[#5F7182] font-roboto-bold">
+                  : {selectedBank.Name}
+                </span>
+
+                {/* Account No Row */}
+                <span className="text-sm text-[#5F7182] whitespace-nowrap">
+                  {t("deposit.accountNo")}
+                </span>
+                <span className="text-sm text-[#5F7182] font-roboto-bold">
+                  : {selectedBank.No}
+                </span>
+              </div>
+            </div>
+          )}
+
+
           {/* Enter Amount */}
           <div className="mb-2">
             <label className="text-sm font-roboto-medium text-[#28323C] mb-2 flex gap-1">
@@ -190,7 +216,7 @@ export default function WithdrawalPage() {
               maxLength={6}
               prefix={
                 <Image
-                  src="/images/icon/lock_icon.png"
+                  src="/images/icon/reset_pin_icon.png"
                   alt="PIN"
                   width={24}
                   height={24}

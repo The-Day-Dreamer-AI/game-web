@@ -14,7 +14,7 @@ import type { Promo } from "@/lib/api/types";
 const categories = [
   { id: "all", label: "ALL" },
   { id: "slots", label: "SLOTS" },
-  { id: "app-slots", label: "APP SLOTS" },
+  { id: "app", label: "APP SLOTS" },
   { id: "live", label: "LIVE" },
   { id: "sports", label: "SPORTS" },
   { id: "lottery", label: "LOTTERY" },
@@ -33,7 +33,7 @@ interface TransformedEvent {
   freq: string | null;
   rate: number;
   amount: number;
-  categoryId: string | null;
+  categoryId: string;
   rawPromo: Promo;
 }
 
@@ -79,7 +79,7 @@ function transformPromo(promo: Promo, lang: string): TransformedEvent {
     freq: promo.Freq,
     rate: promo.Rate,
     amount: promo.Amount,
-    categoryId: promo.CategoryId,
+    categoryId: promo.CategoryId || "",
     rawPromo: promo,
   };
 }
@@ -107,7 +107,8 @@ export default function EventPage() {
 
   // Filter events by category (currently all events show in all categories since API doesn't provide category)
   const filteredEvents = events.filter((event) =>
-    event.category.includes(activeCategory)
+    activeCategory === "all"  ||
+    event.categoryId.toLowerCase().includes(activeCategory)
   );
 
   const handleApply = (event: TransformedEvent) => {

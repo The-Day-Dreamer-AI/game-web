@@ -332,70 +332,19 @@ export default function GameRecordPage() {
           </>
         ) : (
           /* Empty State */
-          <div className="flex-1 flex flex-col items-center justify-center py-20">
-            <div className="relative mb-4">
-              <svg
-                width="80"
-                height="80"
-                viewBox="0 0 80 80"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-zinc-300"
-              >
-                {/* Clipboard shape */}
-                <rect
-                  x="15"
-                  y="15"
-                  width="50"
-                  height="55"
-                  rx="4"
-                  fill="currentColor"
-                />
-                {/* Clipboard top */}
-                <rect
-                  x="25"
-                  y="10"
-                  width="30"
-                  height="12"
-                  rx="2"
-                  fill="#9CA3AF"
-                />
-                {/* Lines on clipboard */}
-                <rect
-                  x="22"
-                  y="35"
-                  width="36"
-                  height="4"
-                  rx="1"
-                  fill="#9CA3AF"
-                />
-                <rect
-                  x="22"
-                  y="45"
-                  width="28"
-                  height="4"
-                  rx="1"
-                  fill="#9CA3AF"
-                />
-                <rect
-                  x="22"
-                  y="55"
-                  width="32"
-                  height="4"
-                  rx="1"
-                  fill="#9CA3AF"
-                />
-                {/* X circle */}
-                <circle cx="52" cy="52" r="16" fill="#6B7280" />
-                <path
-                  d="M46 46L58 58M58 46L46 58"
-                  stroke="white"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                />
-              </svg>
+          <div className="flex-1 flex flex-col items-center justify-center py-12">
+            {/* Empty State Icon - Clipboard with X */}
+            <div className="flex flex-col justify-center items-center py-12 text-[#A9ADB1] text-xs font-roboto-medium gap-9">
+              <Image
+                src="/images/icon/no_report_icon.png"
+                alt="AON1E"
+                width={200}
+                height={200}
+                unoptimized
+                className="h-36 w-auto object-contain"
+              />
+              {t("redeemGift.noHistory")}
             </div>
-            <p className="text-sm text-zinc-400">{t("report.noHistory")}</p>
           </div>
         )}
       </main>
