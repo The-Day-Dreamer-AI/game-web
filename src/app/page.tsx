@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -72,9 +72,12 @@ function transformGame(game: Game) {
 export default function HomePage() {
   const router = useRouter();
   const [activeCategory, setActiveCategory] = useState("slots");
+  const [visualActiveCategory, setVisualActiveCategory] = useState("slots");
   const [slideDirection, setSlideDirection] = useState<"left" | "right">("right");
+  const [animationDuration, setAnimationDuration] = useState(0.25);
   const [launchingGameId, setLaunchingGameId] = useState<string | null>(null);
   const previousCategoryRef = useRef(activeCategory);
+  const steppingTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const { t, locale } = useI18n();
   const { isAuthenticated, user } = useAuth();
   const { showLoading, hideLoading } = useLoadingOverlay();
@@ -83,21 +86,81 @@ export default function HomePage() {
   // Fetch discover data from API
   const { data: discoverData, isLoading, error } = useDiscover();
 
-  // Track category changes to determine slide direction
+  // Clean up stepping timers on unmount
   useEffect(() => {
-    if (discoverData?.GameCategories && previousCategoryRef.current !== activeCategory) {
+    return () => {
+      steppingTimersRef.current.forEach(clearTimeout);
+    };
+  }, []);
+
+  // Handle category change: for multi-step jumps, carousel through each intermediate category
+  const handleCategoryChange = useCallback((newCategory: string) => {
+    // Use ref to avoid stale closure during animation chains
+    if (newCategory === previousCategoryRef.current) return;
+
+    // Clear any in-progress stepping timers
+    steppingTimersRef.current.forEach(clearTimeout);
+    steppingTimersRef.current = [];
+
+    if (discoverData?.GameCategories) {
       const categories = discoverData.GameCategories;
       const prevIndex = categories.findIndex(
         (cat) => cat.Name.toLowerCase() === previousCategoryRef.current
       );
       const currentIndex = categories.findIndex(
-        (cat) => cat.Name.toLowerCase() === activeCategory
+        (cat) => cat.Name.toLowerCase() === newCategory
       );
 
+      const distance = Math.abs(currentIndex - prevIndex);
       setSlideDirection(currentIndex > prevIndex ? "right" : "left");
-      previousCategoryRef.current = activeCategory;
+
+      if (distance <= 1) {
+        // Single step: standard slide
+        setAnimationDuration(0.15);
+        setVisualActiveCategory(newCategory);
+        previousCategoryRef.current = newCategory;
+        setActiveCategory(newCategory);
+      } else {
+        // Multi-step: carousel through each intermediate category
+        const step = currentIndex > prevIndex ? 1 : -1;
+        const perStepDuration = 0.06; // fast per-step slide
+        setAnimationDuration(perStepDuration);
+        const stepDelayMs = perStepDuration * 1000;
+
+        // First step fires immediately
+        const firstCatName = categories[prevIndex + step]?.Name.toLowerCase();
+        if (firstCatName) {
+          setVisualActiveCategory(firstCatName);
+          previousCategoryRef.current = firstCatName;
+          setActiveCategory(firstCatName);
+        }
+
+        // Remaining steps on timers
+        for (let i = 2; i <= distance; i++) {
+          const idx = prevIndex + step * i;
+          const isLast = i === distance;
+          const timer = setTimeout(() => {
+            const catName = categories[idx]?.Name.toLowerCase();
+            if (catName) {
+              // Final step gets a slightly slower, settling duration
+              if (isLast) setAnimationDuration(0.12);
+              setVisualActiveCategory(catName);
+              previousCategoryRef.current = catName;
+              setActiveCategory(catName);
+            }
+            if (isLast) {
+              steppingTimersRef.current = [];
+            }
+          }, stepDelayMs * (i - 1));
+          steppingTimersRef.current.push(timer);
+        }
+      }
+    } else {
+      setVisualActiveCategory(newCategory);
+      previousCategoryRef.current = newCategory;
+      setActiveCategory(newCategory);
     }
-  }, [activeCategory, discoverData?.GameCategories]);
+  }, [discoverData?.GameCategories]);
 
   const launchGameMutation = useLaunchGame();
 
@@ -266,8 +329,8 @@ export default function HomePage() {
         <div className="px-4 mt-4">
           <GameCategories
             categories={discoverData?.GameCategories || []}
-            activeCategory={activeCategory}
-            onCategoryChange={setActiveCategory}
+            activeCategory={visualActiveCategory}
+            onCategoryChange={handleCategoryChange}
             isLoading={!discoverData?.GameCategories}
           />
         </div>
@@ -289,32 +352,42 @@ export default function HomePage() {
             </div>
           ) : (
             <div className="relative overflow-hidden">
-              <AnimatePresence mode="popLayout" initial={false}>
+              <AnimatePresence initial={false} custom={slideDirection}>
                 <motion.div
                   key={activeCategory}
-                  initial={{
-                    x: slideDirection === "right" ? "100%" : "-100%",
-                  }}
-                  animate={{
-                    x: 0,
-                  }}
-                  exit={{
-                    x: slideDirection === "right" ? "-100%" : "100%",
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
+                  custom={slideDirection}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  variants={{
+                    enter: (dir: "left" | "right") => ({
+                      x: dir === "right" ? "100%" : "-100%",
+                      position: "absolute" as const,
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                    }),
+                    center: {
+                      x: 0,
+                      position: "relative" as const,
+                    },
+                    exit: (dir: "left" | "right") => ({
+                      x: dir === "right" ? "-100%" : "100%",
+                      position: "absolute" as const,
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                    }),
                   }}
                   transition={{
                     type: "tween",
-                    duration: 0.3,
-                    ease: "easeOut",
+                    duration: animationDuration,
+                    ease: [0.25, 0.1, 0.25, 1],
                   }}
                   style={{
                     willChange: "transform",
                     backfaceVisibility: "hidden",
                     WebkitBackfaceVisibility: "hidden",
-                    transform: "translateZ(0)",
                   }}
                 >
                   {currentProviders.length > 0 ? (
@@ -324,7 +397,7 @@ export default function HomePage() {
                       loadingId={launchingGameId}
                     />
                   ) : (
-                    <div className="text-center py-8 text-zinc-500 text-sm">
+                    <div className="flex items-center justify-center min-h-[200px] h-full text-zinc-500 text-sm">
                       {t("common.noData")}
                     </div>
                   )}
