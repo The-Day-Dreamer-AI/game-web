@@ -49,6 +49,7 @@ export default function ForgotPasswordPage() {
     setError,
     clearErrors,
     watch,
+    reset,
   } = useForm<ForgotPasswordFormData>({
     defaultValues: {
       username: "",
@@ -61,43 +62,26 @@ export default function ForgotPasswordPage() {
   const usernameValue = watch("username");
   const phoneValue = watch("phoneNumber");
 
-  // Default send-to options fallback
-  const defaultSendToOptions: SendToOption[] = [
-    { value: "SMS", label: t("auth.sms") },
-    { value: "WhatsApp", label: t("auth.whatsapp") },
-  ];
-
   // Fetch message selection options on mount
   useEffect(() => {
     const fetchMessageOptions = async () => {
       try {
         const response = await authApi.getMessageSelection();
         if (response.Code === 200 && response.Data && response.Data.length > 0) {
-          // Filter out "Select" option and map to our format
           const options = response.Data
             .filter((opt: MessageSelectionOption) => opt.Value !== "Select")
             .map((opt: MessageSelectionOption) => ({
               value: opt.Value,
               label: opt.Text,
             }));
-          if (options.length > 0) {
-            setSendToOptions(options);
-          } else {
-            setSendToOptions(defaultSendToOptions);
-          }
-        } else {
-          // API returned non-200 or empty data, use defaults
-          setSendToOptions(defaultSendToOptions);
+          setSendToOptions(options);
         }
       } catch (error) {
         console.error("Failed to fetch message options:", error);
-        // Fallback to default options if API fails
-        setSendToOptions(defaultSendToOptions);
       }
     };
 
     fetchMessageOptions();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // OTP countdown timer
@@ -208,8 +192,12 @@ export default function ForgotPasswordPage() {
       });
 
       if (result.Code === 0) {
-        // Password reset successful - redirect to login
         showSuccess(t("auth.resetSuccess"));
+        // Clear all fields and TAC state
+        reset();
+        setSendTo("");
+        setOtpCountdown(0);
+        setOtpSent(false);
         router.push("/login");
       } else {
         showError(result.Message || t("auth.resetFailed"));

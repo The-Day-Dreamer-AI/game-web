@@ -1,29 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { FormInput } from "@/components/ui/form-input";
 import { Eye, EyeOff, ChevronDown, Loader2 } from "lucide-react";
 import { useI18n } from "@/providers/i18n-provider";
 import { useToast } from "@/providers/toast-provider";
-import { cn } from "@/lib/utils";
 import { useChangePasswordGetTac, useChangePassword } from "@/hooks";
-
-type SendToOption = "sms" | "email";
-
-const sendToOptions: { value: SendToOption; labelKey: string }[] = [
-  { value: "sms", labelKey: "profile.sendToSms" },
-  { value: "email", labelKey: "profile.sendToEmail" },
-];
+import { authApi } from "@/lib/api";
+import type { MessageSelectionOption } from "@/lib/api/types";
 
 export default function ChangePasswordPage() {
   const { t } = useI18n();
   const { showSuccess, showError } = useToast();
 
   // Form state
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [sendTo, setSendTo] = useState<SendToOption>("sms");
-  const [showSendToDropdown, setShowSendToDropdown] = useState(false);
+  const [sendTo, setSendTo] = useState<string>("");
+  const [sendToOptions, setSendToOptions] = useState<{ value: string; label: string }[]>([]);
+  const [isSendToDropdownOpen, setIsSendToDropdownOpen] = useState(false);
+  const sendToDropdownRef = useRef<HTMLDivElement | null>(null);
   const [otpCode, setOtpCode] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -43,6 +38,28 @@ export default function ChangePasswordPage() {
   const getTacMutation = useChangePasswordGetTac();
   const changePasswordMutation = useChangePassword();
 
+  // Fetch message selection options on mount
+  useEffect(() => {
+    const fetchMessageOptions = async () => {
+      try {
+        const response = await authApi.getMessageSelection();
+        if (response.Code === 200 && response.Data && response.Data.length > 0) {
+          const options = response.Data
+            .filter((opt: MessageSelectionOption) => opt.Value !== "Select")
+            .map((opt: MessageSelectionOption) => ({
+              value: opt.Value,
+              label: opt.Text,
+            }));
+          setSendToOptions(options);
+        }
+      } catch (error) {
+        console.error("Failed to fetch message options:", error);
+      }
+    };
+
+    fetchMessageOptions();
+  }, []);
+
   // Countdown timer effect
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -52,11 +69,33 @@ export default function ChangePasswordPage() {
     return () => clearTimeout(timer);
   }, [countdown]);
 
+  // Close dropdown on outside click
+  useEffect(() => {
+    if (!isSendToDropdownOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        sendToDropdownRef.current &&
+        !sendToDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsSendToDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isSendToDropdownOpen]);
+
   const handleRequestOtp = async () => {
     setFieldErrors({});
 
+    if (!sendTo) {
+      showError(t("auth.selectOtpMethod"));
+      return;
+    }
+
     try {
-      const result = await getTacMutation.mutateAsync();
+      const result = await getTacMutation.mutateAsync(sendTo);
       if (result.Code === 0) {
         setOtpSent(true);
         setCountdown(result.ExpiresIn || 60);
@@ -115,8 +154,16 @@ export default function ChangePasswordPage() {
       });
 
       if (result.Code === 0) {
-        // Success - show toast
         showSuccess(t("profile.passwordChanged"));
+        // Clear all fields and TAC state
+        setSendTo("");
+        setOtpCode("");
+        setOldPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+        setCountdown(0);
+        setOtpSent(false);
+        setFieldErrors({});
       } else {
         showError(result.Message || t("common.error"));
       }
@@ -126,7 +173,6 @@ export default function ChangePasswordPage() {
     }
   };
 
-  const selectedSendToOption = sendToOptions.find((opt) => opt.value === sendTo);
   const canRequestOtp = countdown === 0;
   const isSubmitting = changePasswordMutation.isPending;
 
@@ -135,28 +181,20 @@ export default function ChangePasswordPage() {
       {/* Form */}
       <main className="flex-1 px-4 py-4">
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Phone Number Input */}
-          <FormInput
-            type="tel"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            placeholder={t("profile.phoneNumber")}
-            prefix={
-              <Image
-                src="/images/icon/phone_icon.png"
-                alt="Phone"
-                width={24}
-                height={24}
-                unoptimized
-                className="h-6 w-auto object-contain"
-              />
-            }
-          />
-
           {/* Send To Dropdown */}
-          <div className="relative">
-            <div className="form-input-wrapper relative flex items-center w-full rounded-lg border border-[#959595] bg-white transition-all duration-200">
-              <div className="flex items-center justify-center pl-4 text-zinc-400">
+          <div className="relative w-full" ref={sendToDropdownRef}>
+            <button
+              type="button"
+              onClick={() => setIsSendToDropdownOpen((prev) => !prev)}
+              className={`cursor-pointer form-input-wrapper relative flex w-full items-center justify-between rounded-lg border px-4 py-3 transition-all duration-200 focus:outline-none ${
+                isSendToDropdownOpen
+                  ? "border-[#0DC3B1] bg-[rgba(0,214,198,0.1)] shadow-[0_0_20px_rgba(20,187,176,0.2)]"
+                  : "border-[#959595] bg-white"
+              }`}
+              aria-haspopup="listbox"
+              aria-expanded={isSendToDropdownOpen}
+            >
+              <span className="flex items-center gap-3">
                 <Image
                   src="/images/icon/otp_icon.png"
                   alt="Send To"
@@ -165,41 +203,49 @@ export default function ChangePasswordPage() {
                   unoptimized
                   className="h-6 w-auto object-contain"
                 />
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowSendToDropdown(!showSendToDropdown)}
-                className="flex-1 w-full py-3.5 pl-3 pr-4 bg-transparent text-left flex items-center justify-between focus:outline-none"
-              >
-                <span className={selectedSendToOption ? "text-black text-sm font-roboto-regular" : "text-[#959595] text-sm font-roboto-regular"}>
-                  {selectedSendToOption ? t(selectedSendToOption.labelKey) : t("profile.sendTo")}
+                <span
+                  className={`text-sm font-roboto-regular ${
+                    sendTo ? "text-zinc-900" : "text-[#959595]"
+                  }`}
+                >
+                  {sendTo
+                    ? sendToOptions.find((opt) => opt.value === sendTo)?.label || sendTo
+                    : t("auth.sendTo")}
                 </span>
-                <ChevronDown
-                  className={cn(
-                    "w-auto h-6 text-zinc-400 transition-transform",
-                    showSendToDropdown && "rotate-180"
-                  )}
-                />
-              </button>
-            </div>
-            {showSendToDropdown && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-zinc-200 rounded-xl shadow-lg z-10 overflow-hidden">
-                {sendToOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    onClick={() => {
-                      setSendTo(option.value);
-                      setShowSendToDropdown(false);
-                    }}
-                    className={cn(
-                      "w-full px-4 py-3 text-left text-sm hover:bg-zinc-50",
-                      sendTo === option.value ? "text-primary bg-zinc-50" : "text-zinc-700"
-                    )}
-                  >
-                    {t(option.labelKey)}
-                  </button>
-                ))}
+              </span>
+              <ChevronDown
+                className={`w-5 h-6 text-zinc-400 ${
+                  isSendToDropdownOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            {isSendToDropdownOpen && (
+              <div className="absolute left-0 right-0 mt-1 rounded-lg border border-[#959595] bg-white shadow-lg z-20 py-2 flex flex-col gap-2">
+                {sendToOptions.map((option) => {
+                  const isSelected = sendTo === option.value;
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      className="w-full px-2 text-left group cursor-pointer"
+                      onClick={() => {
+                        setSendTo(option.value);
+                        setIsSendToDropdownOpen(false);
+                      }}
+                    >
+                      <span
+                        className={`block rounded-lg px-3 py-2 text-sm font-roboto-regular transition-colors ${
+                          isSelected
+                            ? "border border-[#1ECAD3] bg-[#DDF7F7] text-[#008D92]"
+                            : "text-zinc-900 group-hover:bg-zinc-100"
+                        }`}
+                      >
+                        {option.label}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>

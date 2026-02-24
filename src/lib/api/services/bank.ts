@@ -89,10 +89,10 @@ export const bankApi = {
 
   /**
    * Get TAC for resetting PIN
-   * POST /api/mapiuser/resetpin_gettac
+   * POST /api/mapiuser/ResetPin_GetTac
    */
-  async getResetPinTac(): Promise<ResetPinGetTacResponse> {
-    return apiClient.post<ResetPinGetTacResponse>("/api/mapiuser/resetpin_gettac", {}, {
+  async getResetPinTac(channel: string): Promise<ResetPinGetTacResponse> {
+    return apiClient.post<ResetPinGetTacResponse>("/api/mapiuser/ResetPin_GetTac", { Channel: channel }, {
       authenticated: true,
     });
   },

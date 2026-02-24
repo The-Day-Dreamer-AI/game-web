@@ -134,8 +134,8 @@ export function useChangeAvatar() {
  */
 export function useChangePasswordGetTac() {
   return useMutation({
-    mutationFn: async () => {
-      const response = await userApi.changePasswordGetTac();
+    mutationFn: async (channel: string) => {
+      const response = await userApi.changePasswordGetTac(channel);
       return response;
     },
   });

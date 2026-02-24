@@ -78,8 +78,8 @@ export function useAddBankAccount() {
  */
 export function useResetPinTac() {
   return useMutation({
-    mutationFn: async () => {
-      return bankApi.getResetPinTac();
+    mutationFn: async (channel: string) => {
+      return bankApi.getResetPinTac(channel);
     },
   });
 }
