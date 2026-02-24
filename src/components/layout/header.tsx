@@ -10,6 +10,7 @@ import { Sidebar } from "./sidebar";
 import { getRouteConfig } from "@/lib/route-config";
 import { getBackDestination } from "@/lib/navigation";
 import { useI18n } from "@/providers/i18n-provider";
+import { MdHome } from "react-icons/md";
 
 interface HeaderProps {
   /** Override the auto-detected variant */
@@ -20,6 +21,10 @@ interface HeaderProps {
   backHref?: string;
   /** Custom back navigation handler (overrides everything) */
   onBack?: () => void;
+  /** Show a home button next to the back button (calls onHomeClick if provided, otherwise navigates to /home) */
+  showHomeButton?: boolean;
+  /** Custom home button click handler */
+  onHomeClick?: () => void;
   /** Custom support click handler */
   onSupportClick?: () => void;
   /** Additional CSS classes */
@@ -31,6 +36,8 @@ export function Header({
   title: titleProp,
   backHref: backHrefProp,
   onBack,
+  showHomeButton,
+  onHomeClick,
   onSupportClick,
   className,
 }: HeaderProps) {
@@ -89,12 +96,22 @@ export function Header({
               )}
             </Link>
           ) : (
-            <button
-              onClick={handleBack}
-              className="flex items-center gap-1 text-white cursor-pointer"
-            >
-              <ChevronLeft className="w-7 h-7" />
-            </button>
+            <>
+              <button
+                onClick={handleBack}
+                className="flex items-center gap-1 text-white cursor-pointer"
+              >
+                <ChevronLeft className="w-7 h-7" />
+              </button>
+              {showHomeButton && (
+                <button
+                  onClick={() => onHomeClick ? onHomeClick() : router.push("/home")}
+                  className="flex items-center text-white cursor-pointer"
+                >
+                  <MdHome className="w-6 h-6" />
+                </button>
+              )}
+            </>
           )}
         </div>
 

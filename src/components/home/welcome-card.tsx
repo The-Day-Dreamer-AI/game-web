@@ -83,7 +83,7 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
       {/* Content */}
       <div className="relative z-10">
         {/* Welcome Title */}
-        <h2 className="text-[#28323C] font-roboto-regular mb-1 text-sm flex items-baseline gap-1 max-[380px]:justify-center">
+        <h2 className="text-[#28323C] font-roboto-regular mb-1 max-[380px]:mb-2 text-sm flex items-baseline gap-1">
           {t("common.welcome")},
           <span className="text-base font-roboto-bold"> {user.username}</span>
           <button
@@ -109,122 +109,123 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
         </h2>
 
         {/* Main Content Row - all items same height */}
-        <div className="max-[380px]:grid max-[380px]:grid-cols-2 flex items-stretch gap-2">
-          {/* Avatar - matches full height of row */}
-          <div className="max-[380px]:mx-auto max-[380px]:col-span-2 w-16 aspect-square rounded-full overflow-hidden shrink-0 border-2 border-[#0DC3B1] self-center">
-            {!imgError && user.avatar ? (
-              <Image
-                src={user.avatar}
-                alt={user.username}
-                width={60}
-                height={60}
-                className="object-cover w-full h-full"
-                onError={() => setImgError(true)}
-                unoptimized
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-zinc-400 text-xl font-roboto-bold">
-                {user.username.charAt(0).toUpperCase()}
-              </div>
-            )}
-          </div>
-
-          {/* Balance Grid - equal width columns */}
-          <div className="flex-1 grid grid-rows-3 gap-0 py-1">
-            {/* Cash */}
-            <div className="flex items-center gap-1">
-              <div
-                className="w-[52px] rounded-full p-px"
-                style={{
-                  background:
-                    "linear-gradient(180deg, #07635A 0%, #0EC6B4 100%)",
-                }}
-              >
-                <div
-                  className="w-full rounded-full px-2 py-0.5 text-white text-[10px] font-roboto-bold text-center whitespace-nowrap"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, #0EC6B4 0%, #07635A 100%)",
-                  }}
-                >
-                  {t("wallet.cash")}
-                </div>
-              </div>
-              <div className="flex items-center gap-0.5 text-black font-roboto-bold text-xs">
-                <span>MYR</span>
-                <span>{formatCurrency(user.cashBalance)}</span>
-              </div>
-            </div>
-
-            {/* Chips */}
-            <div className="flex items-center gap-1">
-              <div
-                className="w-[52px] rounded-full p-px"
-                style={{
-                  background:
-                    "linear-gradient(180deg, #07635A 0%, #0EC6B4 100%)",
-                }}
-              >
-                <div
-                  className="w-full rounded-full px-2 py-0.5 text-white text-[10px] font-roboto-bold text-center whitespace-nowrap"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, #0EC6B4 0%, #07635A 100%)",
-                  }}
-                >
-                  {t("wallet.chips")}
-                </div>
-              </div>
-              <div className="flex items-center gap-0.5">
+        <div className="flex items-stretch gap-2 max-[380px]:grid">
+          <div className="flex gap-2 mr-auto items-center">
+            {/* Avatar - matches full height of row */}
+            <div className="w-16 aspect-square rounded-full overflow-hidden shrink-0 border-2 border-[#0DC3B1] self-center">
+              {!imgError && user.avatar ? (
                 <Image
-                  src="/images/icon/chip_dark.png"
-                  alt="Chips"
-                  width={14}
-                  height={14}
-                  className="object-contain"
+                  src={user.avatar}
+                  alt={user.username}
+                  width={60}
+                  height={60}
+                  className="object-cover w-full h-full"
+                  onError={() => setImgError(true)}
                   unoptimized
                 />
-                <span className="text-black font-roboto-bold text-xs">
-                  {formatCurrency(user.chipsBalance)}
-                </span>
-              </div>
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-zinc-400 text-xl font-roboto-bold">
+                  {user.username.charAt(0).toUpperCase()}
+                </div>
+              )}
             </div>
 
-            {/* A-Points */}
-            <div className="flex items-center gap-1">
-              <div
-                className="w-[52px] rounded-full p-px"
-                style={{
-                  background:
-                    "linear-gradient(180deg, #07635A 0%, #0EC6B4 100%)",
-                }}
-              >
+            {/* Balance Grid - equal width columns */}
+            <div className="flex-1 grid grid-rows-3 gap-1 py-1">
+              {/* Cash */}
+              <div className="flex items-center gap-1">
                 <div
-                  className="w-full rounded-full px-2 py-0.5 text-white text-[10px] font-roboto-bold text-center whitespace-nowrap"
+                  className="w-[52px] rounded-full p-px"
                   style={{
                     background:
-                      "linear-gradient(180deg, #0EC6B4 0%, #07635A 100%)",
+                      "linear-gradient(180deg, #07635A 0%, #0EC6B4 100%)",
                   }}
                 >
-                  {t("wallet.aPoint")}
+                  <div
+                    className="w-full rounded-full px-2 py-0.5 text-white text-[10px] font-roboto-bold text-center whitespace-nowrap"
+                    style={{
+                      background:
+                        "linear-gradient(180deg, #0EC6B4 0%, #07635A 100%)",
+                    }}
+                  >
+                    {t("wallet.cash")}
+                  </div>
+                </div>
+                <div className="flex items-center gap-0.5 text-black font-roboto-bold text-xs">
+                  <span>MYR</span>
+                  <span>{formatCurrency(user.cashBalance)}</span>
                 </div>
               </div>
-              <div className="flex items-center gap-0.5">
-                <Image
-                  src="/images/icon/A1_point_icon.png"
-                  alt="A-Points"
-                  width={14}
-                  height={14}
-                  className="object-contain"
-                  unoptimized
-                />
-                <span className="text-black font-roboto-bold text-xs">
-                  {formatPoints(user.aPoints)}
-                </span>
+
+              {/* Chips */}
+              <div className="flex items-center gap-1">
+                <div
+                  className="w-[52px] rounded-full p-px"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, #07635A 0%, #0EC6B4 100%)",
+                  }}
+                >
+                  <div
+                    className="w-full rounded-full px-2 py-0.5 text-white text-[10px] font-roboto-bold text-center whitespace-nowrap"
+                    style={{
+                      background:
+                        "linear-gradient(180deg, #0EC6B4 0%, #07635A 100%)",
+                    }}
+                  >
+                    {t("wallet.chips")}
+                  </div>
+                </div>
+                <div className="flex items-center gap-0.5">
+                  <Image
+                    src="/images/icon/chip_dark.png"
+                    alt="Chips"
+                    width={14}
+                    height={14}
+                    className="object-contain"
+                    unoptimized
+                  />
+                  <span className="text-black font-roboto-bold text-xs">
+                    {formatCurrency(user.chipsBalance)}
+                  </span>
+                </div>
+              </div>
+
+              {/* A-Points */}
+              <div className="flex items-center gap-1">
+                <div
+                  className="w-[52px] rounded-full p-px"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, #07635A 0%, #0EC6B4 100%)",
+                  }}
+                >
+                  <div
+                    className="w-full rounded-full px-2 py-0.5 text-white text-[10px] font-roboto-bold text-center whitespace-nowrap"
+                    style={{
+                      background:
+                        "linear-gradient(180deg, #0EC6B4 0%, #07635A 100%)",
+                    }}
+                  >
+                    {t("wallet.aPoint")}
+                  </div>
+                </div>
+                <div className="flex items-center gap-0.5">
+                  <Image
+                    src="/images/icon/A1_point_icon.png"
+                    alt="A-Points"
+                    width={14}
+                    height={14}
+                    className="object-contain"
+                    unoptimized
+                  />
+                  <span className="text-black font-roboto-bold text-xs">
+                    {formatPoints(user.aPoints)}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-
           {/* Action Buttons */}
           <div className="flex gap-0.5">
             <button
@@ -238,14 +239,14 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
                 alt="Restore"
                 width={25}
                 height={25}
-                className={`object-contain w-16 h-full  ${
+                className={`object-contain w-14 h-full  ${
                   restoreMutation.isPending
                     ? "cursor-not-allowed"
                     : "cursor-pointer"
                 }`}
                 unoptimized
               />
-              <span className="text-[0.7rem] text-black font-roboto-bold mt-1">
+              <span className="text-[0.65rem] text-black font-roboto-bold mt-0">
                 {t("common.restore")}
               </span>
             </button>
@@ -256,11 +257,11 @@ export function WelcomeCard({ user, className }: WelcomeCardProps) {
                 alt="Restore"
                 width={25}
                 height={25}
-                className="object-contain w-16 h-full cursor-pointer"
+                className="object-contain w-14 h-full cursor-pointer"
                 onClick={() => navigateWithKycCheck("/deposit")}
                 unoptimized
               />
-              <span className="text-[0.7rem] text-black font-roboto-bold mt-1">
+              <span className="text-[0.65rem] text-black font-roboto-bold mt-0">
                 {t("wallet.deposit")}
               </span>
             </div>
