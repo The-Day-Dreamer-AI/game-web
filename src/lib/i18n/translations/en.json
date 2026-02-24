@@ -35,7 +35,9 @@
     "search": "Search",
     "fillAllFields": "Please fill in all required fields",
     "notFound": "404 Page not found",
-    "backToHome": "Back to Home"
+    "backToHome": "Back to Home",
+    "action": "Action",
+    "details": "Details"
   },
   "referral": {
     "title": "Referral",
@@ -343,6 +345,7 @@
     "category": "Category"
   },
   "games": {
+    "all": "ALL",
     "slots": "SLOTS",
     "appSlot": "APP SLOT",
     "live": "LIVE",

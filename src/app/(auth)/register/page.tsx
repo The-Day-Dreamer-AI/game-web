@@ -165,9 +165,9 @@ export default function RegisterPage() {
         <Image
           src="/images/welcome_banner.png"
           alt="register banner"
-          width={32}
-          height={32}
-          className="w-full object-fill h-auto max-h-40"
+          width={430}
+          height={160}
+          className="w-full h-auto object-cover"
           unoptimized
         />
 

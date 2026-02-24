@@ -2,6 +2,7 @@ import { apiClient } from "../client";
 import type { TransactionsResponse } from "../types";
 
 export type TransactionAction =
+  | ""
   | "Deposit"
   | "Withdraw"
   | "Transfer In"

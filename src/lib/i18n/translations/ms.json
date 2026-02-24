@@ -35,7 +35,9 @@
     "search": "Cari",
     "fillAllFields": "Sila isi semua ruangan yang diperlukan",
     "notFound": "404 Halaman tidak dijumpai",
-    "backToHome": "Kembali ke Laman Utama"
+    "backToHome": "Kembali ke Laman Utama",
+    "action": "Tindakan",
+    "details": "Butiran"
   },
   "referral": {
     "title": "Rujukan",
@@ -326,6 +328,7 @@
     "category": "Kategori"
   },
   "games": {
+    "all": "SEMUA",
     "slots": "SLOT",
     "appSlot": "SLOT APP",
     "live": "LANGSUNG",

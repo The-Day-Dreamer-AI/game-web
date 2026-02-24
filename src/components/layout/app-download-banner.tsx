@@ -39,8 +39,8 @@ export function AppDownloadBanner({ className }: AppDownloadBannerProps) {
       )}
     >
       {/* Left: Logo and Text */}
-      <div className="flex items-center gap-3">
-        <div className="shrink-0 overflow-hidden w-auto h-10">
+      <div className="flex items-center gap-3 min-w-0 overflow-hidden">
+        <div className="shrink-0 overflow-hidden w-10 h-10">
           {imgError ? (
             <div className="w-full h-full rounded-lg bg-dark flex items-center justify-center">
               <span className="text-xs font-roboto-bold text-white">

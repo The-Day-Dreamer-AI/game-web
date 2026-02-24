@@ -56,7 +56,7 @@ export function EventDetailsModal({
 
   const modalContent = (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 overflow-hidden"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 overflow-hidden"
       onClick={onClose}
     >
       <div
@@ -88,49 +88,6 @@ export function EventDetailsModal({
 
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto pb-6 px-6 gap-2">
-          {/* Event Details */}
-          <div className="">
-            <div className="flex justify-between items-center py-2">
-              <span className="text-sm text-[#5F7182]">{t("event.mode")}</span>
-              <span className="text-sm font-roboto-medium text-zinc-800">
-                {event.mode || "-"}
-              </span>
-            </div>
-            <div className="flex justify-between items-center py-2">
-              <span className="text-sm text-[#5F7182]">{t("event.type")}</span>
-              <span className="text-sm font-roboto-medium text-zinc-800">
-                {event.type || "-"}
-              </span>
-            </div>
-            <div className="flex justify-between items-center py-2">
-              <span className="text-sm text-[#5F7182]">{t("event.frequency")}</span>
-              <span className="text-sm font-roboto-medium text-zinc-800">
-                {event.freq || "-"}
-              </span>
-            </div>
-            {event.rate > 0 && (
-              <div className="flex justify-between items-center py-2">
-                <span className="text-sm text-[#5F7182]">{t("event.rate")}</span>
-                <span className="text-sm font-roboto-medium text-zinc-800">
-                  {event.rate}%
-                </span>
-              </div>
-            )}
-            {event.amount > 0 && (
-              <div className="flex justify-between items-center py-2">
-                <span className="text-sm text-[#5F7182]">{t("event.amount")}</span>
-                <span className="text-sm font-roboto-medium text-zinc-800">
-                  {event.amount}
-                </span>
-              </div>
-            )}
-            <div className="flex justify-between items-center py-2">
-              <span className="text-sm text-[#5F7182]">{t("event.category")}</span>
-              <span className="text-sm font-roboto-medium text-zinc-800">
-                {event.categoryId || "-"}
-              </span>
-            </div>
-          </div>
 
           {/* Terms & Conditions */}
           {tnc && (

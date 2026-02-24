@@ -35,7 +35,9 @@
     "search": "搜索",
     "fillAllFields": "请填写所有必填字段",
     "notFound": "404 页面未找到",
-    "backToHome": "返回首页"
+    "backToHome": "返回首页",
+    "action": "操作",
+    "details": "详情"
   },
   "referral": {
     "title": "推荐",
@@ -326,6 +328,7 @@
     "category": "类别"
   },
   "games": {
+    "all": "全部",
     "slots": "老虎机",
     "appSlot": "APP老虎机",
     "live": "真人",

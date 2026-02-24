@@ -10,7 +10,7 @@ import type { TransactionAction } from "@/lib/api/services/transactions";
 import Image from "next/image";
 
 type TransactionStatus = "progress" | "failed" | "success";
-type TableLayout = "default" | "game" | "withdraw" | "transfer";
+type TableLayout = "all" | "default" | "game" | "withdraw" | "transfer";
 
 // Generate last 12 months dynamically from current date
 function getLast12Months() {
@@ -62,6 +62,8 @@ function truncateId(id: string): string {
 // Determine table layout based on action type
 function getTableLayout(action: string): TableLayout {
   switch (action) {
+    case "":
+      return "all";
     case "Launch Game":
     case "Quit Game":
     case "Auto Quit Game":
@@ -87,6 +89,7 @@ function formatDate(dateString: string): { date: string; time: string } {
 
 // Grid class config per layout
 const GRID_CLASS: Record<TableLayout, string> = {
+  all: "grid-cols-[70px_80px_50px_1fr_80px]",
   default: "grid-cols-[80px_1fr_90px_80px]",
   game: "grid-cols-[70px_1fr_90px_60px_80px]",
   withdraw: "grid-cols-[70px_1fr_1fr_80px_80px]",
@@ -95,12 +98,13 @@ const GRID_CLASS: Record<TableLayout, string> = {
 
 export default function TransactionPage() {
   const monthOptions = getLast12Months();
-  const [selectedType, setSelectedType] = useState<TransactionAction>("Deposit");
+  const [selectedType, setSelectedType] = useState<TransactionAction>("");
   const [selectedMonth, setSelectedMonth] = useState(monthOptions[0].value);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const { t } = useI18n();
 
   const transactionTypeOptions = [
+    { value: "", label: t("transaction.all") },
     { value: "Deposit", label: t("transaction.deposit") },
     { value: "Withdraw", label: t("transaction.withdraw") },
     { value: "Transfer In", label: t("transaction.transferIn") },
@@ -125,7 +129,7 @@ export default function TransactionPage() {
   const selectedMonthData = monthOptions.find((m) => m.value === selectedMonth);
   const tableLayout = getTableLayout(selectedType);
   const gridClass = GRID_CLASS[tableLayout];
-  const needsScroll = tableLayout === "game" || tableLayout === "withdraw";
+  const needsScroll = tableLayout === "all" || tableLayout === "game" || tableLayout === "withdraw";
 
   // Fetch transactions from API
   const { data: transactionsData, isLoading, error } = useTransactions({
@@ -144,6 +148,7 @@ export default function TransactionPage() {
         id: tx.Id,
         date,
         time,
+        action: tx.Action,
         transRef: extractTransRef(tx.Remark),
         transIdShort: truncateId(tx.Id),
         amount: tx.Amount,
@@ -211,6 +216,16 @@ export default function TransactionPage() {
     const base = `sticky top-0 bg-zinc-700 px-4 py-3 grid ${gridClass} gap-2 text-sm text-white font-roboto-bold text-center items-center`;
 
     switch (tableLayout) {
+      case "all":
+        return (
+          <div className={base}>
+            <span>{t("common.date")}</span>
+            <span></span>
+            <span>{t("common.action")}</span>
+            <span>{t("common.details")}</span>
+            <span>{t("common.amount")}<br />(MYR)</span>
+          </div>
+        );
       case "game":
         return (
           <div className={base}>
@@ -257,6 +272,33 @@ export default function TransactionPage() {
     const base = `px-4 py-3 grid ${gridClass} gap-2 items-center text-sm`;
 
     switch (tableLayout) {
+      case "all":
+        return (
+          <div key={tx.id} className={base}>
+            {renderDateCell(tx.date, tx.time)}
+            <div className="flex justify-center">
+              {tx.image ? (
+                <Image
+                  src={tx.image}
+                  alt=""
+                  width={40}
+                  height={40}
+                  unoptimized
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-zinc-200" />
+              )}
+            </div>
+            <div className="text-[#5F7182] text-xs font-roboto-medium text-center leading-tight">
+              {tx.action}
+            </div>
+            <div className="text-[#5F7182] text-xs font-roboto-regular text-center truncate">
+              {tx.remark || "-"}
+            </div>
+            {renderAmountCell(tx.amount)}
+          </div>
+        );
       case "game":
         return (
           <div key={tx.id} className={base}>
@@ -317,7 +359,7 @@ export default function TransactionPage() {
 
   // Loading skeleton per layout
   const renderSkeleton = () => {
-    const colCount = tableLayout === "game" || tableLayout === "withdraw" ? 5 : 4;
+    const colCount = tableLayout === "all" || tableLayout === "game" || tableLayout === "withdraw" ? 5 : 4;
     return [...Array(5)].map((_, i) => (
       <div
         key={i}
