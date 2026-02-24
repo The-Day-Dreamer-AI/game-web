@@ -308,10 +308,22 @@
     "title": "Transaction",
     "all": "All",
     "deposit": "Deposit",
-    "withdrawal": "Withdrawal",
-    "transfer": "Transfer",
-    "adjustment": "Adjustment",
-    "bonus": "Bonus"
+    "withdraw": "Withdraw",
+    "transferIn": "Transfer In",
+    "transferOut": "Transfer Out",
+    "payout": "Payout",
+    "payoutRollback": "Payout Rollback",
+    "launchGame": "Launch Game",
+    "quitGame": "Quit Game",
+    "autoQuitGame": "Auto Quit Game",
+    "gameRefund": "Game Refund",
+    "dailyCheckIn": "Daily Check In",
+    "fortuneWheel": "Fortune Wheel",
+    "bonus": "Bonus",
+    "provider": "Provider",
+    "game": "Game",
+    "withdrawTo": "Withdraw to",
+    "transferTo": "Transfer to"
   },
   "home": {
     "announcement": "Welcome to AONE GLOBAL GAMING. Malaysia stable and trusted online platform"

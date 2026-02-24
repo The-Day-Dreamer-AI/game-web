@@ -291,10 +291,22 @@
     "title": "交易",
     "all": "全部",
     "deposit": "存款",
-    "withdrawal": "取款",
-    "transfer": "转账",
-    "adjustment": "调整",
-    "bonus": "奖金"
+    "withdraw": "取款",
+    "transferIn": "转入",
+    "transferOut": "转出",
+    "payout": "派彩",
+    "payoutRollback": "派彩回滚",
+    "launchGame": "启动游戏",
+    "quitGame": "退出游戏",
+    "autoQuitGame": "自动退出游戏",
+    "gameRefund": "游戏退款",
+    "dailyCheckIn": "每日签到",
+    "fortuneWheel": "幸运转盘",
+    "bonus": "奖金",
+    "provider": "供应商",
+    "game": "游戏",
+    "withdrawTo": "提款至",
+    "transferTo": "转账至"
   },
   "home": {
     "announcement": "欢迎来到 AONE GLOBAL GAMING。马来西亚稳定可信的在线平台"

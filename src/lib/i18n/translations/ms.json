@@ -291,10 +291,22 @@
     "title": "Transaksi",
     "all": "Semua",
     "deposit": "Deposit",
-    "withdrawal": "Pengeluaran",
-    "transfer": "Pindahan",
-    "adjustment": "Pelarasan",
-    "bonus": "Bonus"
+    "withdraw": "Pengeluaran",
+    "transferIn": "Pindahan Masuk",
+    "transferOut": "Pindahan Keluar",
+    "payout": "Pembayaran",
+    "payoutRollback": "Pembatalan Pembayaran",
+    "launchGame": "Lancar Permainan",
+    "quitGame": "Keluar Permainan",
+    "autoQuitGame": "Auto Keluar Permainan",
+    "gameRefund": "Bayaran Balik Permainan",
+    "dailyCheckIn": "Daftar Masuk Harian",
+    "fortuneWheel": "Roda Nasib",
+    "bonus": "Bonus",
+    "provider": "Pembekal",
+    "game": "Permainan",
+    "withdrawTo": "Pengeluaran ke",
+    "transferTo": "Pindahan ke"
   },
   "home": {
     "announcement": "Selamat datang ke AONE GLOBAL GAMING. Platform dalam talian Malaysia yang stabil dan dipercayai"

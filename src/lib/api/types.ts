@@ -142,14 +142,26 @@ export interface ClaimPromoResponse {
 
 export interface Transaction {
   Id: string;
+  Datetime: string;
+  Action: string;
+  ActionDetail: string;
+  ActionDetail2: string | null;
   Type: string;
   Amount: number;
-  Balance: number;
-  CreatedDate: string;
-  Description: string;
+  Remark: string;
+  RefId: string;
+  Image: string | null;
 }
 
-export interface TransactionsResponse extends PaginatedResponse<Transaction> {}
+export interface TransactionsResponse {
+  Code: number;
+  Message: string;
+  Month: string;
+  Action: string;
+  Page: number;
+  End: boolean;
+  Rows: Transaction[];
+}
 
 // ===========================================
 // User / Account Types
