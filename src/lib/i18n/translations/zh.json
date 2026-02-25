@@ -35,7 +35,9 @@
     "search": "搜索",
     "fillAllFields": "请填写所有必填字段",
     "notFound": "404 页面未找到",
-    "backToHome": "返回首页"
+    "backToHome": "返回首页",
+    "action": "操作",
+    "details": "详情"
   },
   "referral": {
     "title": "推荐",
@@ -291,10 +293,22 @@
     "title": "交易",
     "all": "全部",
     "deposit": "存款",
-    "withdrawal": "取款",
-    "transfer": "转账",
-    "adjustment": "调整",
-    "bonus": "奖金"
+    "withdraw": "取款",
+    "transferIn": "转入",
+    "transferOut": "转出",
+    "payout": "派彩",
+    "payoutRollback": "派彩回滚",
+    "launchGame": "启动游戏",
+    "quitGame": "退出游戏",
+    "autoQuitGame": "自动退出游戏",
+    "gameRefund": "游戏退款",
+    "dailyCheckIn": "每日签到",
+    "fortuneWheel": "幸运转盘",
+    "bonus": "奖金",
+    "provider": "供应商",
+    "game": "游戏",
+    "withdrawTo": "提款至",
+    "transferTo": "转账至"
   },
   "home": {
     "announcement": "欢迎来到 AONE GLOBAL GAMING。马来西亚稳定可信的在线平台"
@@ -314,6 +328,7 @@
     "category": "类别"
   },
   "games": {
+    "all": "全部",
     "slots": "老虎机",
     "appSlot": "APP老虎机",
     "live": "真人",

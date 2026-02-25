@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { RequireAuth } from "@/components/auth";
+import { RequireAuth, RequireKyc } from "@/components/auth";
 import { Button } from "@/components/ui/button";
 import { EventDetailsModal } from "@/components/event";
 import { cn } from "@/lib/utils";
@@ -12,13 +12,13 @@ import { useI18n } from "@/providers/i18n-provider";
 import type { Promo } from "@/lib/api/types";
 
 const categories = [
-  { id: "all", label: "ALL" },
-  { id: "slots", label: "SLOTS" },
-  { id: "app", label: "APP SLOTS" },
-  { id: "live", label: "LIVE" },
-  { id: "sports", label: "SPORTS" },
-  { id: "lottery", label: "LOTTERY" },
-  { id: "fishing", label: "FISHING" },
+  { id: "all", labelKey: "games.all" },
+  { id: "slots", labelKey: "games.slots" },
+  { id: "app", labelKey: "games.appSlot" },
+  { id: "live", labelKey: "games.live" },
+  { id: "sports", labelKey: "games.sports" },
+  { id: "lottery", labelKey: "games.lottery" },
+  { id: "fishing", labelKey: "games.fishing" },
 ];
 
 // Transform API promo to component format
@@ -136,26 +136,26 @@ export default function EventPage() {
 
   return (
     <RequireAuth>
+      <RequireKyc>
       <div className="relative min-h-screen flex flex-col">
 
         {/* Horizontally Scrollable Categories */}
         <div
           ref={scrollRef}
-          className="flex gap-1  max-[450px]:px-2 px-4 py-3 mx-auto"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          className="flex gap-1 px-4 py-3 w-full max-w-full overflow-x-auto scrollbar-hide"
         >
           {categories.map((category) => (
             <button
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
               className={cn(
-                "shrink-0 px-3 py-2 rounded-lg max-[390px]:text-[6px] max-[450px]:text-[7px] text-[8px] font-roboto-bold whitespace-nowrap shadow-md cursor-pointer",
+                "shrink-0 px-2 py-2 rounded-md text-xs font-roboto-bold whitespace-nowrap shadow-md cursor-pointer",
                 activeCategory === category.id
                   ? "bg-primary text-white"
                   : "bg-linear-to-b from-white to-[#F2F4F9] text-[#28323C] border border-white"
               )}
             >
-              {category.label}
+              {t(category.labelKey)}
             </button>
           ))}
         </div>
@@ -292,6 +292,7 @@ export default function EventPage() {
           </div>
         )}
       </div>
+    </RequireKyc>
     </RequireAuth>
   );
 }

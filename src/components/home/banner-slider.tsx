@@ -150,7 +150,7 @@ export function BannerSlider({
       <div
         ref={containerRef}
         className={cn(
-          "relative overflow-hidden aspect-16/7 touch-pan-y",
+          "relative overflow-hidden w-full touch-pan-y",
           rounded && "rounded-lg",
           isDragging ? "cursor-grabbing" : "cursor-grab"
         )}
@@ -164,26 +164,28 @@ export function BannerSlider({
       >
         <div
           className={cn(
-            "flex h-full select-none",
+            "flex select-none",
             !isDragging && "transition-transform duration-500 ease-out"
           )}
           style={{ transform: getTransform() }}
         >
           {banners.map((banner) => (
-            <div key={banner.id} className="w-full h-full shrink-0 relative">
+            <div key={banner.id} className="w-full shrink-0">
               {!imgErrors.has(banner.id) ? (
                 <Image
                   src={banner.image}
                   alt={banner.alt}
-                  fill
-                  className="object-cover pointer-events-none"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  className="w-full h-auto pointer-events-none"
                   onError={() => handleImageError(banner.id)}
                   priority={currentIndex === 0}
                   unoptimized
                   draggable={false}
                 />
               ) : (
-                <div className="w-full h-full bg-zinc-200 flex items-center justify-center">
+                <div className="w-full aspect-video bg-zinc-200 flex items-center justify-center">
                 </div>
               )}
             </div>

@@ -83,9 +83,10 @@ export const userApi = {
 
   /**
    * Request TAC/OTP for password change
+   * POST /api/mapiuser/ChangePassword_GetTac
    */
-  async changePasswordGetTac(): Promise<ChangePasswordGetTacResponse> {
-    return apiClient.post<ChangePasswordGetTacResponse>("/api/mapiuser/changepassword_gettac", {}, {
+  async changePasswordGetTac(channel: string): Promise<ChangePasswordGetTacResponse> {
+    return apiClient.post<ChangePasswordGetTacResponse>("/api/mapiuser/ChangePassword_GetTac", { Channel: channel }, {
       authenticated: true,
     });
   },

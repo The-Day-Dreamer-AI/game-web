@@ -10,7 +10,7 @@ import QrScanner from "qr-scanner";
 import { useI18n } from "@/providers/i18n-provider";
 import { useToast } from "@/providers/toast-provider";
 import { useRegister } from "@/hooks/use-register";
-import { authApi, ApiError } from "@/lib/api";
+import { ApiError } from "@/lib/api";
 import { FormInput } from "@/components/ui/form-input";
 
 interface RegisterFormData {
@@ -21,7 +21,6 @@ interface RegisterFormData {
   fullName: string;
 }
 
-const DEFAULT_REFERRAL_CODE = process.env.NEXT_PUBLIC_DEFAULT_REFERRAL_CODE;
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -31,7 +30,6 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
-  const [isValidatingUpline, setIsValidatingUpline] = useState(false);
   const qrFileInputRef = useRef<HTMLInputElement>(null);
 
   // API hooks
@@ -129,42 +127,11 @@ export default function RegisterPage() {
     }
 
     try {
-      let uplineValue = data.referralCode?.trim() || "";
+      const uplineValue = data.referralCode?.trim();
 
-      // If referral code is provided, verify it
-      if (uplineValue) {
-        setIsValidatingUpline(true);
-
-        try {
-          const uplineResult = await authApi.getUpline(uplineValue);
-
-          if (uplineResult.Code !== 0) {
-            setError("referralCode", {
-              message: uplineResult.Message || t("auth.referralInvalid"),
-            });
-            setIsValidatingUpline(false);
-            return;
-          }
-
-          // Use the validated ReferralCode from the response
-          uplineValue = uplineResult.ReferralCode;
-        } catch {
-          setError("referralCode", {
-            message: t("auth.referralVerifyFailed"),
-          });
-          setIsValidatingUpline(false);
-          return;
-        }
-
-        setIsValidatingUpline(false);
-      } else {
-        // No referral code provided, use default
-        uplineValue = DEFAULT_REFERRAL_CODE || "this";
-      }
-
-      // Proceed with registration using the new API
+      // Proceed with registration
       const result = await registerMutation.mutateAsync({
-        UplineReferralCode: uplineValue,
+        UplineReferralCode: uplineValue || "",
         Username: data.username,
         Password: data.password,
         ConfirmPassword: data.confirmPassword,
@@ -186,7 +153,7 @@ export default function RegisterPage() {
     }
   };
 
-  const isSubmitting = isValidatingUpline || registerMutation.isPending;
+  const isSubmitting = registerMutation.isPending;
 
   return (
     <div className="min-h-screen flex flex-col relative">
@@ -197,9 +164,9 @@ export default function RegisterPage() {
         <Image
           src="/images/welcome_banner.png"
           alt="register banner"
-          width={32}
-          height={32}
-          className="w-full object-fill h-auto max-h-40"
+          width={430}
+          height={160}
+          className="w-full h-auto object-cover"
           unoptimized
         />
 
@@ -403,9 +370,7 @@ export default function RegisterPage() {
             {isSubmitting ? (
               <>
                 <Loader2 className="w-6 h-6 animate-spin" />
-                {isValidatingUpline
-                  ? t("auth.verifyingReferral")
-                  : t("auth.creatingAccount")}
+                {t("auth.creatingAccount")}
               </>
             ) : (
               t("auth.register").toUpperCase()

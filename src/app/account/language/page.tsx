@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useI18n } from "@/providers/i18n-provider";
 import { Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -26,9 +27,11 @@ const languages: { id: Locale; name: string; icon: string }[] = [
 
 export default function LanguagePage() {
   const { locale, setLocale, t } = useI18n();
+  const router = useRouter();
 
   const handleSelectLanguage = (langId: Locale) => {
     setLocale(langId);
+    router.push("/home");
   };
 
   return (

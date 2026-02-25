@@ -49,6 +49,7 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
               WebkitBoxShadow: "0 0 0 1000px transparent inset",
               boxShadow: "0 0 0 1000px transparent inset",
             }}
+            {...(type === "password" && { autoComplete: "new-password" })}
             {...props}
           />
 

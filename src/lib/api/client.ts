@@ -4,6 +4,11 @@ import { API_CONFIG, AUTH_STORAGE_KEY } from "./config";
 function handleUnauthorized(): void {
   if (typeof window === "undefined") return;
 
+  // If token is already cleared, logout is in progress —
+  // RequireAuth will handle the redirect via router.replace, skip hard reload
+  const hasToken = localStorage.getItem("token") || localStorage.getItem(AUTH_STORAGE_KEY);
+  if (!hasToken) return;
+
   // Clear all auth-related data from localStorage
   localStorage.removeItem("token");
   localStorage.removeItem(AUTH_STORAGE_KEY);

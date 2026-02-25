@@ -29,7 +29,7 @@ export function useProfile(options?: { enabled?: boolean }) {
       }
       return response;
     },
-    staleTime: 2 * 60 * 1000, // 2 minutes - profile can change
+    staleTime: 0, // Always refetch when navigating to account page
     enabled: options?.enabled ?? true,
   });
 }
@@ -134,8 +134,8 @@ export function useChangeAvatar() {
  */
 export function useChangePasswordGetTac() {
   return useMutation({
-    mutationFn: async () => {
-      const response = await userApi.changePasswordGetTac();
+    mutationFn: async (channel: string) => {
+      const response = await userApi.changePasswordGetTac(channel);
       return response;
     },
   });
