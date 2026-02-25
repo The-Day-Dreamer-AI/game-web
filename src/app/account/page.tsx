@@ -99,6 +99,7 @@ export default function AccountPage() {
       labelKey: "account.resetPin",
       href: "/account/reset-pin",
       isLink: true,
+      requiresKyc: true,
     },
     {
       icon: "/images/icon/contact_icon.png",
@@ -480,6 +481,12 @@ export default function AccountPage() {
                   href={item.href!}
                   prefetch={false}
                   className={className}
+                  onClick={(e) => {
+                    if ("requiresKyc" in item && item.requiresKyc) {
+                      e.preventDefault();
+                      navigateWithKycCheck(item.href!);
+                    }
+                  }}
                 >
                   {content}
                 </Link>

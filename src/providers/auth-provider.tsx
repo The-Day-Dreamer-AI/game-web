@@ -12,6 +12,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { User, LoginCredentials, RegisterCredentials, AuthState } from "@/types/auth";
 import { authApi, userApi } from "@/lib/api";
 import { discoverKeys } from "@/hooks/use-discover";
+import { userKeys } from "@/hooks/use-user";
 import { setKycStatus, clearKycStatus } from "@/lib/kyc-storage";
 
 const AUTH_STORAGE_KEY = "aone-auth";
@@ -76,6 +77,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         expiresIn: response.expires_in,
       }));
 
+      // Clear any stale user data from previous account
+      queryClient.removeQueries({ queryKey: userKeys.all });
       // Refetch discover query with authenticated endpoint
       await queryClient.refetchQueries({ queryKey: discoverKeys.all });
 
@@ -127,6 +130,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         expiresIn: loginResponse.expires_in,
       }));
 
+      // Clear any stale user data from previous account
+      queryClient.removeQueries({ queryKey: userKeys.all });
       // Refetch discover query with authenticated endpoint
       await queryClient.refetchQueries({ queryKey: discoverKeys.all });
 
@@ -161,6 +166,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       localStorage.removeItem(AUTH_STORAGE_KEY);
       // Clear KYC status
       clearKycStatus();
+      // Clear all user query cache to prevent stale data on next login
+      queryClient.removeQueries({ queryKey: userKeys.all });
       // Refetch discover query with unauthenticated endpoint
       await queryClient.refetchQueries({ queryKey: discoverKeys.all });
       setIsLoading(false);

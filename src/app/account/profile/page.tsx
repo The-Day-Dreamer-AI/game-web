@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { useI18n } from "@/providers/i18n-provider";
+import { useKyc } from "@/providers/kyc-provider";
 import Image from "next/image";
 
 const profileMenuItems = [
@@ -17,6 +18,7 @@ const profileMenuItems = [
     labelKey: "profile.changePassword",
     href: "/account/profile/password",
     icon: "/images/icon/lock_icon.png",
+    requiresKyc: true,
   },
   {
     id: "avatar",
@@ -28,6 +30,7 @@ const profileMenuItems = [
 
 export default function ProfilePage() {
   const { t } = useI18n();
+  const { navigateWithKycCheck } = useKyc();
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -39,6 +42,12 @@ export default function ProfilePage() {
               key={item.id}
               href={item.href}
               className="flex items-center gap-4 px-4 py-4 bg-primary/25 rounded-2xl"
+              onClick={(e) => {
+                if (item.requiresKyc) {
+                  e.preventDefault();
+                  navigateWithKycCheck(item.href);
+                }
+              }}
             >
               {/* Icon */}
               <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shrink-0">
