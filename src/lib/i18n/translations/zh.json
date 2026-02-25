@@ -311,7 +311,8 @@
     "transferTo": "转账至"
   },
   "home": {
-    "announcement": "欢迎来到 AONE GLOBAL GAMING。马来西亚稳定可信的在线平台"
+    "announcement": "欢迎来到 AONE GLOBAL GAMING。马来西亚稳定可信的在线平台",
+    "announcementTitle": "公告"
   },
   "event": {
     "noEvents": "目前没有活动。",

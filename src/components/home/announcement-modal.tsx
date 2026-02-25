@@ -18,7 +18,7 @@ export function AnnouncementModal({
   onClose,
   announcement,
 }: AnnouncementModalProps) {
-  const { locale } = useI18n();
+  const { t, locale } = useI18n();
 
   useEffect(() => {
     if (isOpen) {
@@ -57,7 +57,7 @@ export function AnnouncementModal({
         {/* Header */}
         <div className="flex items-center justify-between p-4 shrink-0">
           <label className="text-lg font-roboto-bold text-[#28323C]">
-            Announcement
+            {t("home.announcementTitle")}
           </label>
           <button
           onClick={onClose}

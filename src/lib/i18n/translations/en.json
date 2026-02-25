@@ -328,7 +328,8 @@
     "transferTo": "Transfer to"
   },
   "home": {
-    "announcement": "Welcome to AONE GLOBAL GAMING. Malaysia stable and trusted online platform"
+    "announcement": "Welcome to AONE GLOBAL GAMING. Malaysia stable and trusted online platform",
+    "announcementTitle": "Announcement"
   },
   "event": {
     "noEvents": "There are no events at the moment.",

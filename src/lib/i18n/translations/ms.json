@@ -311,7 +311,8 @@
     "transferTo": "Pindahan ke"
   },
   "home": {
-    "announcement": "Selamat datang ke AONE GLOBAL GAMING. Platform dalam talian Malaysia yang stabil dan dipercayai"
+    "announcement": "Selamat datang ke AONE GLOBAL GAMING. Platform dalam talian Malaysia yang stabil dan dipercayai",
+    "announcementTitle": "Pengumuman"
   },
   "event": {
     "noEvents": "Tiada acara pada masa ini.",
