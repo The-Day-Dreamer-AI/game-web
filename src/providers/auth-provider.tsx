@@ -104,7 +104,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     try {
       await authApi.register({
-        UplineReferralCode: credentials.referralCode || "",
+        UplineReferralCode: credentials.referralCode?.trim() || "",
         Username: credentials.username,
         Password: credentials.password,
         ConfirmPassword: credentials.confirmPassword,

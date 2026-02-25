@@ -21,7 +21,6 @@ interface RegisterFormData {
   fullName: string;
 }
 
-const DEFAULT_REFERRAL_CODE = process.env.NEXT_PUBLIC_DEFAULT_REFERRAL_CODE;
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -128,11 +127,11 @@ export default function RegisterPage() {
     }
 
     try {
-      const uplineValue = data.referralCode?.trim() || DEFAULT_REFERRAL_CODE || "this";
+      const uplineValue = data.referralCode?.trim();
 
       // Proceed with registration
       const result = await registerMutation.mutateAsync({
-        UplineReferralCode: uplineValue,
+        UplineReferralCode: uplineValue || "",
         Username: data.username,
         Password: data.password,
         ConfirmPassword: data.confirmPassword,
