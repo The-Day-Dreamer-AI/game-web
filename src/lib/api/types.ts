@@ -482,11 +482,15 @@ export interface CarouselsResponse {
 }
 
 export interface AnnouncementResponse {
+  Code: number;
+  Message: string;
   HasAnnouncement: boolean;
-  Title: string;
-  Content: string;
-  ImageEn: string;
+  Image: string;
   ImageCn: string;
+  ImageMy: string;
+  Msg: string;
+  MsgCn: string;
+  MsgMy: string;
 }
 
 // ===========================================

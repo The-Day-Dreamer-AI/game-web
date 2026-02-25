@@ -10,7 +10,6 @@ import { Sidebar } from "./sidebar";
 import { getRouteConfig } from "@/lib/route-config";
 import { getBackDestination } from "@/lib/navigation";
 import { useI18n } from "@/providers/i18n-provider";
-import { MdHome } from "react-icons/md";
 
 interface HeaderProps {
   /** Override the auto-detected variant */
@@ -96,22 +95,12 @@ export function Header({
               )}
             </Link>
           ) : (
-            <>
-              <button
-                onClick={handleBack}
-                className="flex items-center gap-1 text-white cursor-pointer"
-              >
-                <ChevronLeft className="w-7 h-7" />
-              </button>
-              {showHomeButton && (
-                <button
-                  onClick={() => onHomeClick ? onHomeClick() : router.push("/home")}
-                  className="flex items-center text-white cursor-pointer"
-                >
-                  <MdHome className="w-6 h-6" />
-                </button>
-              )}
-            </>
+            <button
+              onClick={handleBack}
+              className="flex items-center gap-1 text-white cursor-pointer"
+            >
+              <ChevronLeft className="w-7 h-7" />
+            </button>
           )}
         </div>
 
@@ -145,21 +134,38 @@ export function Header({
               unoptimized
             />
           </button>
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="text-white hover:text-zinc-300 transition-colors cursor-pointer"
-            aria-label="Menu"
-          >
-            <Image
-              src="/images/header/menu_icon.png"
-              alt="AON1E menu"
-              width={24}
-              height={24}
-              className="h-7 w-auto object-contain"
-              onError={() => setImgError(true)}
-              unoptimized
-            />
-          </button>
+          {showHomeButton ? (
+            <button
+              onClick={() => onHomeClick ? onHomeClick() : router.push("/home")}
+              className="text-white hover:text-zinc-300 transition-colors cursor-pointer"
+              aria-label="Home"
+            >
+              <Image
+                src="/images/icon/home_leave_game_icon.png"
+                alt="Home"
+                width={24}
+                height={24}
+                className="h-7 w-auto object-contain"
+                unoptimized
+              />
+            </button>
+          ) : (
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="text-white hover:text-zinc-300 transition-colors cursor-pointer"
+              aria-label="Menu"
+            >
+              <Image
+                src="/images/header/menu_icon.png"
+                alt="AON1E menu"
+                width={24}
+                height={24}
+                className="h-7 w-auto object-contain"
+                onError={() => setImgError(true)}
+                unoptimized
+              />
+            </button>
+          )}
         </div>
       </header>
 

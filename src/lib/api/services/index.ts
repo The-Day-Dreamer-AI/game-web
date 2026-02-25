@@ -9,3 +9,4 @@ export { depositApi } from "./deposit";
 export { reportApi } from "./report";
 export { contactApi } from "./contact";
 export { rewardApi } from "./reward";
+export { systemApi } from "./system";

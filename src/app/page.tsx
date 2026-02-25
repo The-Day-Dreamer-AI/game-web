@@ -10,6 +10,7 @@ import {
   GuestWelcomeCard,
   GameCategories,
   GameProviderGrid,
+  AnnouncementModal,
 } from "@/components/home";
 import { Marquee } from "@/components/ui/marquee";
 import { useI18n } from "@/providers/i18n-provider";
@@ -18,7 +19,8 @@ import { useLoadingOverlay } from "@/providers/loading-overlay-provider";
 import { useLoginModal } from "@/providers/login-modal-provider";
 import { useDiscover, useLaunchGame } from "@/hooks/use-discover";
 import { ApiError } from "@/lib/api";
-import type { Game } from "@/lib/api/types";
+import { systemApi } from "@/lib/api/services/system";
+import type { Game, AnnouncementResponse } from "@/lib/api/types";
 
 // Mock user data (TODO: Replace with user profile API when available)
 const userData = {
@@ -83,8 +85,30 @@ export default function HomePage() {
   const { showLoading, hideLoading } = useLoadingOverlay();
   const { openLoginModal } = useLoginModal();
 
+  // Announcement modal state
+  const [announcementData, setAnnouncementData] =
+    useState<AnnouncementResponse | null>(null);
+  const [showAnnouncement, setShowAnnouncement] = useState(false);
+
   // Fetch discover data from API
   const { data: discoverData, isLoading, error } = useDiscover();
+
+  // Fetch announcement for guest users
+  useEffect(() => {
+    if (isAuthenticated) return;
+
+    systemApi
+      .getAnnouncement()
+      .then((data) => {
+        if (data.HasAnnouncement) {
+          setAnnouncementData(data);
+          setShowAnnouncement(true);
+        }
+      })
+      .catch(() => {
+        // Silently ignore announcement fetch errors
+      });
+  }, [isAuthenticated]);
 
   // Clean up stepping timers on unmount
   useEffect(() => {
@@ -289,6 +313,13 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Announcement Modal for guest users */}
+      <AnnouncementModal
+        isOpen={showAnnouncement}
+        onClose={() => setShowAnnouncement(false)}
+        announcement={announcementData}
+      />
+
       {/* Main Content */}
       <main className="flex-1 overflow-auto pb-7">
         {/* Banner Slider - Full width, no padding, no dots, no border radius */}
