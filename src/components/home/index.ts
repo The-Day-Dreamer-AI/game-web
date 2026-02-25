@@ -3,3 +3,4 @@ export { WelcomeCard } from "./welcome-card";
 export { GuestWelcomeCard } from "./guest-welcome-card";
 export { GameCategories } from "./game-categories";
 export { GameProviderGrid } from "./game-provider-grid";
+export { AnnouncementModal } from "./announcement-modal";
