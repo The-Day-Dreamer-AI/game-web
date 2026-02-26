@@ -226,7 +226,7 @@ export default function DepositPage() {
 
           {/* Withdraw Section */}
           <div
-            className={`bg-[#FCEAC3] rounded-3xl overflow-hidden shadow-sm cursor-pointer ${
+            className={`bg-[#D4F1F0] rounded-3xl overflow-hidden shadow-sm cursor-pointer ${
               depositOpen ? "mt-4" : "mt-7"
             }`}
           >

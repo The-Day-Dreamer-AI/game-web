@@ -68,7 +68,11 @@ const DatePickerInput = React.forwardRef<HTMLInputElement, DatePickerInputProps>
             ref={inputRef}
             type="datetime-local"
             value={toDatetimeLocalValue(value)}
-            onChange={(e) => onChange(fromDatetimeLocalValue(e.target.value))}
+            onChange={(e) => {
+              onChange(fromDatetimeLocalValue(e.target.value));
+              // Auto-close the native picker by blurring the input
+              inputRef.current?.blur();
+            }}
             placeholder={placeholder}
             className={cn(
               "date-picker-no-suffix flex-1 w-full py-3.5 bg-transparent text-black placeholder:text-[#959595] font-roboto-regular text-sm focus:outline-none",

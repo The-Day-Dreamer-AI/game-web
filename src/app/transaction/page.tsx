@@ -213,7 +213,7 @@ export default function TransactionPage() {
 
   // Table headers per layout
   const renderHeader = () => {
-    const base = `sticky top-0 bg-zinc-700 px-4 py-3 grid ${gridClass} gap-2 text-sm text-white font-roboto-bold text-center items-center`;
+    const base = `sticky top-0 bg-[#28323C] px-4 py-1.5 grid ${gridClass} gap-2 text-sm text-white font-roboto-bold text-center items-center`;
 
     switch (tableLayout) {
       case "all":
@@ -269,7 +269,7 @@ export default function TransactionPage() {
 
   // Table row per layout
   const renderRow = (tx: (typeof transactions)[number]) => {
-    const base = `px-4 py-3 grid ${gridClass} gap-2 items-center text-sm`;
+    const base = `shadow-xs rounded-lg px-4 py-4 grid ${gridClass} gap-2 border-black items-center text-sm bg-gradient-to-b from-white to-[#F2F4F9]`;
 
     switch (tableLayout) {
       case "all":
@@ -439,7 +439,7 @@ export default function TransactionPage() {
             {renderHeader()}
 
             {/* Table Body */}
-            <div className="divide-y divide-zinc-100">
+            <div className="flex flex-col gap-1 p-1">
               {isLoading ? renderSkeleton() : transactions.map(renderRow)}
             </div>
           </div>

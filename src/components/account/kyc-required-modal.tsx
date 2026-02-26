@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useI18n } from "@/providers/i18n-provider";
 
 interface KycRequiredModalProps {
@@ -10,6 +11,7 @@ interface KycRequiredModalProps {
 
 export function KycRequiredModal({ isOpen, onClose }: KycRequiredModalProps) {
   const { t } = useI18n();
+  const router = useRouter();
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -24,6 +26,11 @@ export function KycRequiredModal({ isOpen, onClose }: KycRequiredModalProps) {
   }, [isOpen]);
 
   if (!isOpen) return null;
+
+  const handleConfirm = () => {
+    onClose();
+    router.push("/account?openKyc=true");
+  };
 
   return (
     <div
@@ -47,7 +54,7 @@ export function KycRequiredModal({ isOpen, onClose }: KycRequiredModalProps) {
         {/* Confirm Button */}
         <button
           type="button"
-          onClick={onClose}
+          onClick={handleConfirm}
           className="cursor-pointer w-full py-3 bg-primary text-white font-roboto-semibold rounded-lg hover:bg-primary/90 transition-colors"
         >
           {t("common.confirm")}
