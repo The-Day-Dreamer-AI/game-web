@@ -12,6 +12,7 @@
     "loading": "Memuatkan...",
     "error": "Ralat",
     "success": "Berjaya",
+    "new": "Baru",
     "selectAll": "Pilih/ Nyahpilih Semua",
     "noData": "Tiada data tersedia",
     "welcome": "Selamat Datang",
@@ -308,7 +309,16 @@
     "provider": "Pembekal",
     "game": "Permainan",
     "withdrawTo": "Pengeluaran ke",
-    "transferTo": "Pindahan ke"
+    "transferTo": "Pindahan ke",
+    "detail": "Butiran Transaksi",
+    "transactionId": "ID Transaksi",
+    "type": "Jenis",
+    "currency": "Mata Wang",
+    "bank": "Bank",
+    "accountName": "Nama Akaun",
+    "depositNo": "No Deposit",
+    "withdrawNo": "No Pengeluaran",
+    "rejectReason": "Sebab Penolakan"
   },
   "home": {
     "announcement": "Selamat datang ke AONE GLOBAL GAMING. Platform dalam talian Malaysia yang stabil dan dipercayai",
@@ -449,7 +459,16 @@
     "shippingFee": "Caj Penghantaran",
     "total": "Jumlah",
     "pointBalanceAfter": "Baki A-Point",
-    "redeem": "TEBUS"
+    "redeem": "TEBUS",
+    "redeemConfirmTitle": "Tebus hadiah ini dengan {points} A-point?",
+    "redeemConfirmMessage": "Selepas ditebus, anda boleh menyemak status di sejarah tebusan.",
+    "cancel": "BATAL",
+    "redeemId": "ID Tebusan",
+    "date": "Tarikh",
+    "statusSuccess": "Berjaya",
+    "statusProgress": "Dalam Proses",
+    "statusFailed": "Gagal",
+    "statusRejected": "Ditolak"
   },
   "scanner": {
     "title": "Imbas Kod QR",

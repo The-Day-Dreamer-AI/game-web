@@ -12,6 +12,7 @@
     "loading": "加载中...",
     "error": "错误",
     "success": "成功",
+    "new": "新",
     "selectAll": "全选/取消全选",
     "noData": "暂无数据",
     "welcome": "欢迎",
@@ -308,7 +309,16 @@
     "provider": "供应商",
     "game": "游戏",
     "withdrawTo": "提款至",
-    "transferTo": "转账至"
+    "transferTo": "转账至",
+    "detail": "交易详情",
+    "transactionId": "交易编号",
+    "type": "类型",
+    "currency": "货币",
+    "bank": "银行",
+    "accountName": "账户名称",
+    "depositNo": "存款编号",
+    "withdrawNo": "取款编号",
+    "rejectReason": "拒绝原因"
   },
   "home": {
     "announcement": "欢迎来到 AONE GLOBAL GAMING。马来西亚稳定可信的在线平台",
@@ -449,7 +459,16 @@
     "shippingFee": "运费",
     "total": "总计",
     "pointBalanceAfter": "A积分余额",
-    "redeem": "兑换"
+    "redeem": "兑换",
+    "redeemConfirmTitle": "使用 {points} A积分兑换此礼品？",
+    "redeemConfirmMessage": "兑换后，您可以在兑换记录中查看状态。",
+    "cancel": "取消",
+    "redeemId": "兑换编号",
+    "date": "日期",
+    "statusSuccess": "成功",
+    "statusProgress": "处理中",
+    "statusFailed": "失败",
+    "statusRejected": "已拒绝"
   },
   "scanner": {
     "title": "扫描二维码",

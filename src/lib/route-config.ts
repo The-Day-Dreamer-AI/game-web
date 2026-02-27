@@ -91,6 +91,12 @@ export function getRouteConfig(pathname: string): RouteConfig {
       // For dynamic child routes, use parent's title or a generic one
       // e.g., /account/contact/123 -> use "contact.friendDetail"
       // e.g., /account/contact/123/alias -> use "contact.changeAlias"
+      if (route === "/transaction") {
+        return { titleKey: "transaction.detail", variant };
+      }
+      if (route === "/account/redeem-history") {
+        return { titleKey: "redeemGift.redeemHistory", variant };
+      }
       if (route === "/account/contact") {
         if (pathname.endsWith("/alias")) {
           return { titleKey: "contact.changeAlias", variant };

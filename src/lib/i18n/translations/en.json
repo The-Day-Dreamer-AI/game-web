@@ -12,6 +12,7 @@
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
+    "new": "New",
     "selectAll": "Select/ Unselect All",
     "noData": "No data available",
     "welcome": "Welcome",
@@ -325,7 +326,16 @@
     "provider": "Provider",
     "game": "Game",
     "withdrawTo": "Withdraw to",
-    "transferTo": "Transfer to"
+    "transferTo": "Transfer to",
+    "detail": "Transaction Detail",
+    "transactionId": "Transaction ID",
+    "type": "Type",
+    "currency": "Currency",
+    "bank": "Bank",
+    "accountName": "Account Name",
+    "depositNo": "Deposit No",
+    "withdrawNo": "Withdraw No",
+    "rejectReason": "Reject Reason"
   },
   "home": {
     "announcement": "Welcome to AONE GLOBAL GAMING. Malaysia stable and trusted online platform",
@@ -511,7 +521,16 @@
     "shippingFee": "Shipping Fee",
     "total": "Total",
     "pointBalanceAfter": "A-Point Balance",
-    "redeem": "REDEEM"
+    "redeem": "REDEEM",
+    "redeemConfirmTitle": "Redeem this gift with {points} A-point?",
+    "redeemConfirmMessage": "Once redeemed, you can check the status in the redemption history.",
+    "cancel": "CANCEL",
+    "redeemId": "Redeem ID",
+    "date": "Date",
+    "statusSuccess": "Success",
+    "statusProgress": "Progress",
+    "statusFailed": "Failed",
+    "statusRejected": "Rejected"
   },
   "scanner": {
     "title": "Scan QR Code",

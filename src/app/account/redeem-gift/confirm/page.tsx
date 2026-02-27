@@ -28,6 +28,7 @@ export default function ConfirmRedeemPage() {
   const rewardId = searchParams.get("rewardId");
   const [shippingInfo, setShippingInfo] = useState<ShippingInfo | null>(null);
   const [isRedeeming, setIsRedeeming] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   // Fetch rewards to get user points and reward info
   const { data: rewardsData } = useRewards({
@@ -62,11 +63,20 @@ export default function ConfirmRedeemPage() {
   }, [router]);
 
   const handleRedeem = async () => {
-    if (!rewardId || !selectedReward || isRedeeming) return;
+    if (!rewardId || !selectedReward || isRedeeming || !shippingInfo) return;
+
+    const fullAddress = [shippingInfo.address, shippingInfo.postcode, shippingInfo.state, shippingInfo.country]
+      .filter(Boolean)
+      .join(", ");
 
     setIsRedeeming(true);
     try {
-      const response = await claimReward.mutateAsync({ Id: rewardId });
+      const response = await claimReward.mutateAsync({
+        Id: rewardId,
+        ReceiverName: shippingInfo.recipientName,
+        ReceiverPhone: shippingInfo.phoneNumber,
+        ReceiverAddress: fullAddress,
+      });
       if (response.Code === 0) {
         // Clear shipping info from sessionStorage
         sessionStorage.removeItem("redeemShippingInfo");
@@ -291,7 +301,7 @@ export default function ConfirmRedeemPage() {
             </p>
           </div>
           <button
-            onClick={handleRedeem}
+            onClick={() => setShowConfirmModal(true)}
             disabled={isRedeeming}
             className="shadow-lg bg-primary text-white px-10 py-3 rounded-lg text-base font-roboto-bold uppercase cursor-pointer disabled:opacity-50 flex justify-center items-center gap-2"
           >
@@ -300,6 +310,45 @@ export default function ConfirmRedeemPage() {
           </button>
         </div>
       </div>
+
+      {/* Confirmation Modal */}
+      {showConfirmModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75"
+          onClick={() => setShowConfirmModal(false)}
+        >
+          <div
+            className="bg-white rounded-2xl w-full max-w-sm p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-base font-roboto-bold text-[#28323C] text-center mb-2">
+              {t("redeemGift.redeemConfirmTitle").replace("{points}", formatPoints(selectedReward.Price))}
+            </h3>
+            <p className="text-sm text-[#5F7182] text-center mb-6">
+              {t("redeemGift.redeemConfirmMessage")}
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowConfirmModal(false)}
+                className="flex-1 py-3 bg-[#28323C] text-white font-roboto-bold rounded-lg cursor-pointer uppercase"
+              >
+                {t("redeemGift.cancel")}
+              </button>
+              <button
+                onClick={() => {
+                  setShowConfirmModal(false);
+                  handleRedeem();
+                }}
+                disabled={isRedeeming}
+                className="flex-1 py-3 bg-primary text-white font-roboto-bold rounded-lg cursor-pointer uppercase disabled:opacity-50 flex justify-center items-center gap-2"
+              >
+                {isRedeeming && <Loader2 className="w-4 h-4 animate-spin" />}
+                {t("redeemGift.redeem")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

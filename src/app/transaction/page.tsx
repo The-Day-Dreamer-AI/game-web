@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { RequireAuth } from "@/components/auth";
 import { Dropdown } from "@/components/ui/dropdown";
 import { Copy, Check } from "lucide-react";
@@ -96,12 +97,26 @@ const GRID_CLASS: Record<TableLayout, string> = {
   transfer: "grid-cols-[70px_1fr_1fr_80px]",
 };
 
+// Transaction types that support detail view
+const CLICKABLE_ACTIONS = new Set([
+  "Launch Game",
+  "Quit Game",
+  "Auto Quit Game",
+  "Deposit",
+  "Withdraw",
+  "Transfer In",
+  "Transfer Out",
+  "Payout",
+  "Payout Rollback",
+]);
+
 export default function TransactionPage() {
   const monthOptions = getLast12Months();
   const [selectedType, setSelectedType] = useState<TransactionAction>("");
   const [selectedMonth, setSelectedMonth] = useState(monthOptions[0].value);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const { t } = useI18n();
+  const router = useRouter();
 
   const transactionTypeOptions = [
     { value: "", label: t("transaction.all") },
@@ -146,6 +161,7 @@ export default function TransactionPage() {
       const { date, time } = formatDate(tx.Datetime);
       return {
         id: tx.Id,
+        refId: tx.RefId,
         date,
         time,
         action: tx.Action,
@@ -267,14 +283,23 @@ export default function TransactionPage() {
     }
   };
 
+  const handleRowClick = (tx: (typeof transactions)[number]) => {
+    if (CLICKABLE_ACTIONS.has(tx.action)) {
+      // Deposit and Withdraw use RefId for the detail API
+      const detailId = (tx.action === "Deposit" || tx.action === "Withdraw") ? tx.refId : tx.id;
+      router.push(`/transaction/${detailId}?action=${encodeURIComponent(tx.action)}`);
+    }
+  };
+
   // Table row per layout
   const renderRow = (tx: (typeof transactions)[number]) => {
-    const base = `shadow-xs rounded-lg px-4 py-4 grid ${gridClass} gap-2 border-black items-center text-sm bg-gradient-to-b from-white to-[#F2F4F9]`;
+    const isClickable = CLICKABLE_ACTIONS.has(tx.action);
+    const base = `shadow-xs rounded-lg px-4 py-4 grid ${gridClass} gap-2 border-black items-center text-sm bg-gradient-to-b from-white to-[#F2F4F9]${isClickable ? " cursor-pointer active:scale-[0.99] transition-transform" : ""}`;
 
     switch (tableLayout) {
       case "all":
         return (
-          <div key={tx.id} className={base}>
+          <div key={tx.id} className={base} onClick={() => handleRowClick(tx)}>
             {renderDateCell(tx.date, tx.time)}
             <div className="flex justify-center">
               {tx.image ? (
@@ -301,7 +326,7 @@ export default function TransactionPage() {
         );
       case "game":
         return (
-          <div key={tx.id} className={base}>
+          <div key={tx.id} className={base} onClick={() => handleRowClick(tx)}>
             {renderDateCell(tx.date, tx.time)}
             {renderTransIdCell(tx.transIdShort, tx.id)}
             <div className="text-[#5F7182] text-xs font-roboto-regular text-center">{tx.remark}</div>
@@ -324,7 +349,7 @@ export default function TransactionPage() {
         );
       case "withdraw":
         return (
-          <div key={tx.id} className={base}>
+          <div key={tx.id} className={base} onClick={() => handleRowClick(tx)}>
             {renderDateCell(tx.date, tx.time)}
             {renderTransIdCell(tx.transRef, tx.transRef)}
             <div className="text-[#5F7182] text-xs font-roboto-regular text-center leading-tight">
@@ -336,7 +361,7 @@ export default function TransactionPage() {
         );
       case "transfer":
         return (
-          <div key={tx.id} className={base}>
+          <div key={tx.id} className={base} onClick={() => handleRowClick(tx)}>
             {renderDateCell(tx.date, tx.time)}
             {renderTransIdCell(tx.transIdShort, tx.id)}
             <div className="text-[#5F7182] text-xs font-roboto-regular text-center leading-tight">
@@ -347,7 +372,7 @@ export default function TransactionPage() {
         );
       default:
         return (
-          <div key={tx.id} className={base}>
+          <div key={tx.id} className={base} onClick={() => handleRowClick(tx)}>
             {renderDateCell(tx.date, tx.time)}
             {renderTransIdCell(tx.transRef, tx.transRef)}
             {renderAmountCell(tx.amount)}

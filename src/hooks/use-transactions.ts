@@ -9,6 +9,7 @@ export const transactionsKeys = {
   list: (params?: GetTransactionsParams) => [...transactionsKeys.all, "list", params] as const,
   infinite: (params?: Omit<GetTransactionsParams, "page">) =>
     [...transactionsKeys.all, "infinite", params] as const,
+  detail: (id: string, action: string) => [...transactionsKeys.all, "detail", id, action] as const,
 };
 
 /**
@@ -19,6 +20,18 @@ export function useTransactions(params?: GetTransactionsParams) {
     queryKey: transactionsKeys.list(params),
     queryFn: () => transactionsApi.getTransactions(params),
     staleTime: 1 * 60 * 1000, // 1 minute
+  });
+}
+
+/**
+ * Hook to fetch a single transaction's detail
+ */
+export function useTransactionDetail(id: string, action: string, options?: { enabled?: boolean }) {
+  return useQuery({
+    queryKey: transactionsKeys.detail(id, action),
+    queryFn: () => transactionsApi.getTransactionDetail(id, action),
+    enabled: options?.enabled !== false && !!id && !!action,
+    staleTime: 1 * 60 * 1000,
   });
 }
 

@@ -34,9 +34,18 @@ function fromDatetimeLocalValue(value: string): string {
 const DatePickerInput = React.forwardRef<HTMLInputElement, DatePickerInputProps>(
   ({ value, onChange, prefix, placeholder, wrapperClassName }, ref) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
+    const blurTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+    const lastValueRef = React.useRef(value);
 
     // Merge forwarded ref with internal ref
     React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
+
+    // Clean up timeout on unmount
+    React.useEffect(() => {
+      return () => {
+        if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
+      };
+    }, []);
 
     const handleWrapperClick = () => {
       // Trigger the native date picker by calling showPicker()
@@ -69,9 +78,22 @@ const DatePickerInput = React.forwardRef<HTMLInputElement, DatePickerInputProps>
             type="datetime-local"
             value={toDatetimeLocalValue(value)}
             onChange={(e) => {
-              onChange(fromDatetimeLocalValue(e.target.value));
-              // Auto-close the native picker by blurring the input
-              inputRef.current?.blur();
+              const newValue = fromDatetimeLocalValue(e.target.value);
+              onChange(newValue);
+
+              // Only auto-close if the date portion actually changed
+              // (not just month navigation which some browsers fire onChange for)
+              const prevDate = lastValueRef.current.slice(0, 10);
+              const newDate = newValue.slice(0, 10);
+              lastValueRef.current = newValue;
+
+              if (prevDate !== newDate) {
+                // Delay blur to allow the picker to finish its internal update
+                if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
+                blurTimeoutRef.current = setTimeout(() => {
+                  inputRef.current?.blur();
+                }, 100);
+              }
             }}
             placeholder={placeholder}
             className={cn(
