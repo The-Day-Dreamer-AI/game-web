@@ -527,6 +527,7 @@
     "cancel": "CANCEL",
     "redeemId": "Redeem ID",
     "date": "Date",
+    "statusNew": "New",
     "statusSuccess": "Success",
     "statusProgress": "Progress",
     "statusFailed": "Failed",

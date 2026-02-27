@@ -43,9 +43,15 @@ export default function RedeemHistoryPage() {
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
+      case "new":
+        return "bg-blue-500 text-white";
       case "progress":
+      case "pending":
       case "processing":
         return "bg-amber-500 text-white";
+      case "failed":
+      case "rejected":
+        return "bg-red-500 text-white";
       default:
         return "bg-primary text-white";
     }
@@ -53,17 +59,20 @@ export default function RedeemHistoryPage() {
 
   const getStatusLabel = (status: string) => {
     switch (status.toLowerCase()) {
+      case "new":
+        return t("redeemGift.statusNew");
       case "success":
       case "completed":
-        return "Success";
+      case "approved":
+        return t("redeemGift.statusSuccess");
       case "progress":
       case "pending":
       case "processing":
-        return "Progress";
+        return t("redeemGift.statusProgress");
       case "failed":
-        return "Failed";
+        return t("redeemGift.statusFailed");
       case "rejected":
-        return "Rejected";
+        return t("redeemGift.statusRejected");
       default:
         return status;
     }

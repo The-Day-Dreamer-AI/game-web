@@ -465,6 +465,7 @@
     "cancel": "BATAL",
     "redeemId": "ID Tebusan",
     "date": "Tarikh",
+    "statusNew": "Baru",
     "statusSuccess": "Berjaya",
     "statusProgress": "Dalam Proses",
     "statusFailed": "Gagal",

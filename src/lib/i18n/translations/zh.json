@@ -465,6 +465,7 @@
     "cancel": "取消",
     "redeemId": "兑换编号",
     "date": "日期",
+    "statusNew": "新",
     "statusSuccess": "成功",
     "statusProgress": "处理中",
     "statusFailed": "失败",

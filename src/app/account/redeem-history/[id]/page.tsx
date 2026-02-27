@@ -43,10 +43,11 @@ export default function RedeemHistoryDetailPage({
 
   const getStatusLabel = (status: string) => {
     switch (status.toLowerCase()) {
+      case "new":
+        return t("redeemGift.statusNew");
       case "success":
       case "completed":
       case "approved":
-      case "new":
         return t("redeemGift.statusSuccess");
       case "progress":
       case "pending":
@@ -63,10 +64,11 @@ export default function RedeemHistoryDetailPage({
 
   const getStatusHeaderBg = (status: string) => {
     switch (status.toLowerCase()) {
+      case "new":
+        return "linear-gradient(135deg, #2563eb 0%, #3b82f6 100%)";
       case "success":
       case "completed":
       case "approved":
-      case "new":
         return "#0DC3B1";
       case "progress":
       case "pending":
