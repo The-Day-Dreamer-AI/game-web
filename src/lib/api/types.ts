@@ -164,6 +164,91 @@ export interface TransactionsResponse {
 }
 
 // ===========================================
+// Transaction Detail Types
+// ===========================================
+
+export interface GameTransactionDetail {
+  Code: number;
+  Message: string;
+  Id: string;
+  Action: string;
+  Type: string;
+  Currency: string;
+  Amount: number;
+  Datetime: string;
+  User: string;
+  GameImage: string | null;
+  GameName: string;
+}
+
+export interface DepositTransactionDetail {
+  Code: number;
+  Message: string;
+  Id: string;
+  Type: string;
+  Currency: string;
+  Amount: number;
+  No: string;
+  Datetime: string;
+  Status: string;
+  User: string;
+  BankImage: string | null;
+  BankName: string | null;
+  BankAccountName: string | null;
+  BankAccountNo: string | null;
+  RejectReason: string | null;
+}
+
+export interface WithdrawTransactionDetail {
+  Code: number;
+  Message: string;
+  Id: string;
+  Type: string;
+  Currency: string;
+  Amount: number;
+  No: string;
+  Datetime: string;
+  Status: string;
+  User: string;
+  BankImage: string | null;
+  BankName: string | null;
+  BankAccountName: string | null;
+  BankAccountNo: string | null;
+  RejectReason: string | null;
+}
+
+export interface TransferTransactionDetail {
+  Code: number;
+  Message: string;
+  Id: string;
+  Type: string;
+  Currency: string;
+  Amount: number;
+  Datetime: string;
+  Status: string;
+  User: string;
+}
+
+export interface PayoutTransactionDetail {
+  Code: number;
+  Message: string;
+  Id: string;
+  Type: string;
+  Currency: string;
+  Amount: number;
+  Datetime: string;
+  Status: string;
+  User: string;
+}
+
+export type TransactionDetail =
+  | GameTransactionDetail
+  | DepositTransactionDetail
+  | WithdrawTransactionDetail
+  | TransferTransactionDetail
+  | PayoutTransactionDetail;
+
+// ===========================================
 // User / Account Types
 // ===========================================
 
@@ -664,7 +749,7 @@ export interface MyReward {
   Image: string;
   Price: number;
   Status: string;
-  CreatedDate: string;
+  Datetime: string;
 }
 
 export interface GetMyRewardsResponse {
@@ -675,6 +760,9 @@ export interface GetMyRewardsResponse {
 
 export interface ClaimRewardRequest {
   Id: string;
+  ReceiverName: string;
+  ReceiverPhone: string;
+  ReceiverAddress: string;
 }
 
 export interface ClaimRewardResponse {

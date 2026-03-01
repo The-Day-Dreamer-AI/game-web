@@ -143,6 +143,11 @@ export function getBackDestination(
     return { href: "/account/contact" };
   }
 
+  // === Transaction detail page ===
+  if (pathname.startsWith("/transaction/")) {
+    return { href: "/transaction" };
+  }
+
   // === Redeem pages ===
   if (pathname === "/account/redeem-gift") {
     return { href: "/account" };
@@ -158,6 +163,9 @@ export function getBackDestination(
   }
   if (pathname === "/account/redeem-history") {
     return { href: "/account/redeem-gift" };
+  }
+  if (pathname.startsWith("/account/redeem-history/")) {
+    return { href: "/account/redeem-history" };
   }
   if (pathname === "/account/rebate") {
     return { href: "/account" };

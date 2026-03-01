@@ -51,11 +51,8 @@ export default function AddBankAccountPage() {
         Tac: "", // TAC not required per user request
         UserBankId: selectedBankId,
       });
-      // On success, show toast and clear form
       showSuccess(t("bank.addSuccess"));
-      setSelectedBankId("");
-      setAccountNumber("");
-      // Keep accountName as it's pre-filled from user's full name
+      router.push("/account/bank");
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : t("bank.addFailed");
       showError(errorMessage);

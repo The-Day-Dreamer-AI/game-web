@@ -2,13 +2,41 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
 
+const localeFlagIcons: Record<string, string> = {
+  en: "/images/icon/english_icon.png",
+  zh: "/images/icon/chinese_icon.png",
+  ms: "/images/icon/malay_icon.png",
+};
+
 export default function TermsPage() {
   const [openSection, setOpenSection] = useState<number | null>(2);
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+
+  const secondaryMenuItems = [
+    {
+      id: "about",
+      labelKey: "sidebar.aboutUs",
+      href: "/about?returnUrl=/terms",
+      icon: "/images/sidebar/sidebar_aboutus_icon.png",
+    },
+    {
+      id: "terms",
+      labelKey: "sidebar.termsConditions",
+      href: "/terms",
+      icon: "/images/sidebar/sidebar_tnc_icon.png",
+    },
+    {
+      id: "language",
+      labelKey: "sidebar.language",
+      href: "/account/language?returnUrl=/terms",
+      icon: localeFlagIcons[locale] || localeFlagIcons.en,
+    },
+  ];
 
   // Terms sections data
   const termsSections = [
@@ -116,6 +144,35 @@ export default function TermsPage() {
                   <p className="text-sm text-zinc-600 leading-relaxed whitespace-pre-line">
                     {t(section.contentKey)}
                   </p>
+
+                  {/* Secondary Menu inside User Accounts section */}
+                  {section.id === 2 && (
+                    <div className="mt-4">
+                        {secondaryMenuItems.map((item, index) => (
+                          <div key={item.id}>
+                            <Link
+                              href={item.href}
+                              className="flex items-center gap-5 px-4 py-3"
+                            >
+                              <Image
+                                src={item.icon}
+                                alt={item.id}
+                                width={24}
+                                height={24}
+                                unoptimized
+                                className="w-6 h-6 object-contain"
+                              />
+                              <span className="flex-1 text-xs font-roboto-bold text-[#28323C]">
+                                {t(item.labelKey)}
+                              </span>
+                            </Link>
+                            {index !== secondaryMenuItems.length - 1 && (
+                              <div className="bg-[#d4f1f0] h-px"></div>
+                            )}
+                          </div>
+                        ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>

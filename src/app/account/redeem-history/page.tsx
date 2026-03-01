@@ -2,12 +2,14 @@
 
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/providers/auth-provider";
 import { useI18n } from "@/providers/i18n-provider";
 import { useMyRewards } from "@/hooks";
 import { cn } from "@/lib/utils";
 
 export default function RedeemHistoryPage() {
+  const router = useRouter();
   const { isAuthenticated } = useAuth();
   const { t } = useI18n();
 
@@ -23,7 +25,13 @@ export default function RedeemHistoryPage() {
   };
 
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+    if (!dateString) return "-";
+    // Handle formats like "DD/MM/YYYY HH:mm:ss" or "DD/MM/YYYY"
+    const normalized = dateString.includes("/")
+      ? dateString.replace(/(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1")
+      : dateString;
+    const date = new Date(normalized);
+    if (isNaN(date.getTime())) return dateString;
     return date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
@@ -35,9 +43,8 @@ export default function RedeemHistoryPage() {
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
-      case "success":
-      case "completed":
-        return "bg-primary text-white";
+      case "new":
+        return "bg-blue-500 text-white";
       case "progress":
       case "pending":
       case "processing":
@@ -46,23 +53,26 @@ export default function RedeemHistoryPage() {
       case "rejected":
         return "bg-red-500 text-white";
       default:
-        return "bg-zinc-500 text-white";
+        return "bg-primary text-white";
     }
   };
 
   const getStatusLabel = (status: string) => {
     switch (status.toLowerCase()) {
+      case "new":
+        return t("redeemGift.statusNew");
       case "success":
       case "completed":
-        return "Success";
+      case "approved":
+        return t("redeemGift.statusSuccess");
       case "progress":
       case "pending":
       case "processing":
-        return "Progress";
+        return t("redeemGift.statusProgress");
       case "failed":
-        return "Failed";
+        return t("redeemGift.statusFailed");
       case "rejected":
-        return "Rejected";
+        return t("redeemGift.statusRejected");
       default:
         return status;
     }
@@ -100,20 +110,14 @@ export default function RedeemHistoryPage() {
             {rewards.map((reward) => (
               <div
                 key={reward.Id}
-                className="px-4 py-4 flex items-start justify-between"
+                className="px-4 py-4 flex flex-col gap-2 cursor-pointer active:bg-zinc-50"
+                onClick={() => router.push(`/account/redeem-history/${reward.Id}`)}
               >
-                {/* Left: Reward Info */}
-                <div className="flex-1">
+                {/* Top row: Name & Points */}
+                <div className="flex items-center justify-between">
                   <h3 className="text-base font-roboto-medium text-zinc-800">
                     {reward.Name}
                   </h3>
-                  <p className="text-sm text-zinc-500 mt-1">
-                    {formatDate(reward.CreatedDate)}
-                  </p>
-                </div>
-
-                {/* Right: Points & Status */}
-                <div className="flex flex-col items-end gap-2">
                   <div className="flex items-center gap-1">
                     <span className="text-base font-roboto-medium text-zinc-800">
                       - {formatPoints(reward.Price)}
@@ -127,6 +131,12 @@ export default function RedeemHistoryPage() {
                       unoptimized
                     />
                   </div>
+                </div>
+                {/* Bottom row: Date & Status */}
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-zinc-500">
+                    {formatDate(reward.Datetime)}
+                  </p>
                   <span
                     className={cn(
                       "px-3 py-1 text-xs font-roboto-medium rounded-full",

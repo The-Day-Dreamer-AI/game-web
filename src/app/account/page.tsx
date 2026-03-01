@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { RequireAuth } from "@/components/auth";
@@ -16,15 +17,31 @@ import { useProfile } from "@/hooks";
 
 export default function AccountPage() {
   const [imgError, setImgError] = useState(false);
-  const [isKycModalOpen, setIsKycModalOpen] = useState(false);
-  const [isKycVerifiedModalOpen, setIsKycVerifiedModalOpen] = useState(false);
   const { t, locale } = useI18n();
   const { logout } = useAuth();
   const { showSuccess, showError } = useToast();
   const { navigateWithKycCheck } = useKyc();
+  const searchParams = useSearchParams();
+  const shouldOpenKyc = searchParams.get("openKyc") === "true";
 
   // Fetch user profile data
   const { data: profile, isLoading, isError, refetch, isFetching } = useProfile();
+
+  const [isKycModalOpen, setIsKycModalOpen] = useState(false);
+  const [isKycVerifiedModalOpen, setIsKycVerifiedModalOpen] = useState(false);
+
+  // Auto-open KYC verification modal when redirected with ?openKyc=true
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    if (shouldOpenKyc && profile) {
+      if (profile.KycStatus === "Pending") {
+        setIsKycModalOpen(true);
+      } else {
+        setIsKycVerifiedModalOpen(true);
+      }
+    }
+  }, [shouldOpenKyc, profile]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const handleRefresh = async () => {
     try {
@@ -155,11 +172,11 @@ export default function AccountPage() {
       zh: "zh-CN",
       ms: "ms-MY",
     };
-    return date.toLocaleDateString(localeMap[locale] || "en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
+    const l = localeMap[locale] || "en-US";
+    const year = date.toLocaleDateString(l, { year: "numeric" });
+    const month = date.toLocaleDateString(l, { month: "short" });
+    const day = date.toLocaleDateString(l, { day: "numeric" });
+    return `${year} ${month} ${day}`;
   };
 
   // Loading state

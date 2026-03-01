@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { User, Phone, MapPin, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useAuth } from "@/providers/auth-provider";
 import { useI18n } from "@/providers/i18n-provider";
 import { useRewards } from "@/hooks";
@@ -144,7 +144,7 @@ export default function ShippingInfoPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <div className="flex-1 px-4">
+      <div className="flex-1 px-4 pb-10">
         {/* Points Balance Card */}
         <div className="mt-4">
           <div className="bg-white rounded-xl shadow-sm px-5 py-4 flex items-center justify-between">
@@ -169,9 +169,9 @@ export default function ShippingInfoPage() {
 
         {/* Gift Redeem Section */}
         <div className="mt-5">
-          <h2 className="text-base font-roboto-bold text-[#28323C] mb-3">
+          <div className="text-base font-roboto-bold text-[#28323C] mb-3">
             {t("redeemGift.giftRedeem")}
-          </h2>
+          </div>
 
           {/* Selected Reward Card */}
           <div className="bg-white rounded-xl shadow-sm p-4 flex items-center gap-4">
@@ -185,11 +185,11 @@ export default function ShippingInfoPage() {
               />
             </div>
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
+              <div className="flex items-center gap-2 mb-1 justify-between">
                 <span className="text-sm text-[#5F7182]">
                   {t("redeemGift.product")}
                 </span>
-                <span className="text-sm font-roboto-medium text-[#28323C]">
+                <span className="text-sm font-roboto-regular text-[#28323C]">
                   {selectedReward.Name}
                 </span>
               </div>
@@ -197,7 +197,7 @@ export default function ShippingInfoPage() {
                 <span className="text-sm text-[#5F7182]">
                   {t("redeemGift.aPoint")}
                 </span>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1 ml-auto">
                   <Image
                     src="/images/icon/A1_point_icon.png"
                     alt="A-Point"
@@ -206,7 +206,7 @@ export default function ShippingInfoPage() {
                     className="object-contain"
                     unoptimized
                   />
-                  <span className="text-sm font-roboto-medium text-[#28323C]">
+                  <span className="text-sm font-roboto-bold text-[#28323C]">
                     {formatPoints(selectedReward.Price)}
                   </span>
                 </div>
@@ -225,7 +225,16 @@ export default function ShippingInfoPage() {
           <div className="space-y-3">
             {/* Recipient Name */}
             <FormInput
-              prefix={<User className="w-5 h-5 text-[#959595]" />}
+              prefix={
+                <Image
+                  src="/images/icon/user_icon.png"
+                  alt="AON1E user"
+                  width={24}
+                  height={24}
+                  unoptimized
+                  className="h-6 w-auto object-contain"
+                />
+              }
               placeholder={t("redeemGift.recipientName")}
               value={recipientName}
               onChange={(e) => updateField("recipientName", e.target.value)}
@@ -233,7 +242,16 @@ export default function ShippingInfoPage() {
 
             {/* Phone Number */}
             <FormInput
-              prefix={<Phone className="w-5 h-5 text-[#959595]" />}
+              prefix={
+                <Image
+                  src="/images/icon/phone_icon.png"
+                  alt="AON1E user"
+                  width={24}
+                  height={24}
+                  unoptimized
+                  className="h-6 w-auto object-contain"
+                />
+              }
               placeholder={t("redeemGift.phoneNumber")}
               value={phoneNumber}
               onChange={(e) => updateField("phoneNumber", e.target.value)}
@@ -242,7 +260,16 @@ export default function ShippingInfoPage() {
 
             {/* Address */}
             <FormInput
-              prefix={<MapPin className="w-5 h-5 text-[#959595]" />}
+              prefix={
+                <Image
+                  src="/images/icon/location_icon.png"
+                  alt="AON1E user"
+                  width={24}
+                  height={24}
+                  unoptimized
+                  className="h-6 w-auto object-contain"
+                />
+              }
               placeholder={t("redeemGift.address")}
               value={address}
               onChange={(e) => updateField("address", e.target.value)}
@@ -250,7 +277,16 @@ export default function ShippingInfoPage() {
 
             {/* State */}
             <FormInput
-              prefix={<MapPin className="w-5 h-5 text-[#959595]" />}
+              prefix={
+                <Image
+                  src="/images/icon/location_icon.png"
+                  alt="AON1E user"
+                  width={24}
+                  height={24}
+                  unoptimized
+                  className="h-6 w-auto object-contain"
+                />
+              }
               placeholder={t("redeemGift.state")}
               value={state}
               onChange={(e) => updateField("state", e.target.value)}
@@ -258,7 +294,16 @@ export default function ShippingInfoPage() {
 
             {/* Postcode */}
             <FormInput
-              prefix={<MapPin className="w-5 h-5 text-[#959595]" />}
+              prefix={
+                <Image
+                  src="/images/icon/location_icon.png"
+                  alt="AON1E user"
+                  width={24}
+                  height={24}
+                  unoptimized
+                  className="h-6 w-auto object-contain"
+                />
+              }
               placeholder={t("redeemGift.postcode")}
               value={postcode}
               onChange={(e) => updateField("postcode", e.target.value)}
@@ -272,7 +317,14 @@ export default function ShippingInfoPage() {
                 className="w-full flex items-center rounded-lg border border-[#959595] bg-white transition-all duration-200"
               >
                 <div className="flex items-center justify-center pl-4 text-[#959595]">
-                  <MapPin className="w-5 h-5" />
+                <Image
+                  src="/images/icon/location_icon.png"
+                  alt="AON1E user"
+                  width={24}
+                  height={24}
+                  unoptimized
+                  className="h-6 w-auto object-contain"
+                />
                 </div>
                 <span
                   className={cn(
@@ -295,7 +347,7 @@ export default function ShippingInfoPage() {
               </button>
 
               {isCountryOpen && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-zinc-200 rounded-lg shadow-lg z-10 overflow-hidden max-h-60 overflow-y-auto">
+                <div className="absolute bottom-full left-0 right-0 mb-1 bg-white border border-zinc-200 rounded-lg shadow-lg z-10 overflow-hidden max-h-60 overflow-y-auto">
                   {COUNTRIES.map((c) => (
                     <button
                       key={c.value}
