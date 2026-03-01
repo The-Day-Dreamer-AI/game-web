@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { ChevronDown, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -69,9 +69,14 @@ export default function TurnoverReportPage() {
   const { t } = useI18n();
   const { isAuthenticated } = useAuth();
 
-  const defaultDates = getDefaultDates();
-  const [startDate, setStartDate] = useState(defaultDates.startDate);
-  const [endDate, setEndDate] = useState(defaultDates.endDate);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  useEffect(() => {
+    const defaults = getDefaultDates();
+    setStartDate(defaults.startDate);
+    setEndDate(defaults.endDate);
+  }, []);
   const [selectedGame, setSelectedGame] = useState<string | null>(null);
   const [showGameDropdown, setShowGameDropdown] = useState(false);
   const [searchParams, setSearchParams] = useState<{
@@ -92,6 +97,7 @@ export default function TurnoverReportPage() {
     data: recordsData,
     isLoading: isLoadingRecords,
     isFetching: isFetchingRecords,
+    refetch,
   } = useTurnover(
     searchParams ?? { StartDt: "", EndDt: "", Game: "", PageNumber: 1 },
     { enabled: !!searchParams && isAuthenticated }
@@ -110,12 +116,17 @@ export default function TurnoverReportPage() {
   const currentGame = selectedGame ?? defaultGame;
 
   const handleSearch = () => {
-    setSearchParams({
+    const newParams = {
       StartDt: startDate,
       EndDt: endDate,
       Game: currentGame,
       PageNumber: 1,
-    });
+    };
+    setSearchParams(newParams);
+    // refetch for when params haven't changed
+    if (searchParams) {
+      refetch();
+    }
   };
 
   const gameOptions = selectionsData?.Rows ?? [];
@@ -296,11 +307,11 @@ export default function TurnoverReportPage() {
 
             {/* Table Body */}
             <div className="divide-y divide-zinc-100">
-              {records.map((record) => {
-                const { date, time } = formatDateForDisplay(record.CreatedDate);
+              {records.map((record, index) => {
+                const { date, time } = formatDateForDisplay(record.Date);
                 return (
                   <div
-                    key={record.Id}
+                    key={`${record.Date}-${record.Game}-${index}`}
                     className="grid grid-cols-4 gap-2 px-4 py-3 text-xs"
                   >
                     <div className="text-zinc-600">
@@ -308,18 +319,18 @@ export default function TurnoverReportPage() {
                       <div className="text-zinc-400">{time}</div>
                     </div>
                     <div className="text-zinc-800 flex items-center text-[10px]">
-                      {record.GameName}
+                      {record.Game}
                     </div>
                     <div className="text-zinc-800 text-right flex items-center justify-end">
-                      {record.Rollover.toFixed(2)}
+                      {(record.TotalRollover ?? 0).toFixed(2)}
                     </div>
                     <div
                       className={cn(
                         "text-right flex items-center justify-end font-roboto-medium",
-                        record.WinLose >= 0 ? "text-primary" : "text-red-500"
+                        (record.TotalWinLose ?? 0) >= 0 ? "text-primary" : "text-red-500"
                       )}
                     >
-                      {record.WinLose.toFixed(2)}
+                      {(record.TotalWinLose ?? 0).toFixed(2)}
                     </div>
                   </div>
                 );

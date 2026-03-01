@@ -197,13 +197,13 @@ export default function RebateListPage() {
                     {game.Name}
                   </div>
                   <div className="p-2 text-center text-[#5F7182] font-roboto-bold border-r border-zinc-200">
-                    {game.PlayerCommRate.toFixed(1)}
+                    {(game.PlayerCommRate ?? 0).toFixed(1)}
                   </div>
                   <div className="p-2 text-center text-[#5F7182] font-roboto-bold border-r border-zinc-200">
-                    {game.PlayerL1CommRate.toFixed(1)}
+                    {(game.PlayerL1CommRate ?? 0).toFixed(1)}
                   </div>
                   <div className="p-2 text-center text-[#5F7182] font-roboto-bold">
-                    {game.PlayerL2CommRate.toFixed(1)}
+                    {(game.PlayerL2CommRate ?? 0).toFixed(1)}
                   </div>
                 </div>
               ))}

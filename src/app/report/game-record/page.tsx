@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { ChevronDown, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -69,9 +69,14 @@ export default function GameRecordPage() {
   const { t } = useI18n();
   const { isAuthenticated } = useAuth();
 
-  const defaultDates = getDefaultDates();
-  const [startDate, setStartDate] = useState(defaultDates.startDate);
-  const [endDate, setEndDate] = useState(defaultDates.endDate);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  useEffect(() => {
+    const defaults = getDefaultDates();
+    setStartDate(defaults.startDate);
+    setEndDate(defaults.endDate);
+  }, []);
   const [selectedGame, setSelectedGame] = useState<string | null>(null);
   const [showGameDropdown, setShowGameDropdown] = useState(false);
   const [searchParams, setSearchParams] = useState<{
@@ -92,6 +97,7 @@ export default function GameRecordPage() {
     data: recordsData,
     isLoading: isLoadingRecords,
     isFetching: isFetchingRecords,
+    refetch,
   } = useGameRecords(
     searchParams ?? { StartDt: "", EndDt: "", Game: "", PageNumber: 1 },
     { enabled: !!searchParams && isAuthenticated }
@@ -110,12 +116,17 @@ export default function GameRecordPage() {
   const currentGame = selectedGame ?? defaultGame;
 
   const handleSearch = () => {
-    setSearchParams({
+    const newParams = {
       StartDt: startDate,
       EndDt: endDate,
       Game: currentGame,
       PageNumber: 1,
-    });
+    };
+    setSearchParams(newParams);
+    // refetch for when params haven't changed
+    if (searchParams) {
+      refetch();
+    }
   };
 
   const gameOptions = selectionsData?.Rows ?? [];
@@ -312,18 +323,18 @@ export default function GameRecordPage() {
                       {record.GameName}
                     </div>
                     <div className="text-zinc-800 text-right flex items-center justify-end">
-                      {record.Stake.toFixed(2)}
+                      {(record.Stake ?? 0).toFixed(2)}
                     </div>
                     <div className="text-zinc-800 text-right flex items-center justify-end">
-                      {record.Turnover.toFixed(2)}
+                      {(record.Turnover ?? 0).toFixed(2)}
                     </div>
                     <div
                       className={cn(
                         "text-right flex items-center justify-end font-roboto-medium",
-                        record.Profit >= 0 ? "text-primary" : "text-red-500"
+                        (record.Profit ?? 0) >= 0 ? "text-primary" : "text-red-500"
                       )}
                     >
-                      {record.Profit.toFixed(2)}
+                      {(record.Profit ?? 0).toFixed(2)}
                     </div>
                   </div>
                 );

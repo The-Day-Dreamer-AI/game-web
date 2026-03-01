@@ -786,17 +786,20 @@ export interface TurnoverGameSelectionsResponse {
 }
 
 export interface TurnoverRecord {
-  Id: string;
-  GameName: string;
-  Rollover: number;
-  WinLose: number;
-  CreatedDate: string;
+  Date: string;
+  Game: string;
+  TotalRollover: number;
+  TotalWinLose: number;
 }
 
 export interface TurnoverReportResponse {
   Code: number;
   Message: string;
+  StartDt: string;
+  EndDt: string;
+  Game: string;
   PageNumber: number;
+  End: boolean;
   TotalRollover: number;
   TotalWinLose: number;
   Rows: TurnoverRecord[];

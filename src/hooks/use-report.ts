@@ -39,7 +39,8 @@ export function useGameRecords(
     queryFn: async () => {
       return reportApi.getGameRecords(params);
     },
-    staleTime: 1 * 60 * 1000, // 1 minute
+    staleTime: 0,
+    gcTime: 0,
     enabled: options?.enabled ?? true,
   });
 }
@@ -70,7 +71,8 @@ export function useTurnover(
     queryFn: async () => {
       return reportApi.getTurnover(params);
     },
-    staleTime: 1 * 60 * 1000, // 1 minute
+    staleTime: 0,
+    gcTime: 0,
     enabled: options?.enabled ?? true,
   });
 }
