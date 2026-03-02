@@ -283,7 +283,7 @@ export default function GameRecordPage() {
                     {t("report.totalTurnover")}
                   </p>
                   <p className="text-white font-roboto-bold">
-                    MYR {(recordsData?.TotalTurnover ?? 0).toFixed(2)}
+                    MYR {records.reduce((sum, r) => sum + (r.Turnover ?? 0), 0).toFixed(2)}
                   </p>
                 </div>
                 <div className="flex-1 text-center">
@@ -291,7 +291,7 @@ export default function GameRecordPage() {
                     {t("report.totalProfit")}
                   </p>
                   <p className="text-white font-roboto-bold">
-                    MYR {(recordsData?.TotalProfit ?? 0).toFixed(2)}
+                    MYR {records.reduce((sum, r) => sum + (r.Profit ?? 0), 0).toFixed(2)}
                   </p>
                 </div>
               </div>
@@ -308,11 +308,11 @@ export default function GameRecordPage() {
 
             {/* Table Body */}
             <div className="divide-y divide-zinc-100">
-              {records.map((record) => {
-                const { date, time } = formatDateForDisplay(record.CreatedDate);
+              {records.map((record, index) => {
+                const { date, time } = formatDateForDisplay(record.Date);
                 return (
                   <div
-                    key={record.Id}
+                    key={`${record.Date}-${index}`}
                     className="grid grid-cols-5 gap-2 px-4 py-3 text-xs"
                   >
                     <div className="text-zinc-600">
@@ -320,7 +320,7 @@ export default function GameRecordPage() {
                       <div className="text-zinc-400">{time}</div>
                     </div>
                     <div className="text-zinc-800 flex items-center text-[10px]">
-                      {record.GameName}
+                      {record.Game}
                     </div>
                     <div className="text-zinc-800 text-right flex items-center justify-end">
                       {(record.Stake ?? 0).toFixed(2)}

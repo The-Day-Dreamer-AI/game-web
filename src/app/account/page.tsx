@@ -98,6 +98,7 @@ export default function AccountPage() {
       labelKey: "account.bankAccount",
       href: "/account/bank",
       isLink: true,
+      requiresKyc: true,
     },
     {
       icon: "/images/icon/kyc_icon.png",
@@ -123,6 +124,7 @@ export default function AccountPage() {
       labelKey: "account.myContact",
       href: "/account/contact",
       isLink: true,
+      requiresKyc: true,
     },
     // {
     //   icon: "/images/icon/inbox_icon.png",

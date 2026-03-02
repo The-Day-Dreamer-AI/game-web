@@ -8,8 +8,8 @@ import { ContactListItem, AddFriendBanner } from "@/components/contact";
 import { useAuth } from "@/providers/auth-provider";
 import { useI18n } from "@/providers/i18n-provider";
 import { useToast } from "@/providers/toast-provider";
-import { useKyc } from "@/providers/kyc-provider";
 import { useContacts, useContactRequests } from "@/hooks/use-contact";
+import { RequireKyc } from "@/components/auth";
 import { contactApi } from "@/lib/api";
 
 type PageMode = "contact" | "transfer";
@@ -19,7 +19,6 @@ export default function ContactPage() {
   const searchParams = useSearchParams();
   const { isAuthenticated } = useAuth();
   const { t } = useI18n();
-  const { navigateWithKycCheck } = useKyc();
   const { showError } = useToast();
 
   // Determine page mode from query param
@@ -92,7 +91,7 @@ export default function ContactPage() {
   };
 
   const handleAddNewFriend = () => {
-    navigateWithKycCheck("/account/contact/new-friend");
+    router.push("/account/contact/new-friend");
   };
 
   if (!isAuthenticated) {
@@ -108,6 +107,7 @@ export default function ContactPage() {
   }
 
   return (
+    <RequireKyc>
     <div className="min-h-screen flex flex-col">
       {/* Add New Friend Banner - only when not in transfer mode */}
       {!isTransferMode && (
@@ -170,5 +170,6 @@ export default function ContactPage() {
         </div>
       )}
     </div>
+    </RequireKyc>
   );
 }

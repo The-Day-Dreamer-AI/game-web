@@ -2,8 +2,9 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { getKycStatus, KYC_CHANGE_EVENT } from "@/lib/kyc-storage";
-import { KycRequiredModal } from "@/components/account/kyc-required-modal";
+import { getKycStatus, KYC_CHANGE_EVENT, setKycStatus } from "@/lib/kyc-storage";
+import { KycVerificationModal } from "@/components/account/kyc-verification-modal";
+import { useProfile } from "@/hooks/use-user";
 
 interface KycContextType {
   isKycVerified: boolean;
@@ -32,6 +33,7 @@ export function KycProvider({ children }: KycProviderProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const { data: profile, refetch: refetchProfile } = useProfile();
 
   // Track previous pathname synchronously during render
   // so it's available immediately when RequireKyc effects fire
@@ -69,12 +71,23 @@ export function KycProvider({ children }: KycProviderProps) {
     return previousPathnameRef.current;
   }, []);
 
+  const handleKycModalClose = useCallback(() => {
+    setIsModalOpen(false);
+    // Refetch profile to sync KYC status after verification
+    refetchProfile().then((result) => {
+      if (result.data?.KycStatus) {
+        setKycStatus(result.data.KycStatus);
+      }
+    });
+  }, [refetchProfile]);
+
   return (
     <KycContext.Provider value={{ isKycVerified, openKycModal, navigateWithKycCheck, getPreviousPathname }}>
       {children}
-      <KycRequiredModal
+      <KycVerificationModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleKycModalClose}
+        userId={profile?.Id || ""}
       />
     </KycContext.Provider>
   );

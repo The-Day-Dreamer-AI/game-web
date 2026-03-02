@@ -2,20 +2,20 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+
 import Image from "next/image";
 import { Trash2, Loader2 } from "lucide-react";
 import { useI18n } from "@/providers/i18n-provider";
 import { useAuth } from "@/providers/auth-provider";
 import { useToast } from "@/providers/toast-provider";
-import { useKyc } from "@/providers/kyc-provider";
 import { useUserBankAccounts, useDeleteBankAccount } from "@/hooks/use-bank";
+import { RequireKyc } from "@/components/auth";
 import type { UserBankAccount } from "@/lib/api/types";
 
 export default function BankAccountsPage() {
   const router = useRouter();
   const { t } = useI18n();
   const { isAuthenticated } = useAuth();
-  const { navigateWithKycCheck } = useKyc();
   const { showSuccess, showError } = useToast();
   const { data, isLoading, error } = useUserBankAccounts({
     enabled: isAuthenticated,
@@ -78,6 +78,7 @@ export default function BankAccountsPage() {
   const hasBankAccounts = bankAccounts.length > 0;
 
   return (
+    <RequireKyc>
     <div className="min-h-screen flex flex-col">
 
       <main className="flex-1 px-4 py-4">
@@ -164,7 +165,7 @@ export default function BankAccountsPage() {
       <div className="sticky bottom-0 left-0 right-0 p-4 bg-white border-t border-primary">
         <button
           type="button"
-          onClick={() => navigateWithKycCheck("/account/bank/add")}
+          onClick={() => router.push("/account/bank/add")}
           className="cursor-pointer w-full py-4 bg-primary text-white font-roboto-semibold rounded-xl uppercase"
         >
           {t("account.addBankAccount")}
@@ -215,5 +216,6 @@ export default function BankAccountsPage() {
         </div>
       )}
     </div>
+    </RequireKyc>
   );
 }

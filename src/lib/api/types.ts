@@ -295,22 +295,24 @@ export interface GameRecordSelectionsResponse {
 }
 
 export interface GameRecord {
-  Id: string;
-  GameName: string;
+  Date: string;
+  Game: string;
   Stake: number;
   Turnover: number;
   Profit: number;
-  CreatedDate: string;
+  TotalRows: number;
 }
 
 export interface GameRecordsResponse {
   Code: number;
   Message: string;
+  StartDt: string;
+  EndDt: string;
+  Game: string;
   PageNumber: number;
-  TotalStake: number;
-  TotalTurnover: number;
-  TotalProfit: number;
+  End: boolean;
   Rows: GameRecord[];
+  TotalRows: number;
 }
 
 // ===========================================

@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/providers/i18n-provider";
+import { useKyc } from "@/providers/kyc-provider";
 import { ProtectedLink } from "@/components/auth";
 import { discoverKeys } from "@/hooks/use-discover";
 
@@ -13,11 +14,12 @@ interface NavItem {
   labelKey: string;
   href: string;
   imageName: string; // Maps to Footer_Icon_{imageName}_Active/Default.webp
+  requiresKyc?: boolean;
 }
 
 const navItems: NavItem[] = [
   { labelKey: "referral", href: "/referral", imageName: "Referral" },
-  { labelKey: "event", href: "/event", imageName: "Event" },
+  { labelKey: "event", href: "/event", imageName: "Event", requiresKyc: true },
   { labelKey: "transaction", href: "/transaction", imageName: "Transaction" },
   { labelKey: "account", href: "/account", imageName: "Account" },
 ];
@@ -35,6 +37,7 @@ export function BottomNav() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { t } = useI18n();
+  const { navigateWithKycCheck } = useKyc();
 
   const handleHomeClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -48,10 +51,18 @@ export function BottomNav() {
     const imageState = isActive ? "Active" : "Default";
     const imagePath = `/images/footer/${item.imageName.toLowerCase()}_icon_${imageState.toLowerCase()}.png`;
 
+    const handleKycClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+      if (item.requiresKyc) {
+        e.preventDefault();
+        navigateWithKycCheck(item.href);
+      }
+    };
+
     return (
       <ProtectedLink
         key={item.href}
         href={item.href}
+        onClick={handleKycClick}
         className={cn(
           "flex flex-col items-center gap-2 text-[0.5rem] min-[345px]:text-xs transition-colors",
           isActive ? "text-primary" : "text-white"
