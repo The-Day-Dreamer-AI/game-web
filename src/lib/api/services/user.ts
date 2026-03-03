@@ -86,7 +86,7 @@ export const userApi = {
    * POST /api/mapiuser/ChangePassword_GetTac
    */
   async changePasswordGetTac(channel: string): Promise<ChangePasswordGetTacResponse> {
-    return apiClient.post<ChangePasswordGetTacResponse>("/api/mapiuser/ChangePassword_GetTac", { Channel: channel }, {
+    return apiClient.post<ChangePasswordGetTacResponse>("/api/mapiuser/ChangePassword_GetTac_C9", { Channel: channel }, {
       authenticated: true,
     });
   },
